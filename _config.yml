@@ -1,0 +1,9 @@
+# Site settings
+title: Practical Statistics
+tagline: 'Statistics graduate students at UC Berkeley meet to learn statistical methods that people expect us to know but that we secretly have no idea about.' # A brief tagline for your site
+sidebar_image: /images/cover.jpg
+
+# Build settings
+markdown: redcarpet
+highlighter: pygments
+baseurl: /practical_stats # the subpath of your site, e.g. /blog/
