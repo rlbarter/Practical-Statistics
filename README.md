@@ -1,4 +1,4 @@
- # Practical Statistics
+# Practical Statistics
 
 Welcome to the group for *Statistical methods that people expect us to know but that we have no idea about.*
 
