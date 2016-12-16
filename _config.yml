@@ -4,6 +4,6 @@ tagline: 'Statistics graduate students at UC Berkeley meet to learn statistical 
 sidebar_image: /images/cover.jpg
 
 # Build settings
-markdown: redcarpet
+markdown: kramdown
 highlighter: pygments
 baseurl: "" # the subpath of your site, e.g. /blog/
