@@ -2,8 +2,8 @@
 title: Practical Statistics
 description: > # this means to ignore newlines until "baseurl:"
   Statistics graduate students at UC Berkeley meet to learn statistical methods that people expect us to know but that we secretly have no idea about.
-baseurl: "/blog" # the subpath of your site, e.g. /blog/
-url: "https://github.com/rlbarter/Practical-Statistics" # the base hostname & protocol for your site
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "https://rlbarter.github.io/Practical-Statistics/" # the base hostname & protocol for your site
 
 github_username:  rlbarter/Practical-Statistics
 permalink: /:year/:month/:title.html
