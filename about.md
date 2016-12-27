@@ -1,9 +1,7 @@
 ---
-layout: post
-title: "What are we doing here?"
-date: 2016-12-15 12:00:00
-categories: intro
-featured_image: /images/cover.jpg
+layout: page
+title: About
+permalink: /about/
 ---
 
 

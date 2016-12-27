@@ -1,9 +1,12 @@
 # Site settings
 title: Practical Statistics
-tagline: 'Statistics graduate students at UC Berkeley meet to learn statistical methods that people expect us to know but that we secretly have no idea about.' # A brief tagline for your site
-sidebar_image: /images/cover.jpg
+description: > # this means to ignore newlines until "baseurl:"
+  Statistics graduate students at UC Berkeley meet to learn statistical methods that people expect us to know but that we secretly have no idea about.
+baseurl: "/blog" # the subpath of your site, e.g. /blog/
+url: "https://github.com/rlbarter/Practical-Statistics" # the base hostname & protocol for your site
+
+github_username:  rlbarter/Practical-Statistics
+permalink: /:year/:month/:title.html
 
 # Build settings
 markdown: kramdown
-highlighter: rouge
-baseurl: "" # the subpath of your site, e.g. /blog/
