@@ -36,12 +36,13 @@ The clone operation only pulls the master branch of the repo, but the website li
 To set that up, you would run the following commands:
 
 ```{bash eval = FALSE}
-git checkout -b gh-pages
 git pull origin gh-pages
+git checkout -b NAME-OF-NEW-BRANCH
 ```
-
-The first line creates the gh-pages branch on your local machine (`git checkout` is for switching branches and the `-b` flag says to create a new branch).
-The second line pulls the gh-pages branch from your fork on GitHub to your local machine.
+  
+The first line pulls the gh-pages branch from your fork on GitHub to your local machine.
+The second line creates a new branch on your local machine (`git checkout` is for switching branches and the `-b` flag says to create a new branch).
+You need to make your changes on a new branch; the gh-pages branch won't work.
 Now you should have all the files necessary.
 
 ## Step 2: Write your blog post using R Markdown
@@ -61,11 +62,11 @@ We do this in two steps: you'll push it to your GitHub repo and then submit a **
 First, push your changes to your repo:
 
 ```{bash eval = FALSE}
-git push origin gh-pages
+git push origin NAME-OF-NEW-BRANCH
 ```
 
 Now, navigate back to [the original repo](https://github.com/rlbarter/Practical-Statistics).
-At the top of the repo, the new branch will show up with a green Pull Request button - click it and submit the request.
+At the top of the repo, the new branch will show up with a green Pull Request button - click it and submit the request, **making sure that you set the base branch as gh-pages**.
 Now, the maintainers will either merge your changes into the website, or may ask you to make modifications first.
 If the latter happens, follow this same process of commits and pushes, and they will automatically get added to your open pull request.
 
@@ -129,3 +130,19 @@ git push origin gh-pages
 
 The steps here are pretty straightforward: make sure you're on the right branch, pull from that branch in the main repo, and push the updated branch on your machine to your GitHub fork.
 You can do this for the master branch as well.
+
+## Deleting old branches
+
+After you're done making a pull request, you might want to get rid of old branches that have already been merged.
+You can see what branches you have by running
+
+```{bash eval = FALSE}
+git branch -v
+```
+
+To delete a branch, first delete it locally and then delete the branch on your GitHub:
+
+```{bash eval = FALSE}
+git branch -d OLD-BRANCH
+git push origin :OLD-BRANCH
+```
