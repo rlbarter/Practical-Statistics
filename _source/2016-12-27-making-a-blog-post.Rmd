@@ -67,7 +67,7 @@ git push origin NAME-OF-NEW-BRANCH
 ```
 
 Now, navigate back to [the original repo](https://github.com/rlbarter/Practical-Statistics).
-At the top of the repo, the new branch will show up with a green Pull Request button - click it and submit the request.
+At the top of the repo, the new branch will show up with a green Pull Request button - click it and submit the request, **making sure that you set the base branch as gh-pages**.
 Now, the maintainers will either merge your changes into the website, or may ask you to make modifications first.
 If the latter happens, follow this same process of commits and pushes, and they will automatically get added to your open pull request.
 
