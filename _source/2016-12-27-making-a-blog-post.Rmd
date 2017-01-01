@@ -38,10 +38,12 @@ To set that up, you would run the following commands:
 ```{bash eval = FALSE}
 git checkout -b gh-pages
 git pull origin gh-pages
+git checkout -b NAME-OF-NEW-BRANCH
 ```
 
 The first line creates the gh-pages branch on your local machine (`git checkout` is for switching branches and the `-b` flag says to create a new branch).
 The second line pulls the gh-pages branch from your fork on GitHub to your local machine.
+Finally, you need to create a new branch where you'll make your changes.
 Now you should have all the files necessary.
 
 ## Step 2: Write your blog post using R Markdown
@@ -61,7 +63,7 @@ We do this in two steps: you'll push it to your GitHub repo and then submit a **
 First, push your changes to your repo:
 
 ```{bash eval = FALSE}
-git push origin gh-pages
+git push origin NAME-OF-NEW-BRANCH
 ```
 
 Now, navigate back to [the original repo](https://github.com/rlbarter/Practical-Statistics).
@@ -129,3 +131,19 @@ git push origin gh-pages
 
 The steps here are pretty straightforward: make sure you're on the right branch, pull from that branch in the main repo, and push the updated branch on your machine to your GitHub fork.
 You can do this for the master branch as well.
+
+## Deleting old branches
+
+After you're done making a pull request, you might want to get rid of old branches that have already been merged.
+You can see what branches you have by running
+
+```{bash eval = FALSE}
+git branch -v
+```
+
+To delete a branch, first delete it locally and then delete the branch on your GitHub:
+
+```{bash eval = FALSE}
+git branch -d OLD-BRANCH
+git push origin :OLD-BRANCH
+```
