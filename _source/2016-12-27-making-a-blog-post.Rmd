@@ -19,20 +19,55 @@ All you need to do is follow the so-simple-and-easy-to-implement steps below! Ho
 
 ## Step 1: Fork the github repository
 
-First thing's first, you need to **fork the git repo** on which this site is hosted: [https://github.com/rlbarter/Practical-Statistics](https://github.com/rlbarter/Practical-Statistics). Basically you will write the following code in the **command line** i.e. terminal (assuming that you've installed git at some point in your life):
+First thing's first, you need to **fork the git repo** on which this site is hosted: [https://github.com/rlbarter/Practical-Statistics](https://github.com/rlbarter/Practical-Statistics).
+Go to this repository and in the top righthand corner, click the Fork button.
+This creates your own copy of the repo in your GitHub account.
+
+Now, you need to copy the repo onto your local machine.
+Basically you will write the following code in the **command line** i.e. terminal (assuming that you've installed git at some point in your life):
 
 
 ```{bash eval = FALSE}
-git fork https://github.com/rlbarter/Practical-Statistics
+git clone https://github.com/YOUR-USERNAME/Practical-Statistics
 ```
 
+Notice that you want to clone **your fork** of the repo, not the original repo.
+The clone operation only pulls the master branch of the repo, but the website lives on the gh-pages branch.
+To set that up, you would run the following commands:
+
+```{bash eval = FALSE}
+git checkout -b gh-pages
+git pull origin gh-pages
+```
+
+The first line creates the gh-pages branch on your local machine (`git checkout` is for switching branches and the `-b` flag says to create a new branch).
+The second line pulls the gh-pages branch from your fork on GitHub to your local machine.
+Now you should have all the files necessary.
 
 ## Step 2: Write your blog post using R Markdown
 
 Write your blog post in RStudio as an R Markdown file, and save your `.Rmd` file in the `/_source` folder <font color="red">this lives on the `gh_pages` branch</font>.
+Once you're done, add and commit your blog post:
 
+```{bash eval = FALSE}
+git add FILENAME
+git commit -m "A brief message about what files you're adding"
+```
 
 ## Step 3: Submit a pull request
+
+Now that you're all done adding things, we need to merge it into the website.
+We do this in two steps: you'll push it to your GitHub repo and then submit a **pull request**, asking us to pull your changes into the website.
+First, push your changes to your repo:
+
+```{bash eval = FALSE}
+git push origin gh-pages
+```
+
+Now, navigate back to [the original repo](https://github.com/rlbarter/Practical-Statistics).
+At the top of the repo, the new branch will show up with a green Pull Request button - click it and submit the request.
+Now, the maintainers will either merge your changes into the website, or may ask you to make modifications first.
+If the latter happens, follow this same process of commits and pushes, and they will automatically get added to your open pull request.
 
 <font color="red">Note that the website content lives on the `gh-pages` branch... I need someone who is more familliar with forking and making pull requests than I to write about how to do this. All .Rmd posts will be added to the `/_source` folder in the `gh-pages` branch</font>
 
@@ -66,3 +101,31 @@ servr::jekyll(command = "~/.rbenv/shims/jekyll build")
 
 Note that due to laziness, this site was essentially copied from Yihui Xie's kitr-jekyll repository https://github.com/yihui/knitr-jekyll. Gi
 
+## Divergence between the main repository and your fork
+
+As the website gets updated, the main repo will change, but yours will **not** be automatically updated.
+To keep yours in sync, you need to set up access to the main repo:
+
+```{bash eval = FALSE}
+git remote add upstream https://github.com/rlbarter/Practical-Statistics
+```
+
+Before, you did pushes and pulls from your fork, which was called `origin`.
+`upstream` refers to the original repo.
+You could name these whatever you wanted, but `origin` and `upstream` are the conventions.
+You can see where else you have push/pull access to by running git remote with the `-v` flag:
+
+```{bash eval = FALSE}
+git remote -v
+```
+
+Now to actually update your local clone and your fork on GitHub, you'd run
+
+```{bash eval = FALSE}
+git checkout gh-pages
+git pull upstream gh-pages
+git push origin gh-pages
+```
+
+The steps here are pretty straightforward: make sure you're on the right branch, pull from that branch in the main repo, and push the updated branch on your machine to your GitHub fork.
+You can do this for the master branch as well.
