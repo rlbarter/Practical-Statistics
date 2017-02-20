@@ -6,6 +6,8 @@ theme = "ghostwriter"
 googleAnalytics = ""
 disqusShortname = ""
 ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
+publishDir: "docs"
+
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
