@@ -1,0 +1,7 @@
+_site
+.sass-cache
+.jekyll-metadata
+.Rproj.user
+.Rhistory
+.DS_Store
+public
