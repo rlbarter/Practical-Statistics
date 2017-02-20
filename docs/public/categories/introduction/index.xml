@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Introduction on Practical Statistics</title>
+    <link>/categories/introduction/index.xml</link>
+    <description>Recent content in Introduction on Practical Statistics</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="/categories/introduction/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ANOVA</title>
+      <link>/2017/02/20/anova/</link>
+      <pubDate>Mon, 20 Feb 2017 21:13:14 -0500</pubDate>
+      
+      <guid>/2017/02/20/anova/</guid>
+      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
+
+/BLOGDOWN-BODY-BEFORE --&gt;
+
+&lt;p&gt;Last week, practical statistics met to discuss all things ANOVA. Below you will find the slides from my talk, but read on if you would like to learn all about ANOVA.&lt;/p&gt;
+&lt;center&gt;
+&lt;iframe src=&#34;https://docs.google.com/presentation/d/1mjaZs2ynGK7-qHFFr0nzjHmwqT3BhLDf0h-R5h6RsfU/embed?start=false&amp;amp;loop=false&amp;amp;delayms=3000&#34; frameborder=&#34;0&#34; width=&#34;480&#34; height=&#34;299&#34; allowfullscreen=&#34;true&#34; mozallowfullscreen=&#34;true&#34; webkitallowfullscreen=&#34;true&#34;&gt;
+&lt;/iframe&gt;
+&lt;/center&gt;
+&lt;div id=&#34;when-anova-is-used-and-who-uses-it&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;When ANOVA is used and who uses it?&lt;/h2&gt;
+&lt;p&gt;ANOVA is used far and wide by the scientific community and beyond. Unfortunately, scientists also frequently misuse ANOVA. A study by &lt;a href=&#34;https://www.hindawi.com/journals/tswj/2011/139494/&#34;&gt;Wu et al. (2011)&lt;/a&gt; showed that from a survey of 10 leading Chinese medical journals in 2008, 446 articles used ANOVA, and of those articles, &lt;a href=&#34;https://www.hindawi.com/journals/tswj/2011/139494/tab1/&#34;&gt;&lt;strong&gt;59% of them used ANOVA incorrectly&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In this post, I will describe the general framework for ANOVA, the assumptions it requires, and many common pitfalls. While I will introduce a few equations, I will not provide extensive details or derivations. Instead, I will focus on developing intuition for &lt;em&gt;why&lt;/em&gt; these equations make sense for the type of problem at hand.&lt;/p&gt;
+&lt;p&gt;Let’s start by getting an idea of what kind of questions one can answer using ANOVA. Three examples are presented below.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Is there a difference between the average number of times articles are shared on social media based on day of the week?&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Is there a difference in average waiting room times for a set of 3 different hospitals?&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Does the presence of other people have an influence on the amount of time taken for a person to help someone in distress?&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The third question is not like the others; can you see why? The first two questions are asking about a difference between mean values of some outcome (article shares or waiting room time) across multiple groups (day of week or hospital). The last question, however, does not seem to satisfy this criteria: while it has a clear outcome (amount of time taken for a person to help someone in distress), it has no obvious groupings.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.wadsworth.com/psychology_d/templates/student_resources/0155060678_rathus/ps/ps19.html&#34;&gt;Darley and Latané (1969)&lt;/a&gt; used ANOVA to answer the question of whether the presence of other people had an influence on the amount of time taken for a person to help someone in distress by setting up an appropriate experiment. In doing so, they were the first to demonstrate the “&lt;a href=&#34;https://en.wikipedia.org/wiki/Bystander_effect&#34;&gt;bystander effect&lt;/a&gt;”.&lt;/p&gt;
+&lt;p&gt;In their experiment, the experimenter had the subject wait in a room with either 0, 2, or 4 other individuals. The experimenter announces that the study will begin shortly and walks into an adjacent room. In a few moments the people in the waiting room hear her fall and cry out. The outcome varibale is the number of seconds it takes the subject to help the experimenter, and the grouping variable is the number of other people in the room (0, 2, or 4).&lt;/p&gt;
+&lt;p&gt;Given these examples, the definition of ANOVA provided in the following paragraph shouldn’t come as much of a surprise.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;anova-in-a-nutshell&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;ANOVA in a nutshell&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;AN&lt;/strong&gt;alysis &lt;strong&gt;O&lt;/strong&gt;f &lt;strong&gt;VA&lt;/strong&gt;riance (&lt;strong&gt;ANOVA&lt;/strong&gt;), is a widely used method designed for &lt;em&gt;comparing differences in means among three or more groups.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;For example, we might be interested in comparing the average waiting times in the emergency rooms of three different hospitals. Or perhaps we have conducted a clinical trial comparing the effectiveness of five different drugs for reducing blood pressure.&lt;/p&gt;
+&lt;p&gt;The key is that each individual falls into a group described by a &lt;em&gt;(categorical) grouping variable&lt;/em&gt; (e.g. hospital or drug group) and for each individual we measure some &lt;em&gt;continuous outcome&lt;/em&gt; (e.g. waiting time or blood pressure).&lt;/p&gt;
+&lt;p&gt;Although there are multiple types of ANOVA, the simplest (“one-way” ANOVA) can be thought of as a generalization of a two-sample t-test. One-way ANOVA involves testing the &lt;em&gt;omnibus hypothesis&lt;/em&gt; that &lt;em&gt;k&lt;/em&gt; population means are identical:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[H_0: \mu_1 = \mu_2 = ... = \mu_k.\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Note that the two-sample t-test tested the hypothesis that &lt;em&gt;two&lt;/em&gt; population means are equal (i.e. &lt;em&gt;k = 2&lt;/em&gt;).&lt;/p&gt;
+&lt;p&gt;The alternative hypothesis for ANOVA states that &lt;em&gt;any one&lt;/em&gt; of the population mean equalities does not hold:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[H_1: \mu_i \neq \mu_j~~ \text{ for some } ~~i \neq j.\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;It is important to note that a rejection of the null hypothesis &lt;strong&gt;does not tell you which of the population means differ&lt;/strong&gt;. It only tells you that there is &lt;em&gt;some&lt;/em&gt; population whose mean is different from at least one other population (it could be that all of the means are different from one another!)&lt;/p&gt;
+&lt;div id=&#34;a-simple-toy-example-hospital-waiting-times&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;A simple toy example: hospital waiting times&lt;/h3&gt;
+&lt;p&gt;Suppose that we have three hospitals, let’s call them A, B and C (creative names, I know). We are interested in whether all three hospitals have the same the average waiting time for the emergency room.&lt;/p&gt;
+&lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
+&lt;img src=&#34;../../img/hospitals.png&#34; alt=&#34;Three hospitals: A, B and C.&#34;  /&gt;
+&lt;p class=&#34;caption&#34;&gt;
+Figure 1: Three hospitals: A, B and C.
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;We measured the waiting time for 20 unique individuals at each of these three hospitals (so there are 60 individuals in total). These waiting times (in hours) are recorded below.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr class=&#34;header&#34;&gt;
+&lt;th align=&#34;right&#34;&gt;Hospital A&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;Hospital B&lt;/th&gt;
+&lt;th align=&#34;right&#34;&gt;Hospital C&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1.8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1.4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;0.7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;0.8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;0.5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;2.1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;0.9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;2.2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1.2&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1.3&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1.1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1.1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;0.4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1.4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;0.8&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.0&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1.1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;0.8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;0.6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1.1&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.4&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;odd&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;1.6&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.5&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&#34;even&#34;&gt;
+&lt;td align=&#34;right&#34;&gt;0.9&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;1.7&lt;/td&gt;
+&lt;td align=&#34;right&#34;&gt;2.0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;As pictures tend to be more informative than tables, we present a plot of these waiting times below. To aid the visualization, the x-position of each point is jittered to gently increase the space between the points.&lt;/p&gt;
+&lt;p&gt;Most people seem to wait over an hour, with some unlucky individuals waiting for almost 3 hours. The mean waiting time for each hospital is highlighted by a red bar.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;#####../content/post/2017-02-17-anova_files/figure-html/wait2-1.png&#34; width=&#34;288&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The question of interest is whether or not the average waiting time for each of the three hospitals is the same. This question might be naively interpreted as: “are the red bars at the same height?”, i.e. is there a difference between the waiting times for the &lt;em&gt;sample&lt;/em&gt; of 20 patients from each hospital. The intended question is actually asking about equality between the average waiting times from the population of all patients who have ever, and will ever, wait in these waiting rooms, regardless of whether they fall in our sample.&lt;/p&gt;
+&lt;p&gt;Although the sample means clearly aren’t identical (the red bars are all at different heights), &lt;strong&gt;do we have enough evidence to show that the &lt;em&gt;underlying population&lt;/em&gt; waiting time means are different&lt;/strong&gt;, or are the differences that we observe are simply reflection of the inherent noise in the data?&lt;/p&gt;
+&lt;p&gt;This is the question that lies at the heart of hypothesis testing.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;why-is-anova-called-analysis-of-variance&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Why is ANOVA called “Analysis of Variance”?&lt;/h3&gt;
+&lt;p&gt;What does comparing means have to do with variability?&lt;/p&gt;
+&lt;p&gt;Quite a lot it turns out… simply by asking “are the means different”, we are essentially asking a question about whether the variance of the means is large. However, the variability that we observe between the means themselves only makes sense relative to the overall variance in the data. For example, if the individual observations themselves are extremely variable, then it might be reasonable to expect that the observed group-specific averages might exhibit some variance (even if the underlying true averages are identical).&lt;/p&gt;
+&lt;p&gt;There are two types of variance at play here:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;within-group variability&lt;/strong&gt;: the variance of the individual observations within a group, and&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;between-group variability&lt;/strong&gt;: the variance between the averages of the groups.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In the figure below, the red bars in the left panel highlight the &lt;em&gt;within-group variance&lt;/em&gt;, while the red bars in the right panel highlight the &lt;em&gt;between-group variance&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;#####../content/post/2017-02-17-anova_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;768&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The basic idea is that &lt;strong&gt;if the variability between the groups is greater than the variability within the groups&lt;/strong&gt;, then we have evidence that the differences between the groups is not simply reflecting random noise.&lt;/p&gt;
+&lt;p&gt;Quantifying the within and between group variability is typically done by calculating a mean sum of squares: add up the squared vertical distances and divide by the &lt;em&gt;degrees of freedom&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;This means that we are comparing the&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;between sum of squares (BSS): the squared distances from the group means (average over all individuals separately &lt;em&gt;for each hospital&lt;/em&gt;) to the global mean (average over all individuals),&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;to the&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;within sum of squares (WSS): the squared distances from each individual to their group mean (average over all individuals within the same hospital).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Using this idea we can formulate a test statistic:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../img/F-stat.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;To spell it out mathematically, we can write these expressions as follows:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[WSS =\sum_{i = 1}^K \sum_{j = 1}^{n_i} (y_{ij} - \overline{y}_{i\cdot})^2 ~~~~~ \text{ and } ~~~~~ BSS = \sum_{i=1}^K (\overline{y}_{\cdot \cdot} - \overline{y}_{i\cdot})^2\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(y_{ij}\)&lt;/span&gt;, defines the waiting room time (outcome) for patient &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt; from hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\overline{y}_{\cdot \cdot}\)&lt;/span&gt; defines the global average waiting time and &lt;span class=&#34;math inline&#34;&gt;\(\overline{y}_{i \cdot}\)&lt;/span&gt; defines the average waiting time for hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;. &lt;span class=&#34;math inline&#34;&gt;\(K\)&lt;/span&gt; is the number of hospitals, and &lt;span class=&#34;math inline&#34;&gt;\(n_i\)&lt;/span&gt; is the number of patients sampled from hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Note that in the test statistic above, each quantity is scaled by its &lt;strong&gt;degrees of freedom&lt;/strong&gt;, which when comparing the groups is the number of groups minus 1 (&lt;span class=&#34;math inline&#34;&gt;\(K-1\)&lt;/span&gt;), and when comparing individuals is the number of individuals minus the number of groups (&lt;span class=&#34;math inline&#34;&gt;\(N-K\)&lt;/span&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;what-assumptions-are-required&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What assumptions are required?&lt;/h2&gt;
+&lt;p&gt;If our data satisfies a few parametric assumptions, then we can show that this test statistic follows an &lt;span class=&#34;math inline&#34;&gt;\(F\)&lt;/span&gt; distribution and we can do a straightforward parametric hypothesis test:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\text{p-value} = P\left(F_{K-1, N-k} \geq \frac{BSS/(K-1)}{WSS/(N-K)}\right).\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;These assumptions are as follows&lt;/p&gt;
+&lt;div id=&#34;assumption-1-the-samples-are-independent.&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Assumption 1: The samples are &lt;strong&gt;independent&lt;/strong&gt;.&lt;/h3&gt;
+&lt;p&gt;Independence is an extremely common assumption that is hard to test in general.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;assumption-2-the-data-are-normally-distributed.&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Assumption 2: The data are &lt;strong&gt;normally distributed&lt;/strong&gt;.&lt;/h3&gt;
+&lt;p&gt;Not being a fan of such distributional assumptions myself, I am inclined to point the reader in the direction of non-parametric versions of ANOVA, including the &lt;a href=&#34;https://en.wikipedia.org/wiki/Kruskal%E2%80%93Wallis_one-way_analysis_of_variance&#34;&gt;Kruskal-Wallis test&lt;/a&gt;, however since this is a blog post about ANOVA, we will leave non-parametric readings to the interested parties. Those wishing to test the normality of their data can do so using a variety of methods such as plotting a QQ-plot, or using a normality test (see the &lt;a href=&#34;https://en.wikipedia.org/wiki/Normality_test&#34;&gt;Wikipedia page on normality tests&lt;/a&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;assumption-3-each-group-has-the-same-variance.&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Assumption 3: Each group has the &lt;strong&gt;same variance&lt;/strong&gt;.&lt;/h3&gt;
+&lt;p&gt;The common variance assumption can be tested using common tests, such as the &lt;a href=&#34;https://en.wikipedia.org/wiki/Bartlett%27s_test&#34;&gt;Bartlett test&lt;/a&gt; and the &lt;a href=&#34;http://www.statsref.com/HTML/index.html?fligner-killeen_test.html&#34;&gt;Fligner-Killeen test&lt;/a&gt;, which are easily implemented in R.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;working-through-our-waiting-times-example&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Working through our waiting times example&lt;/h2&gt;
+&lt;p&gt;Let’s examine these assumptions for our Hospital waiting times example.&lt;/p&gt;
+&lt;p&gt;Unfortunately, independence is hard to judge statistically, but if, for example, each person was randomly selected from a splattering of visitors to the waiting room at different times (rather than, e.g. selecting 5 members of the same family all of whom came to the hospital together in some freak accident), then the assumption of independence is probably ok.&lt;/p&gt;
+&lt;p&gt;The figure below plots the density estimation for the waiting times from each hospital. We know that if our data is normally distributed, it should look vaguely like a bell-curve.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;#####../content/post/2017-02-17-anova_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;One might argue that these are some pretty funky-looking bell-curves…&lt;/p&gt;
+&lt;p&gt;However, as I was the one who simulated this data in the first place, I can assure you that they are in fact normally distributed, and you can use this as a lesson on the difficult of drawing conclusions on normality from small samples (in this case, we have 20 observations in each group).&lt;/p&gt;
+&lt;p&gt;A &lt;a href=&#34;http://stat.ethz.ch/R-manual/R-devel/library/stats/html/shapiro.test.html&#34;&gt;Shapiro-Wilk test for normality&lt;/a&gt; provides p-values of 0.39, 0.087, 0.52 for hospitals A, B and C, respectively. Although none of these values are “significant” (even unadjusted for multiple testing), we have stumbled upon another lesson: small p-values (&lt;span class=&#34;math inline&#34;&gt;\(p = 0.087\)&lt;/span&gt; for hospital B) can certainly occur when the null hypothesis is true (in this case, the null hypothesis is that the data are normally distributed)! Remember that when the null hypothesis is true, p-values are uniformly distributed.&lt;/p&gt;
+&lt;p&gt;Finally, based on a visual assessment, the common variance assumption is probably fairly reasonable (and, again, since I simulated this data, I can confirm that the variance is the same for each hospital).&lt;/p&gt;
+&lt;p&gt;To test this formally, &lt;a href=&#34;https://en.wikipedia.org/wiki/Bartlett&amp;#39;s_test&#34;&gt;Bartlett’s test for homogeneity of variances&lt;/a&gt; yields a p-value of 0.68, indicating that we do not have evidence that the variances are different.&lt;/p&gt;
+&lt;p&gt;We have now concluded that the assumptions for ANOVA are satisfied, and can proceed to do our calculations.&lt;/p&gt;
+&lt;p&gt;Calculating the between-sum-of-squares (BSS) and scaling by the degrees of freedom (the number of groups minus 1), and the within-sum-of-squares (WSS) and scaling by the degrees of freedom (the number of observations minus the number of groups), we get that&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\frac{BSS}{K - 1} = \frac{5.94}{3 - 1} = 2.97 ~~~~~~ \text{and} ~~~~~ \frac{WSS}{N - K} = \frac{16.96}{60 - 3} = 0.30.\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Our test statistic turns out to be quite large indeed:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[F = \frac{BSS/(K-1)}{WSS/(N-k)} = \frac{2.97}{0.3} = 9.98.\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Since we are confident that the ANOVA assumptions are satisfied, this F-statistic must follow an F distribution with suitable degrees of freedom. Our p-value can thus be calculated as follows:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[P(F_{2, 53} \geq 9.98) = 0.000192\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;And we can claim to have evidence that the three group means are not all identical. Note that we can interpret this as the distances between the group means and the global mean is quite large relative to the distances between the individual observations and the group means. Recall that these distances are scaled by their respective degrees of freeedom.&lt;/p&gt;
+&lt;p&gt;Rather than conducting these calculations by hand, in R, one could simply use the &lt;code&gt;aov()&lt;/code&gt; function:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(aov(time ~ hospital, data = data))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##             Df Sum Sq Mean Sq F value   Pr(&amp;gt;F)    
+## variable     2  5.938  2.9688   9.981 0.000192 ***
+## Residuals   57 16.955  0.2975                     
+## ---
+## Signif. codes:  0 &amp;#39;***&amp;#39; 0.001 &amp;#39;**&amp;#39; 0.01 &amp;#39;*&amp;#39; 0.05 &amp;#39;.&amp;#39; 0.1 &amp;#39; &amp;#39; 1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;obtaining the same p-value.&lt;/p&gt;
+&lt;div id=&#34;anova-as-a-linear-model&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;ANOVA as a linear model&lt;/h3&gt;
+&lt;p&gt;So far we have discussed ANOVA purely as a hypothesis test comparing two different types of variability. It is, however, more common to talk about ANOVA as a &lt;strong&gt;linear model&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;The anova linear model can be written as follows:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../img/model.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; represents the overall average wait time across all hospitals, and &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt; represents the amount of time that is either added or subtracted from the overall average as a result of being at hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;. To get the average wait time for hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; we can calculate &lt;span class=&#34;math inline&#34;&gt;\(\mu_i := \mu + \tau_i\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Finally, &lt;span class=&#34;math inline&#34;&gt;\(\epsilon_{ij}\)&lt;/span&gt; represents the “noise” term; the quantity that defines how the waiting time for individual &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt; differs from the mean (within their group).&lt;/p&gt;
+&lt;p&gt;We typically assume that the expected value (the average over the population) for &lt;span class=&#34;math inline&#34;&gt;\(\epsilon_{ij}\)&lt;/span&gt; is equal to zero, and that the &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt;s add up to zero. Note that if we do not assume that &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt;s sum to zero, then the model is “over-parametrized” in that there would be an infinite number of ways to define the &lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt;s such that they add up to the group mean &lt;span class=&#34;math inline&#34;&gt;\(\mu_i\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;The question that is sure to be on the edge of your tongue is &lt;strong&gt;“how is this possibly equivalent to the hypothesis test discussed above?”&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The answer is simple and can be summarized by the diagram below.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../img/equivalence.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Specifically, if the hospital-specific effects &lt;span class=&#34;math inline&#34;&gt;\(\tau_A, \tau_B,\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\tau_C\)&lt;/span&gt; are all equal to zero, then the average effect across all groups is the same: &lt;span class=&#34;math inline&#34;&gt;\(\mu_A = \mu_B = \mu_C = \mu\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;common-pitfalls-of-anova-and-alternative-approaches&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Common pitfalls of ANOVA and alternative approaches&lt;/h2&gt;
+&lt;p&gt;Despite its perceived simplicity, scientists frequently misuse ANOVA. A study by &lt;a href=&#34;https://www.hindawi.com/journals/tswj/2011/139494/&#34;&gt;Wu et al. (2011)&lt;/a&gt; showed that from a survey of 10 leading Chinese medical journals in 2008, 446 articles used ANOVA, and of those articles, &lt;a href=&#34;https://www.hindawi.com/journals/tswj/2011/139494/tab1/&#34;&gt;&lt;strong&gt;59% of them used ANOVA incorrectly&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Below we will discuss many of the common pitfalls.&lt;/p&gt;
+&lt;div id=&#34;using-one-way-anova-when-there-is-more-than-one-grouping-variable&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Using one-way ANOVA when there is more than one grouping variable&lt;/h3&gt;
+&lt;p&gt;Suppose that instead of solely measuring waiting times from emergency waiting rooms at each hospital, we instead measured the waiting times from three medical departments from each hospital: &lt;em&gt;surgery&lt;/em&gt;, &lt;em&gt;pediatrics&lt;/em&gt;, and &lt;em&gt;dentistry&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../img/two-way.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In this scenario we should adapt the model to take the second grouping variable into account. This is called &lt;strong&gt;two-way ANOVA&lt;/strong&gt;, and the model can be adapted as follows:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[y_{ijk} = \mu + \tau_i + \gamma_j + \beta_{ij} + \epsilon_{ijk}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt; represents the hospital-specific effect on waiting time and &lt;span class=&#34;math inline&#34;&gt;\(\gamma_j\)&lt;/span&gt; represents the department-specific effect. &lt;span class=&#34;math inline&#34;&gt;\(\beta_{ij}\)&lt;/span&gt; represents an interaction term between these two effects.&lt;/p&gt;
+&lt;p&gt;Another adaptation of ANOVA when the second grouping variable (medical department) is not the same across each hospital is called &lt;strong&gt;nested ANOVA&lt;/strong&gt; (see fig below). For example, perhaps we are comparing both hospitals and medical departments, but we are not examining the same medical department in each hospital.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../img/nested.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conducting-anova-multiple-times-for-multiple-outcomes&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Conducting ANOVA multiple times for multiple outcomes&lt;/h3&gt;
+&lt;p&gt;Suppose that instead of simply being interested in whether there is a difference between waiting time for each hospital, we were also interested in differences in average &lt;em&gt;length of hospital stay&lt;/em&gt; and &lt;em&gt;cost of visit&lt;/em&gt;. Then the incorrect way to proceed would be to generate three separate ANOVA models and draw our conclusions separately for each model. This reeks of multiple testing issues and does not take into account any dependence between the different outcome variables.&lt;/p&gt;
+&lt;p&gt;Instead, one should use Multivariate Analysis of Variance (&lt;strong&gt;MANOVA&lt;/strong&gt;), which can be written as follows:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[ \left[\begin{array}a  y_{ij1} \\ y_{ij2} \\ y_{ij3} \end{array} \right]= \mu + \tau_i +  \epsilon_{ij}\]&lt;/span&gt; where&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(y_{ij1}\)&lt;/span&gt; is the waiting time for individual &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt; from hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;,&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(y_{ij2}\)&lt;/span&gt; is the length of hospital stay for individual &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt; from hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;, and&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(y_{ij3}\)&lt;/span&gt; is the cost of the visit for individual &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt; from hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;incorrectly-conducting-multiple-pair-wise-comparisons-following-anova&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Incorrectly conducting multiple pair-wise comparisons following ANOVA&lt;/h3&gt;
+&lt;p&gt;Upon obtaining a “significant” ANOVA p-value, a common mistake is to then go and test all of the pairwise differences to identify &lt;em&gt;which&lt;/em&gt; of the populations had different means. This is another example of multiple hypothesis testing, and corrections on these p-values must be made. See the &lt;a href=&#34;https://en.wikipedia.org/wiki/Multiple_comparisons_problem&#34;&gt;Wikipedia page&lt;/a&gt; for details on this common issue.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;using-anova-to-analyse-repeated-measures-data&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Using ANOVA to analyse repeated-measures data&lt;/h3&gt;
+&lt;p&gt;What if, instead of having measured the waiting room times on a different set of 20 people at each hospital (left-panel in fig below), we instead measured the waiting room times on the same set of 20 people at each hospital (right-panel in fig below)?&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../img/repeated-normal-anova.png&#34; width=&#34;100&#34; height=&#34;200&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We have certainly violated the assumption that our observations are independent. Fortunately, &lt;strong&gt;repeated measures ANOVA (rANOVA)&lt;/strong&gt; is a method for exactly this situation.&lt;/p&gt;
+&lt;p&gt;Basically, rANOVA simply splits the within sum of squares into the individual-level sum of squares and the random error sum of squares. An excellent article describing rANOVA can be found &lt;a href=&#34;https://statistics.laerd.com/statistical-guides/repeated-measures-anova-statistical-guide.php&#34;&gt;here&lt;/a&gt;. A common repeated measures experimental design involves observations being made at different &lt;em&gt;time points&lt;/em&gt; (as opposed to at different hospitals).&lt;/p&gt;
+&lt;p&gt;According to the Wikipedia article,&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;rANOVA is not always the best statistical analysis for repeated measure designs. The rANOVA is vulnerable to effects from missing values, imputation, unequivalent time points between subjects and violations of sphericity. These issues can result in sampling bias and inflated rates of Type I error. In such cases it may be better to consider use of a linear mixed model.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;freqently-asked-questions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Freqently asked questions&lt;/h2&gt;
+&lt;div id=&#34;can-i-use-anova-if-my-data-violates-the-assumption-of-common-variances&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Can I use ANOVA if my data violates the assumption of common variances?&lt;/h3&gt;
+&lt;p&gt;According to this post on &lt;a href=&#34;http://stats.stackexchange.com/questions/56971/alternative-to-one-way-anova-unequal-variance&#34;&gt;Stats Stack Exchange&lt;/a&gt;, if the sample size in each group is similar, and the difference between variance isn’t too bad, you should be ok.&lt;/p&gt;
+&lt;p&gt;According to user &lt;em&gt;gung&lt;/em&gt;, with similar group sizes there is a rule of thumb that states that&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ANOVA is robust to heterogeneity of variance so long as the largest variance is not more than 4 times the smallest variance.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I’ll admit that I haven’t checked this claim, but I’d be willing to believe it.&lt;/p&gt;
+&lt;p&gt;If, however, your data has wildly different group variances or varying group sizes, then I’m not entirely sure of what options exist (note that the non-parametric alternative also assumes that the population variances are similar).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;if-my-data-are-not-normal-can-i-simply-transform-it-and-draw-the-conclusions-as-normal&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;If my data are not normal, can I simply transform it and draw the conclusions as normal?&lt;/h3&gt;
+&lt;p&gt;Yes, probably.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;how-does-the-anova-for-model-comparison-work&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;How does the ANOVA for model comparison work?&lt;/h3&gt;
+&lt;p&gt;It is common to use the &lt;code&gt;anova()&lt;/code&gt; function in R to compare two different models. Specifically, it compares &lt;em&gt;nested&lt;/em&gt; models wherein one model consists of a subset of the set of variables of the other model.&lt;/p&gt;
+&lt;p&gt;Note that the use of the word “nested” here has nothing to do with the nested anova discussed above in which the grouping variables themselves (rather than the models) were nested.&lt;/p&gt;
+&lt;p&gt;The comparison being made by ANOVA in this situation is whether the residual sum of squares (which is essentially the &lt;em&gt;within sum of squares&lt;/em&gt; from one-way ANOVA) for model 1 (the larger model) is larger than the residual sum of squares for model 2 (the smaller model).&lt;/p&gt;
+&lt;p&gt;Specifically, it calculates the F-statistic&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[F = \frac{(RSS_{\text{model 2}} - RSS_{\text{model 1}})/(p_1 - p_2)}{RSS_{\text{model 1}}/(n - p_1)}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The idea is that since model 2 is a special case of model 1, model 1 is more complex so &lt;span class=&#34;math inline&#34;&gt;\(RSS_{\text{model 2}}\)&lt;/span&gt; will always be as least as large as &lt;span class=&#34;math inline&#34;&gt;\(RSS_{\text{model 1}}\)&lt;/span&gt;. The question is whether the difference is “statistically significant”.&lt;/p&gt;
+&lt;p&gt;Note that if you call the &lt;code&gt;anova()&lt;/code&gt; function with a single model, it will compare the first variable in the model to a baseline model with no predictors. If there is a second variable, it compares the model with both variables against the model with just one variable, and so on and so forth.&lt;/p&gt;
+&lt;p&gt;See this &lt;a href=&#34;http://www.statpower.net/Content/311/Lecture%20Notes/RegressionIntro.pdf&#34;&gt;set of slides&lt;/a&gt; by James Steiger if you’re interested in further details.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-end&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The end…&lt;/h2&gt;
+&lt;p&gt;While this post has only scratched the surface of all things ANOVA, I hope that you have developed a general intuition for how ANOVA works, what assumptions are needed to make things go, and common pitfalls to avoid.&lt;/p&gt;
+&lt;/div&gt;
+
+
+&lt;!-- BLOGDOWN-HEAD
+
+
+
+
+/BLOGDOWN-HEAD --&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to post your blog post</title>
+      <link>/2016/12/27/how-to-post-your-blog-post/</link>
+      <pubDate>Tue, 27 Dec 2016 21:13:14 -0500</pubDate>
+      
+      <guid>/2016/12/27/how-to-post-your-blog-post/</guid>
+      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
+
+/BLOGDOWN-BODY-BEFORE --&gt;
+
+&lt;p&gt;So… how does one get their blog post on here? That’s an excellent question and I’m so glad that you asked!&lt;/p&gt;
+&lt;p&gt;It’s quite easy, really (especially if you avoid the advanced steps which will require you to spend some time pulling out your hair trying to understand how jekyll, github pages, and R Markdown interact with one another).&lt;/p&gt;
+&lt;p&gt;All you need to do is follow the so-simple-and-easy-to-implement steps below! Hooray!&lt;/p&gt;
+&lt;div id=&#34;step-1-fork-the-github-repository&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Step 1: Fork the github repository&lt;/h2&gt;
+&lt;p&gt;First thing’s first, you need to &lt;strong&gt;fork the git repo&lt;/strong&gt; on which this site is hosted: &lt;a href=&#34;https://github.com/rlbarter/Practical-Statistics&#34; class=&#34;uri&#34;&gt;https://github.com/rlbarter/Practical-Statistics&lt;/a&gt;. Go to this repository and in the top righthand corner, click the Fork button. This creates your own copy of the repo in your GitHub account.&lt;/p&gt;
+&lt;p&gt;Now, you need to copy the repo onto your local machine. Basically you will write the following code in the &lt;strong&gt;command line&lt;/strong&gt; i.e. terminal (assuming that you’ve installed git at some point in your life):&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git clone https://github.com/YOUR-USERNAME/Practical-Statistics&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Notice that you want to clone &lt;strong&gt;your fork&lt;/strong&gt; of the repo, not the original repo. The clone operation only pulls the master branch of the repo, but the website lives on the gh-pages branch. To set that up, you would run the following commands:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git pull origin gh-pages
+git checkout -b NAME-OF-NEW-BRANCH&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The first line pulls the gh-pages branch from your fork on GitHub to your local machine. The second line creates a new branch on your local machine (&lt;code&gt;git checkout&lt;/code&gt; is for switching branches and the &lt;code&gt;-b&lt;/code&gt; flag says to create a new branch). You need to &lt;strong&gt;make your changes on a new branch&lt;/strong&gt;; the gh-pages branch won’t work. Now you should have all the files necessary.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;step-2-write-your-blog-post-using-r-markdown&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Step 2: Write your blog post using R Markdown&lt;/h2&gt;
+&lt;p&gt;Write your blog post in RStudio as an R Markdown file (please copy the format of existing blog posts), and save your &lt;code&gt;.Rmd&lt;/code&gt; file in the &lt;code&gt;/content/post&lt;/code&gt; folder (which lives on the &lt;code&gt;gh_pages&lt;/code&gt; branch). Once you’re done, add and commit your blog post:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git add FILENAME
+git commit -m &amp;quot;A brief message about what files you&amp;#39;re adding&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;step-3-submit-a-pull-request&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Step 3: Submit a pull request&lt;/h2&gt;
+&lt;p&gt;Now that you’re all done adding things, we need to merge it into the website. We do this in two steps: you’ll push it to your GitHub repo and then submit a &lt;strong&gt;pull request&lt;/strong&gt;, asking us to pull your changes into the website. First, push your changes to your repo:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git push origin NAME-OF-NEW-BRANCH&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, navigate back to &lt;a href=&#34;https://github.com/rlbarter/Practical-Statistics&#34;&gt;the original repo&lt;/a&gt;. At the top of the repo, the new branch will show up with a green Pull Request button - click it and submit the request, &lt;strong&gt;making sure that you set the base branch as gh-pages&lt;/strong&gt;. Now, the maintainers will either merge your changes into the website, or may ask you to make modifications first. If the latter happens, follow this same process of commits and pushes, and they will automatically get added to your open pull request.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;advanced-steps&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Advanced steps&lt;/h2&gt;
+&lt;p&gt;If you would like to be able to render the website locally on your machine before submitting your post or any changes to the public version, you need to follow the instructions on the RStudio &lt;a href=&#34;https://github.com/rstudio/blogdown&#34;&gt;blogdown github page&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;divergence-between-the-main-repository-and-your-fork&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Divergence between the main repository and your fork&lt;/h2&gt;
+&lt;p&gt;As the website gets updated, the main repo will change, but yours will &lt;strong&gt;not&lt;/strong&gt; be automatically updated. To keep yours in sync, you need to set up access to the main repo:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git remote add upstream https://github.com/rlbarter/Practical-Statistics&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Before, you did pushes and pulls from your fork, which was called &lt;code&gt;origin&lt;/code&gt;. &lt;code&gt;upstream&lt;/code&gt; refers to the original repo. You could name these whatever you wanted, but &lt;code&gt;origin&lt;/code&gt; and &lt;code&gt;upstream&lt;/code&gt; are the conventions. You can see where else you have push/pull access to by running git remote with the &lt;code&gt;-v&lt;/code&gt; flag:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git remote -v&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now to actually update your local clone and your fork on GitHub, you’d run&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git checkout gh-pages
+git pull upstream gh-pages
+git push origin gh-pages&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The steps here are pretty straightforward: make sure you’re on the right branch, pull from that branch in the main repo, and push the updated branch on your machine to your GitHub fork. You can do this for the master branch as well.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;deleting-old-branches&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Deleting old branches&lt;/h2&gt;
+&lt;p&gt;After you’re done making a pull request, you might want to get rid of old branches that have already been merged. You can see what branches you have by running&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git branch -v&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To delete a branch, first delete it locally and then delete the branch on your GitHub:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git branch -d OLD-BRANCH
+git push origin :OLD-BRANCH&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;!-- BLOGDOWN-HEAD
+
+
+
+
+/BLOGDOWN-HEAD --&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>What are we doing here?</title>
+      <link>/2016/12/27/what-are-we-doing-here/</link>
+      <pubDate>Tue, 27 Dec 2016 21:13:14 -0500</pubDate>
+      
+      <guid>/2016/12/27/what-are-we-doing-here/</guid>
+      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
+
+/BLOGDOWN-BODY-BEFORE --&gt;
+
+&lt;p&gt;Welcome to the “Practical Statistics” group for &lt;strong&gt;statistical methods that people expect us to know but that we have no idea about.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Members of this group meet once every two weeks for the purpose of learning common statistical methods that we should, but don’t, know how to use in practice (but that people in other fields think we do).&lt;/p&gt;
+&lt;p&gt;Such topics include&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;ANOVA&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Mixed effects models&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Power calculations&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Clustered standard errors&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These methods are used constantly in other fields and the fact that we rarely learn how and when to use them makes it hard for us to help people in consulting or in other venues.&lt;/p&gt;
+&lt;div id=&#34;what-do-the-meetings-involve&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What do the meetings involve?&lt;/h2&gt;
+&lt;p&gt;We will get together every one or two weeks and teach each other a method that is not commonly taught to Statisticians, but is used widely in other fields. Each meeting will involve:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;A 20 minute presentation by a volunteer on a pre-determined topic&lt;/strong&gt;: the presentations should be short and high-level. Only one equation is allowed. The focus should not be on the technical aspects of the method, but rather on how and when it is used in practice (and when it shouldn’t be used in practice), with examples. For example, blog posts might be more helpful than technical papers when preparing presentations.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Discussion&lt;/strong&gt;: the remainder of the meeting will be discussion-based, so that everyone can offer their take on the topic and we can clear up any ambiguities.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;A short explanatory blog post&lt;/strong&gt;: each topic will be accompanied by a blog post describing the method to a layperson. This blog post will either be written by the presenter, volunteers amongst the attendees, or both.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Our aim is to understand how methods work at a high level, who uses these methods, what kind of data and problems they are used for, and what the necessary assumptions are to make things go.&lt;/p&gt;
+&lt;/div&gt;
+
+
+&lt;!-- BLOGDOWN-HEAD
+
+
+
+
+/BLOGDOWN-HEAD --&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

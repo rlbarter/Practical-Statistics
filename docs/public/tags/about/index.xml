@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>About on Practical Statistics</title>
+    <link>/tags/about/index.xml</link>
+    <description>Recent content in About on Practical Statistics</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="/tags/about/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>What are we doing here?</title>
+      <link>/2016/12/27/what-are-we-doing-here/</link>
+      <pubDate>Tue, 27 Dec 2016 21:13:14 -0500</pubDate>
+      
+      <guid>/2016/12/27/what-are-we-doing-here/</guid>
+      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
+
+/BLOGDOWN-BODY-BEFORE --&gt;
+
+&lt;p&gt;Welcome to the “Practical Statistics” group for &lt;strong&gt;statistical methods that people expect us to know but that we have no idea about.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Members of this group meet once every two weeks for the purpose of learning common statistical methods that we should, but don’t, know how to use in practice (but that people in other fields think we do).&lt;/p&gt;
+&lt;p&gt;Such topics include&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;ANOVA&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Mixed effects models&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Power calculations&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Clustered standard errors&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These methods are used constantly in other fields and the fact that we rarely learn how and when to use them makes it hard for us to help people in consulting or in other venues.&lt;/p&gt;
+&lt;div id=&#34;what-do-the-meetings-involve&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What do the meetings involve?&lt;/h2&gt;
+&lt;p&gt;We will get together every one or two weeks and teach each other a method that is not commonly taught to Statisticians, but is used widely in other fields. Each meeting will involve:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;A 20 minute presentation by a volunteer on a pre-determined topic&lt;/strong&gt;: the presentations should be short and high-level. Only one equation is allowed. The focus should not be on the technical aspects of the method, but rather on how and when it is used in practice (and when it shouldn’t be used in practice), with examples. For example, blog posts might be more helpful than technical papers when preparing presentations.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Discussion&lt;/strong&gt;: the remainder of the meeting will be discussion-based, so that everyone can offer their take on the topic and we can clear up any ambiguities.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;A short explanatory blog post&lt;/strong&gt;: each topic will be accompanied by a blog post describing the method to a layperson. This blog post will either be written by the presenter, volunteers amongst the attendees, or both.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Our aim is to understand how methods work at a high level, who uses these methods, what kind of data and problems they are used for, and what the necessary assumptions are to make things go.&lt;/p&gt;
+&lt;/div&gt;
+
+
+&lt;!-- BLOGDOWN-HEAD
+
+
+
+
+/BLOGDOWN-HEAD --&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

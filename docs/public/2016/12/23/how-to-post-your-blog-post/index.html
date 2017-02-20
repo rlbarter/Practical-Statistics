@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>How to post your blog post &middot; </title>
+        <meta name="description" content="So… how does one get their blog post on here? That’s an excellent question and I’m so glad that you asked!
+It’s quite easy, really (especially if you avoid the advanced steps which will require you to spend some time pulling out your hair trying to understand how jekyll, github pages, and R Markdown interact with one another).
+All you need to do is follow the so-simple-and-easy-to-implement steps below! Hooray!">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.18.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="../../../../dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+
+
+
+
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <a class="site-logo" title="" href="">
+                                <img src="#ZgotmplZ" alt="" />
+                            </a>
+                        
+                        <a class="button-square" href="../../../../index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="About" href="../../../../about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Blog" href="../../../../post/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Schedule" href="../../../../schedule/">Schedule</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="GitHub" href="https://github.com/rlbarter/Practical-Statistics">GitHub</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container">
+        <header class="post-header">
+    <h1 class="post-title">How to post your blog post</h1>
+    
+</header>
+
+        <div class="post-content clearfix">
+    
+
+
+
+<p>So… how does one get their blog post on here? That’s an excellent question and I’m so glad that you asked!</p>
+<p>It’s quite easy, really (especially if you avoid the advanced steps which will require you to spend some time pulling out your hair trying to understand how jekyll, github pages, and R Markdown interact with one another).</p>
+<p>All you need to do is follow the so-simple-and-easy-to-implement steps below! Hooray!</p>
+<div id="step-1-fork-the-github-repository" class="section level2">
+<h2>Step 1: Fork the github repository</h2>
+<p>First thing’s first, you need to <strong>fork the git repo</strong> on which this site is hosted: <a href="https://github.com/rlbarter/Practical-Statistics" class="uri">https://github.com/rlbarter/Practical-Statistics</a>. Go to this repository and in the top righthand corner, click the Fork button. This creates your own copy of the repo in your GitHub account.</p>
+<p>Now, you need to copy the repo onto your local machine. Basically you will write the following code in the <strong>command line</strong> i.e. terminal (assuming that you’ve installed git at some point in your life):</p>
+<pre class="bash"><code>git clone https://github.com/YOUR-USERNAME/Practical-Statistics</code></pre>
+<p>Notice that you want to clone <strong>your fork</strong> of the repo, not the original repo. The clone operation only pulls the master branch of the repo, but the website lives on the gh-pages branch. To set that up, you would run the following commands:</p>
+<pre class="bash"><code>git pull origin gh-pages
+git checkout -b NAME-OF-NEW-BRANCH</code></pre>
+<p>The first line pulls the gh-pages branch from your fork on GitHub to your local machine. The second line creates a new branch on your local machine (<code>git checkout</code> is for switching branches and the <code>-b</code> flag says to create a new branch). You need to <strong>make your changes on a new branch</strong>; the gh-pages branch won’t work. Now you should have all the files necessary.</p>
+</div>
+<div id="step-2-write-your-blog-post-using-r-markdown" class="section level2">
+<h2>Step 2: Write your blog post using R Markdown</h2>
+<p>Write your blog post in RStudio as an R Markdown file, and save your <code>.Rmd</code> file in the <code>/_source</code> folder (which lives on the <code>gh_pages</code> branch). Once you’re done, add and commit your blog post:</p>
+<pre class="bash"><code>git add FILENAME
+git commit -m &quot;A brief message about what files you&#39;re adding&quot;</code></pre>
+</div>
+<div id="step-3-submit-a-pull-request" class="section level2">
+<h2>Step 3: Submit a pull request</h2>
+<p>Now that you’re all done adding things, we need to merge it into the website. We do this in two steps: you’ll push it to your GitHub repo and then submit a <strong>pull request</strong>, asking us to pull your changes into the website. First, push your changes to your repo:</p>
+<pre class="bash"><code>git push origin NAME-OF-NEW-BRANCH</code></pre>
+<p>Now, navigate back to <a href="https://github.com/rlbarter/Practical-Statistics">the original repo</a>. At the top of the repo, the new branch will show up with a green Pull Request button - click it and submit the request, <strong>making sure that you set the base branch as gh-pages</strong>. Now, the maintainers will either merge your changes into the website, or may ask you to make modifications first. If the latter happens, follow this same process of commits and pushes, and they will automatically get added to your open pull request.</p>
+</div>
+<div id="advanced-steps" class="section level2">
+<h2>Advanced steps</h2>
+<p>If you would like to be able to render the website locally on your machine before submitting your post or any changes to the public version, you need to install <a href="https://www.ruby-lang.org/en/downloads/">ruby</a> and then <a href="https://jekyllrb.com/docs/installation/">jekyll</a>.</p>
+<p>Having done this (possibly with a huge amount of frustrated hair-pulling), you can simply install the <code>servr</code> package in R:</p>
+<pre class="r"><code>install.packages(&quot;servr&quot;)</code></pre>
+<p>and then run the <code>jekyll()</code> command</p>
+<pre class="r"><code>servr::jekyll()</code></pre>
+<p>If this doesn’t work, it make sure that you have indeed installed ruby and jekyll. Otherwise, your problem will likely be solved by specifying the path to the <code>jekyll build</code> command (found using <code>which jekyll</code> in the terminal).</p>
+<p>For instance, in order to build and serve the website locally, I need to use the following argument:</p>
+<pre class="r"><code>servr::jekyll(command = &quot;~/.rbenv/shims/jekyll build&quot;)</code></pre>
+<p>Note that due to laziness, this site was essentially copied from Yihui Xie’s kitr-jekyll repository <a href="https://github.com/yihui/knitr-jekyll" class="uri">https://github.com/yihui/knitr-jekyll</a>. Gi</p>
+</div>
+<div id="divergence-between-the-main-repository-and-your-fork" class="section level2">
+<h2>Divergence between the main repository and your fork</h2>
+<p>As the website gets updated, the main repo will change, but yours will <strong>not</strong> be automatically updated. To keep yours in sync, you need to set up access to the main repo:</p>
+<pre class="bash"><code>git remote add upstream https://github.com/rlbarter/Practical-Statistics</code></pre>
+<p>Before, you did pushes and pulls from your fork, which was called <code>origin</code>. <code>upstream</code> refers to the original repo. You could name these whatever you wanted, but <code>origin</code> and <code>upstream</code> are the conventions. You can see where else you have push/pull access to by running git remote with the <code>-v</code> flag:</p>
+<pre class="bash"><code>git remote -v</code></pre>
+<p>Now to actually update your local clone and your fork on GitHub, you’d run</p>
+<pre class="bash"><code>git checkout gh-pages
+git pull upstream gh-pages
+git push origin gh-pages</code></pre>
+<p>The steps here are pretty straightforward: make sure you’re on the right branch, pull from that branch in the main repo, and push the updated branch on your machine to your GitHub fork. You can do this for the master branch as well.</p>
+</div>
+<div id="deleting-old-branches" class="section level2">
+<h2>Deleting old branches</h2>
+<p>After you’re done making a pull request, you might want to get rid of old branches that have already been merged. You can see what branches you have by running</p>
+<pre class="bash"><code>git branch -v</code></pre>
+<p>To delete a branch, first delete it locally and then delete the branch on your GitHub:</p>
+<pre class="bash"><code>git branch -d OLD-BRANCH
+git push origin :OLD-BRANCH</code></pre>
+</div>
+
+
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="../../../../tags/publishing/">publishing</a>, 
+            
+                <a href="../../../../tags/blog-posts/">blog posts</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=How%20to%20post%20your%20blog%20post&url=%2f2016%2f12%2f23%2fhow-to-post-your-blog-post%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2f2016%2f12%2f23%2fhow-to-post-your-blog-post%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2f2016%2f12%2f23%2fhow-to-post-your-blog-post%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="Practical Statistics" href="../../../../">Practical Statistics</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2017 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="../../../../js/jquery-1.11.3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+        <script src="../../../../js/jquery.fitvids.js"></script>
+        <script src="../../../../js/scripts.js"></script>
+    </body>
+</html>
+
