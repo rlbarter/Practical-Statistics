@@ -1,0 +1,40 @@
+baseurl = "/"
+publishDir = "docs"
+relativeurls = true
+languageCode = "en-us"
+title = "Practical Statistics"
+theme = "ghostwriter"
+googleAnalytics = ""
+disqusShortname = ""
+ignoreFiles = ["\\.Rmd$", "_files$", "_cache$"]
+
+
+
+[permalinks]
+    post = "/:year/:month/:day/:slug/"
+
+
+[[menu.main]]
+    name = "Blog"
+    url = "/post/"
+    weight = 1
+[[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 1
+[[menu.main]]
+    name = "Schedule"
+    url = "/schedule/"
+    weight = 1
+[[menu.main]]
+    name = "GitHub"
+    url = "https://github.com/rlbarter/Practical-Statistics"
+    weight = 2
+
+[params]
+    description = "Statistics graduate students at UC Berkeley meet to learn statistical methods that people expect us to know but that we secretly have no idea about."
+
+    # options for highlight.js (version, additional languages, and theme)
+    highlightjsVersion = "9.9.0"
+    highlightjsLang = ["r", "yaml"]
+    highlightjsTheme = "github"
