@@ -36,7 +36,7 @@
 &lt;/ul&gt;
 &lt;p&gt;The third question is not like the others; can you see why? The first two questions are asking about a difference between mean values of some outcome (article shares or waiting room time) across multiple groups (day of week or hospital). The last question, however, does not seem to satisfy this criteria: while it has a clear outcome (amount of time taken for a person to help someone in distress), it has no obvious groupings.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;http://www.wadsworth.com/psychology_d/templates/student_resources/0155060678_rathus/ps/ps19.html&#34;&gt;Darley and Latané (1969)&lt;/a&gt; used ANOVA to answer the question of whether the presence of other people had an influence on the amount of time taken for a person to help someone in distress by setting up an appropriate experiment. In doing so, they were the first to demonstrate the “&lt;a href=&#34;https://en.wikipedia.org/wiki/Bystander_effect&#34;&gt;bystander effect&lt;/a&gt;”.&lt;/p&gt;
-&lt;p&gt;In their experiment, the experimenter had the subject wait in a room with either 0, 2, or 4 other individuals. The experimenter announces that the study will begin shortly and walks into an adjacent room. In a few moments the people in the waiting room hear her fall and cry out. The outcome varibale is the number of seconds it takes the subject to help the experimenter, and the grouping variable is the number of other people in the room (0, 2, or 4).&lt;/p&gt;
+&lt;p&gt;In their experiment, the experimenter had the subject wait in a room with either 0, 2, or 4 other individuals. The experimenter announces that the study will begin shortly and walks into an adjacent room. In a few moments the people in the waiting room hear her fall and cry out. The outcome variable is the number of seconds it takes the subject to help the experimenter, and the grouping variable is the number of other people in the room (0, 2, or 4).&lt;/p&gt;
 &lt;p&gt;Given these examples, the definition of ANOVA provided in the following paragraph shouldn’t come as much of a surprise.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;anova-in-a-nutshell&#34; class=&#34;section level2&#34;&gt;
@@ -54,7 +54,7 @@
 &lt;h3&gt;A simple toy example: hospital waiting times&lt;/h3&gt;
 &lt;p&gt;Suppose that we have three hospitals, let’s call them A, B and C (creative names, I know). We are interested in whether all three hospitals have the same the average waiting time for the emergency room.&lt;/p&gt;
 &lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
-&lt;img src=&#34;../img/hospitals.png&#34; alt=&#34;Three hospitals: A, B and C.&#34;  /&gt;
+&lt;img src=&#34;../img/anova/hospitals.png&#34; alt=&#34;Three hospitals: A, B and C.&#34;  /&gt;
 &lt;p class=&#34;caption&#34;&gt;
 Figure 1: Three hospitals: A, B and C.
 &lt;/p&gt;
@@ -200,7 +200,7 @@ Figure 1: Three hospitals: A, B and C.
 &lt;li&gt;within sum of squares (WSS): the squared distances from each individual to their group mean (average over all individuals within the same hospital).&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Using this idea we can formulate a test statistic:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;../img/F-stat.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/anova/F-stat.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;To spell it out mathematically, we can write these expressions as follows:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[WSS =\sum_{i = 1}^K \sum_{j = 1}^{n_i} (y_{ij} - \overline{y}_{i\cdot})^2 ~~~~~ \text{ and } ~~~~~ BSS = \sum_{i=1}^K (\overline{y}_{\cdot \cdot} - \overline{y}_{i\cdot})^2\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(y_{ij}\)&lt;/span&gt;, defines the waiting room time (outcome) for patient &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt; from hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\overline{y}_{\cdot \cdot}\)&lt;/span&gt; defines the global average waiting time and &lt;span class=&#34;math inline&#34;&gt;\(\overline{y}_{i \cdot}\)&lt;/span&gt; defines the average waiting time for hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;. &lt;span class=&#34;math inline&#34;&gt;\(K\)&lt;/span&gt; is the number of hospitals, and &lt;span class=&#34;math inline&#34;&gt;\(n_i\)&lt;/span&gt; is the number of patients sampled from hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;.&lt;/p&gt;
@@ -243,7 +243,7 @@ Figure 1: Three hospitals: A, B and C.
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[F = \frac{BSS/(K-1)}{WSS/(N-k)} = \frac{2.97}{0.3} = 9.98.\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Since we are confident that the ANOVA assumptions are satisfied, this F-statistic must follow an F distribution with suitable degrees of freedom. Our p-value can thus be calculated as follows:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[P(F_{2, 53} \geq 9.98) = 0.000192\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;And we can claim to have evidence that the three group means are not all identical. Note that we can interpret this as the distances between the group means and the global mean is quite large relative to the distances between the individual observations and the group means. Recall that these distances are scaled by their respective degrees of freeedom.&lt;/p&gt;
+&lt;p&gt;And we can claim to have evidence that the three group means are not all identical. Note that we can interpret this as the distances between the group means and the global mean is quite large relative to the distances between the individual observations and the group means. Recall that these distances are scaled by their respective degrees of freedom.&lt;/p&gt;
 &lt;p&gt;Rather than conducting these calculations by hand, in R, one could simply use the &lt;code&gt;aov()&lt;/code&gt; function:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(aov(time ~ hospital, data = data))&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##             Df Sum Sq Mean Sq F value   Pr(&amp;gt;F)    
@@ -256,13 +256,13 @@ Figure 1: Three hospitals: A, B and C.
 &lt;h3&gt;ANOVA as a linear model&lt;/h3&gt;
 &lt;p&gt;So far we have discussed ANOVA purely as a hypothesis test comparing two different types of variability. It is, however, more common to talk about ANOVA as a &lt;strong&gt;linear model&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;The anova linear model can be written as follows:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;../img/model.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/anova/model.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; represents the overall average wait time across all hospitals, and &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt; represents the amount of time that is either added or subtracted from the overall average as a result of being at hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;. To get the average wait time for hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; we can calculate &lt;span class=&#34;math inline&#34;&gt;\(\mu_i := \mu + \tau_i\)&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;Finally, &lt;span class=&#34;math inline&#34;&gt;\(\epsilon_{ij}\)&lt;/span&gt; represents the “noise” term; the quantity that defines how the waiting time for individual &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt; differs from the mean (within their group).&lt;/p&gt;
 &lt;p&gt;We typically assume that the expected value (the average over the population) for &lt;span class=&#34;math inline&#34;&gt;\(\epsilon_{ij}\)&lt;/span&gt; is equal to zero, and that the &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt;s add up to zero. Note that if we do not assume that &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt;s sum to zero, then the model is “over-parametrized” in that there would be an infinite number of ways to define the &lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt;s such that they add up to the group mean &lt;span class=&#34;math inline&#34;&gt;\(\mu_i\)&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;The question that is sure to be on the edge of your tongue is &lt;strong&gt;“how is this possibly equivalent to the hypothesis test discussed above?”&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;The answer is simple and can be summarized by the diagram below.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;../img/equivalence.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/anova/equivalence.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Specifically, if the hospital-specific effects &lt;span class=&#34;math inline&#34;&gt;\(\tau_A, \tau_B,\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\tau_C\)&lt;/span&gt; are all equal to zero, then the average effect across all groups is the same: &lt;span class=&#34;math inline&#34;&gt;\(\mu_A = \mu_B = \mu_C = \mu\)&lt;/span&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -273,12 +273,12 @@ Figure 1: Three hospitals: A, B and C.
 &lt;div id=&#34;using-one-way-anova-when-there-is-more-than-one-grouping-variable&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Using one-way ANOVA when there is more than one grouping variable&lt;/h3&gt;
 &lt;p&gt;Suppose that instead of solely measuring waiting times from emergency waiting rooms at each hospital, we instead measured the waiting times from three medical departments from each hospital: &lt;em&gt;surgery&lt;/em&gt;, &lt;em&gt;pediatrics&lt;/em&gt;, and &lt;em&gt;dentistry&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;../img/two-way.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/anova/two-way.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In this scenario we should adapt the model to take the second grouping variable into account. This is called &lt;strong&gt;two-way ANOVA&lt;/strong&gt;, and the model can be adapted as follows:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[y_{ijk} = \mu + \tau_i + \gamma_j + \beta_{ij} + \epsilon_{ijk}\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt; represents the hospital-specific effect on waiting time and &lt;span class=&#34;math inline&#34;&gt;\(\gamma_j\)&lt;/span&gt; represents the department-specific effect. &lt;span class=&#34;math inline&#34;&gt;\(\beta_{ij}\)&lt;/span&gt; represents an interaction term between these two effects.&lt;/p&gt;
 &lt;p&gt;Another adaptation of ANOVA when the second grouping variable (medical department) is not the same across each hospital is called &lt;strong&gt;nested ANOVA&lt;/strong&gt; (see fig below). For example, perhaps we are comparing both hospitals and medical departments, but we are not examining the same medical department in each hospital.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;../img/nested.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/anova/nested.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;conducting-anova-multiple-times-for-multiple-outcomes&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Conducting ANOVA multiple times for multiple outcomes&lt;/h3&gt;
@@ -298,7 +298,7 @@ Figure 1: Three hospitals: A, B and C.
 &lt;div id=&#34;using-anova-to-analyse-repeated-measures-data&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Using ANOVA to analyse repeated-measures data&lt;/h3&gt;
 &lt;p&gt;What if, instead of having measured the waiting room times on a different set of 20 people at each hospital (left-panel in fig below), we instead measured the waiting room times on the same set of 20 people at each hospital (right-panel in fig below)?&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;../img/repeated-normal-anova.png&#34; width=&#34;100&#34; height=&#34;200&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../img/anova/repeated-normal-anova.png&#34; width=&#34;100&#34; height=&#34;200&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We have certainly violated the assumption that our observations are independent. Fortunately, &lt;strong&gt;repeated measures ANOVA (rANOVA)&lt;/strong&gt; is a method for exactly this situation.&lt;/p&gt;
 &lt;p&gt;Basically, rANOVA simply splits the within sum of squares into the individual-level sum of squares and the random error sum of squares. An excellent article describing rANOVA can be found &lt;a href=&#34;https://statistics.laerd.com/statistical-guides/repeated-measures-anova-statistical-guide.php&#34;&gt;here&lt;/a&gt;. A common repeated measures experimental design involves observations being made at different &lt;em&gt;time points&lt;/em&gt; (as opposed to at different hospitals).&lt;/p&gt;
 &lt;p&gt;According to the Wikipedia article,&lt;/p&gt;

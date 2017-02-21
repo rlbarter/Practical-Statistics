@@ -34,7 +34,7 @@ The third question is not like the others; can you see why? The first two questi
 
 [Darley and Latané (1969)](http://www.wadsworth.com/psychology_d/templates/student_resources/0155060678_rathus/ps/ps19.html) used ANOVA to answer the question of whether the presence of other people had an influence on the amount of time taken for a person to help someone in distress by setting up an appropriate experiment. In doing so, they were the first to demonstrate the "[bystander effect](https://en.wikipedia.org/wiki/Bystander_effect)". 
 
-In their experiment, the experimenter had the subject wait in a room with either 0, 2, or 4 other individuals. The experimenter announces that the study will begin shortly and walks into an adjacent room. In a few moments the people in the waiting room hear her fall and cry out. The outcome varibale is the number of seconds it takes the subject to help the experimenter, and the grouping variable is the number of other people in the room (0, 2, or 4).
+In their experiment, the experimenter had the subject wait in a room with either 0, 2, or 4 other individuals. The experimenter announces that the study will begin shortly and walks into an adjacent room. In a few moments the people in the waiting room hear her fall and cry out. The outcome variable is the number of seconds it takes the subject to help the experimenter, and the grouping variable is the number of other people in the room (0, 2, or 4).
 
 
 
@@ -72,7 +72,7 @@ It is important to note that a rejection of the null hypothesis **does not tell 
 Suppose that we have three hospitals, let's call them A, B and C (creative names, I know). We are interested in whether all three hospitals have the same the average waiting time for the emergency room. 
 
 ```{r, fig.align='center', echo = FALSE, fig.cap = "Three hospitals: A, B and C."}
-knitr::include_graphics("/img/hospitals.png")
+knitr::include_graphics("/img/anova/hospitals.png")
 ```
 
 We measured the waiting time for 20 unique individuals at each of these three hospitals (so there are 60 individuals in total). These waiting times (in hours) are recorded below.
@@ -222,7 +222,7 @@ to the
 Using this idea we can formulate a test statistic:
 
 ```{r, fig.align='center', echo = FALSE}
-knitr::include_graphics("/img/F-stat.png")
+knitr::include_graphics("/img/anova/F-stat.png")
 ```
 
 To spell it out mathematically, we can write these expressions as follows:
@@ -315,7 +315,7 @@ Since we are confident that the ANOVA assumptions are satisfied, this F-statisti
 $$P(F_{2, 53} \geq 9.98) = 0.000192$$
 
 
-And we can claim to have evidence that the three group means are not all identical. Note that we can interpret this as the distances between the group means and the global mean is quite large relative to the distances between the individual observations and the group means. Recall that these distances are scaled by their respective degrees of freeedom.
+And we can claim to have evidence that the three group means are not all identical. Note that we can interpret this as the distances between the group means and the global mean is quite large relative to the distances between the individual observations and the group means. Recall that these distances are scaled by their respective degrees of freedom.
 
 Rather than conducting these calculations by hand, in R, one could simply use the `aov()` function:
 
@@ -337,7 +337,7 @@ The anova linear model can be written as follows:
 
 
 ```{r echo = FALSE, fig.align='center'}
-knitr::include_graphics("/img/model.png")
+knitr::include_graphics("/img/anova/model.png")
 ```
 
 
@@ -354,7 +354,7 @@ The question that is sure to be on the edge of your tongue is **"how is this pos
 The answer is simple and can be summarized by the diagram below.
 
 ```{r echo = FALSE, fig.align='center'}
-knitr::include_graphics("/img/equivalence.png")
+knitr::include_graphics("/img/anova/equivalence.png")
 ```
 
 Specifically, if the hospital-specific effects $\tau_A, \tau_B,$ and $\tau_C$ are all equal to zero, then the average effect across all groups is the same: $\mu_A = \mu_B = \mu_C = \mu$.
@@ -373,7 +373,7 @@ Suppose that instead of solely measuring waiting times from emergency waiting ro
 
 
 ```{r echo = FALSE, fig.align='center'}
-knitr::include_graphics("/img/two-way.png")
+knitr::include_graphics("/img/anova/two-way.png")
 ```
 
 In this scenario we should adapt the model to take the second grouping variable into account. This is called **two-way ANOVA**, and the model can be adapted as follows:
@@ -386,7 +386,7 @@ Another adaptation of ANOVA when the second grouping variable (medical departmen
 
 
 ```{r echo = FALSE, fig.align='center'}
-knitr::include_graphics("/img/nested.png")
+knitr::include_graphics("/img/anova/nested.png")
 ```
 
 
@@ -419,7 +419,7 @@ Upon obtaining a "significant" ANOVA p-value, a common mistake is to then go and
 What if, instead of having measured the waiting room times on a different set of 20 people at each hospital (left-panel in fig below), we instead measured the waiting room times on the same set of 20 people at each hospital (right-panel in fig below)?
 
 ```{r echo = FALSE, fig.align='center', fig.show="hold", out.height = 200, out.width = 100}
-knitr::include_graphics("/img/repeated-normal-anova.png")
+knitr::include_graphics("/img/anova/repeated-normal-anova.png")
 
 ```
 
