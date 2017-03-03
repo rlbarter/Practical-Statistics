@@ -10,9 +10,7 @@ date: 2016-12-27T21:13:14-05:00
 
 So... how does one get their blog post on here? That's an excellent question and I'm so glad that you asked!  
 
-It's quite easy, really (especially if you avoid the advanced steps which will require you to spend some time pulling out your hair trying to understand how jekyll, github pages, and R Markdown interact with one another).
-
-All you need to do is follow the so-simple-and-easy-to-implement steps below! Hooray!
+It's quite easy, really. All you need to do is follow the so-simple-and-easy-to-implement steps below! Hooray!
 
 
 
@@ -23,7 +21,7 @@ First thing's first, you need to **fork the git repo** on which this site is hos
 Go to this repository and in the top righthand corner, click the Fork button.
 This creates your own copy of the repo in your GitHub account.
 
-Now, you need to copy the repo onto your local machine.
+Now, you need to **copy the repo** onto your local machine.
 Basically you will write the following code in the **command line** i.e. terminal (assuming that you've installed git at some point in your life):
 
 
@@ -32,22 +30,25 @@ git clone https://github.com/YOUR-USERNAME/Practical-Statistics
 ```
 
 Notice that you want to clone **your fork** of the repo, not the original repo.
-The clone operation only pulls the master branch of the repo, but the website lives on the gh-pages branch.
-To set that up, you would run the following commands:
+
+
+Next, create a new branch on your local machine (`git checkout` is for switching branches and the `-b` flag says to create a new branch).
+You need to **make your changes on this new branch**.
 
 ```{bash eval = FALSE}
-git pull origin gh-pages
 git checkout -b NAME-OF-NEW-BRANCH
 ```
   
-The first line pulls the gh-pages branch from your fork on GitHub to your local machine.
-The second line creates a new branch on your local machine (`git checkout` is for switching branches and the `-b` flag says to create a new branch).
-You need to **make your changes on a new branch**; the gh-pages branch won't work.
+
 Now you should have all the files necessary.
 
 ## Step 2: Write your blog post using R Markdown
 
-Write your blog post in RStudio as an R Markdown file (please copy the format of existing blog posts), and save your `.Rmd` file in the `/content/post` folder (which lives on the `gh_pages` branch).
+Write your blog post in RStudio as an R Markdown file, and save your `.Rmd` file in the `/content/post` folder. You *do not* need to compile this file into html anywhere.
+
+
+Any figures that you link to in your markdown file need to live in the `static` folder. Where you put it in this folder is up to you (for example, for the anova blog post, I put all of the images in the `static/img/anova` folder).
+
 Once you're done, add and commit your blog post:
 
 ```{bash eval = FALSE}
@@ -55,10 +56,11 @@ git add FILENAME
 git commit -m "A brief message about what files you're adding"
 ```
 
+
 ## Step 3: Submit a pull request
 
-Now that you're all done adding things, we need to merge it into the website.
-We do this in two steps: you'll push it to your GitHub repo and then submit a **pull request**, asking us to pull your changes into the website.
+Now that you're all done adding things, you need to merge it into the website.
+You do this in two steps: you'll push it to your GitHub repo and then submit a **pull request**, asking us to pull your changes into the website.
 First, push your changes to your repo:
 
 ```{bash eval = FALSE}
@@ -66,7 +68,8 @@ git push origin NAME-OF-NEW-BRANCH
 ```
 
 Now, navigate back to [the original repo](https://github.com/rlbarter/Practical-Statistics).
-At the top of the repo, the new branch will show up with a green Pull Request button - click it and submit the request, **making sure that you set the base branch as gh-pages**.
+At the top of the repo, the new branch will show up with a green Pull Request button - click it and submit the request.
+
 Now, the maintainers will either merge your changes into the website, or may ask you to make modifications first.
 If the latter happens, follow this same process of commits and pushes, and they will automatically get added to your open pull request.
 
@@ -74,6 +77,7 @@ If the latter happens, follow this same process of commits and pushes, and they 
 
 If you would like to be able to render the website locally on your machine before submitting your post or any changes to the public version, you need to follow the instructions on the RStudio [blogdown github page](https://github.com/rstudio/blogdown).
 
+Basically, set your working directory to your cloned folder, install the blogdown package in R, and run `blogdown::serve_site()`. The website should appear in the Viewer pane.
 
 ## Divergence between the main repository and your fork
 
