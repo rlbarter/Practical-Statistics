@@ -1,7 +1,7 @@
 ---
 title:  "ANOVA"
 author: "Rebecca Barter"
-categories: [introduction]
+categories: [Method]
 tags: [anova]
 date: 2017-02-20T21:13:14-05:00
 ---

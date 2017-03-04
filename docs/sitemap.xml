@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>/2017/03/03/fixed-mixed-and-random-effects/</loc>
+    <lastmod>2017-03-03T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/about/</loc>
     <lastmod>2017-02-20T21:48:51-07:00</lastmod>
   </url>
@@ -51,25 +56,49 @@
   
   <url>
     <loc>/categories/introduction/</loc>
-    <lastmod>2017-02-20T21:13:14-05:00</lastmod>
+    <lastmod>2016-12-27T21:13:14-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/linear-models/</loc>
+    <lastmod>2017-03-03T21:13:14-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/method/</loc>
+    <lastmod>2017-03-03T21:13:14-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/mixed-effects/</loc>
+    <lastmod>2017-03-03T21:13:14-05:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2017-02-20T21:13:14-05:00</lastmod>
+    <lastmod>2017-03-03T21:13:14-05:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/</loc>
-    <lastmod>2017-02-20T21:48:51-07:00</lastmod>
+    <lastmod>2017-03-03T21:13:14-05:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/publishing/</loc>
     <lastmod>2016-12-27T21:13:14-05:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/random-effects/</loc>
+    <lastmod>2017-03-03T21:13:14-05:00</lastmod>
     <priority>0</priority>
   </url>
   

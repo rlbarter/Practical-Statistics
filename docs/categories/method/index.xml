@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Practical Statistics</title>
-    <link>/post/index.xml</link>
-    <description>Recent content in Posts on Practical Statistics</description>
+    <title>Method on Practical Statistics</title>
+    <link>/categories/method/index.xml</link>
+    <description>Recent content in Method on Practical Statistics</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 03 Mar 2017 21:13:14 -0500</lastBuildDate>
-    <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/categories/method/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Fixed, Mixed, and Random Effects</title>
@@ -362,7 +361,7 @@ qqline(resid(mod)[13:18])&lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;A simple toy example: hospital waiting times&lt;/h3&gt;
 &lt;p&gt;Suppose that we have three hospitals, let’s call them A, B and C (creative names, I know). We are interested in whether all three hospitals have the same the average waiting time for the emergency room.&lt;/p&gt;
 &lt;div class=&#34;figure&#34; style=&#34;text-align: center&#34;&gt;&lt;span id=&#34;fig:unnamed-chunk-1&#34;&gt;&lt;/span&gt;
-&lt;img src=&#34;../img/anova/hospitals.png&#34; alt=&#34;Three hospitals: A, B and C.&#34;  /&gt;
+&lt;img src=&#34;../../img/anova/hospitals.png&#34; alt=&#34;Three hospitals: A, B and C.&#34;  /&gt;
 &lt;p class=&#34;caption&#34;&gt;
 Figure 1: Three hospitals: A, B and C.
 &lt;/p&gt;
@@ -508,7 +507,7 @@ Figure 1: Three hospitals: A, B and C.
 &lt;li&gt;within sum of squares (WSS): the squared distances from each individual to their group mean (average over all individuals within the same hospital).&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Using this idea we can formulate a test statistic:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;../img/anova/F-stat.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../img/anova/F-stat.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;To spell it out mathematically, we can write these expressions as follows:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[WSS =\sum_{i = 1}^K \sum_{j = 1}^{n_i} (y_{ij} - \overline{y}_{i\cdot})^2 ~~~~~ \text{ and } ~~~~~ BSS = \sum_{i=1}^K (\overline{y}_{\cdot \cdot} - \overline{y}_{i\cdot})^2\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(y_{ij}\)&lt;/span&gt;, defines the waiting room time (outcome) for patient &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt; from hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\overline{y}_{\cdot \cdot}\)&lt;/span&gt; defines the global average waiting time and &lt;span class=&#34;math inline&#34;&gt;\(\overline{y}_{i \cdot}\)&lt;/span&gt; defines the average waiting time for hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;. &lt;span class=&#34;math inline&#34;&gt;\(K\)&lt;/span&gt; is the number of hospitals, and &lt;span class=&#34;math inline&#34;&gt;\(n_i\)&lt;/span&gt; is the number of patients sampled from hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;.&lt;/p&gt;
@@ -564,13 +563,13 @@ Figure 1: Three hospitals: A, B and C.
 &lt;h3&gt;ANOVA as a linear model&lt;/h3&gt;
 &lt;p&gt;So far we have discussed ANOVA purely as a hypothesis test comparing two different types of variability. It is, however, more common to talk about ANOVA as a &lt;strong&gt;linear model&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;The anova linear model can be written as follows:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;../img/anova/model.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../img/anova/model.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; represents the overall average wait time across all hospitals, and &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt; represents the amount of time that is either added or subtracted from the overall average as a result of being at hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt;. To get the average wait time for hospital &lt;span class=&#34;math inline&#34;&gt;\(i\)&lt;/span&gt; we can calculate &lt;span class=&#34;math inline&#34;&gt;\(\mu_i := \mu + \tau_i\)&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;Finally, &lt;span class=&#34;math inline&#34;&gt;\(\epsilon_{ij}\)&lt;/span&gt; represents the “noise” term; the quantity that defines how the waiting time for individual &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt; differs from the mean (within their group).&lt;/p&gt;
 &lt;p&gt;We typically assume that the expected value (the average over the population) for &lt;span class=&#34;math inline&#34;&gt;\(\epsilon_{ij}\)&lt;/span&gt; is equal to zero, and that the &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt;s add up to zero. Note that if we do not assume that &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt;s sum to zero, then the model is “over-parametrized” in that there would be an infinite number of ways to define the &lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt;s such that they add up to the group mean &lt;span class=&#34;math inline&#34;&gt;\(\mu_i\)&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;The question that is sure to be on the edge of your tongue is &lt;strong&gt;“how is this possibly equivalent to the hypothesis test discussed above?”&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;The answer is simple and can be summarized by the diagram below.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;../img/anova/equivalence.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../img/anova/equivalence.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Specifically, if the hospital-specific effects &lt;span class=&#34;math inline&#34;&gt;\(\tau_A, \tau_B,\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\tau_C\)&lt;/span&gt; are all equal to zero, then the average effect across all groups is the same: &lt;span class=&#34;math inline&#34;&gt;\(\mu_A = \mu_B = \mu_C = \mu\)&lt;/span&gt;.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -581,12 +580,12 @@ Figure 1: Three hospitals: A, B and C.
 &lt;div id=&#34;using-one-way-anova-when-there-is-more-than-one-grouping-variable&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Using one-way ANOVA when there is more than one grouping variable&lt;/h3&gt;
 &lt;p&gt;Suppose that instead of solely measuring waiting times from emergency waiting rooms at each hospital, we instead measured the waiting times from three medical departments from each hospital: &lt;em&gt;surgery&lt;/em&gt;, &lt;em&gt;pediatrics&lt;/em&gt;, and &lt;em&gt;dentistry&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;../img/anova/two-way.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../img/anova/two-way.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In this scenario we should adapt the model to take the second grouping variable into account. This is called &lt;strong&gt;two-way ANOVA&lt;/strong&gt;, and the model can be adapted as follows:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[y_{ijk} = \mu + \tau_i + \gamma_j + \beta_{ij} + \epsilon_{ijk}\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;where &lt;span class=&#34;math inline&#34;&gt;\(\tau_i\)&lt;/span&gt; represents the hospital-specific effect on waiting time and &lt;span class=&#34;math inline&#34;&gt;\(\gamma_j\)&lt;/span&gt; represents the department-specific effect. &lt;span class=&#34;math inline&#34;&gt;\(\beta_{ij}\)&lt;/span&gt; represents an interaction term between these two effects.&lt;/p&gt;
 &lt;p&gt;Another adaptation of ANOVA when the second grouping variable (medical department) is not the same across each hospital is called &lt;strong&gt;nested ANOVA&lt;/strong&gt; (see fig below). For example, perhaps we are comparing both hospitals and medical departments, but we are not examining the same medical department in each hospital.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;../img/anova/nested.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../img/anova/nested.png&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;conducting-anova-multiple-times-for-multiple-outcomes&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Conducting ANOVA multiple times for multiple outcomes&lt;/h3&gt;
@@ -606,7 +605,7 @@ Figure 1: Three hospitals: A, B and C.
 &lt;div id=&#34;using-anova-to-analyse-repeated-measures-data&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Using ANOVA to analyse repeated-measures data&lt;/h3&gt;
 &lt;p&gt;What if, instead of having measured the waiting room times on a different set of 20 people at each hospital (left-panel in fig below), we instead measured the waiting room times on the same set of 20 people at each hospital (right-panel in fig below)?&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;../img/anova/repeated-normal-anova.png&#34; width=&#34;100&#34; height=&#34;200&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../img/anova/repeated-normal-anova.png&#34; width=&#34;100&#34; height=&#34;200&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We have certainly violated the assumption that our observations are independent. Fortunately, &lt;strong&gt;repeated measures ANOVA (rANOVA)&lt;/strong&gt; is a method for exactly this situation.&lt;/p&gt;
 &lt;p&gt;Basically, rANOVA simply splits the within sum of squares into the individual-level sum of squares and the random error sum of squares. An excellent article describing rANOVA can be found &lt;a href=&#34;https://statistics.laerd.com/statistical-guides/repeated-measures-anova-statistical-guide.php&#34;&gt;here&lt;/a&gt;. A common repeated measures experimental design involves observations being made at different &lt;em&gt;time points&lt;/em&gt; (as opposed to at different hospitals).&lt;/p&gt;
 &lt;p&gt;According to the Wikipedia article,&lt;/p&gt;
@@ -646,120 +645,6 @@ Figure 1: Three hospitals: A, B and C.
 &lt;div id=&#34;the-end&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;The end…&lt;/h2&gt;
 &lt;p&gt;While this post has only scratched the surface of all things ANOVA, I hope that you have developed a general intuition for how ANOVA works, what assumptions are needed to make things go, and common pitfalls to avoid.&lt;/p&gt;
-&lt;/div&gt;
-
-
-&lt;!-- BLOGDOWN-HEAD
-
-
-
-
-/BLOGDOWN-HEAD --&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>How to post your blog post</title>
-      <link>/2016/12/27/how-to-post-your-blog-post/</link>
-      <pubDate>Tue, 27 Dec 2016 21:13:14 -0500</pubDate>
-      
-      <guid>/2016/12/27/how-to-post-your-blog-post/</guid>
-      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
-
-/BLOGDOWN-BODY-BEFORE --&gt;
-
-&lt;p&gt;So… how does one get their blog post on here? That’s an excellent question and I’m so glad that you asked!&lt;/p&gt;
-&lt;p&gt;It’s quite easy, really. All you need to do is follow the so-simple-and-easy-to-implement steps below! Hooray!&lt;/p&gt;
-&lt;div id=&#34;step-1-fork-the-github-repository&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Step 1: Fork the github repository&lt;/h2&gt;
-&lt;p&gt;First thing’s first, you need to &lt;strong&gt;fork the git repo&lt;/strong&gt; on which this site is hosted: &lt;a href=&#34;https://github.com/rlbarter/Practical-Statistics&#34; class=&#34;uri&#34;&gt;https://github.com/rlbarter/Practical-Statistics&lt;/a&gt;. Go to this repository and in the top righthand corner, click the Fork button. This creates your own copy of the repo in your GitHub account.&lt;/p&gt;
-&lt;p&gt;Now, you need to &lt;strong&gt;copy the repo&lt;/strong&gt; onto your local machine. Basically you will write the following code in the &lt;strong&gt;command line&lt;/strong&gt; i.e. terminal (assuming that you’ve installed git at some point in your life):&lt;/p&gt;
-&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git clone https://github.com/YOUR-USERNAME/Practical-Statistics&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Notice that you want to clone &lt;strong&gt;your fork&lt;/strong&gt; of the repo, not the original repo.&lt;/p&gt;
-&lt;p&gt;Next, create a new branch on your local machine (&lt;code&gt;git checkout&lt;/code&gt; is for switching branches and the &lt;code&gt;-b&lt;/code&gt; flag says to create a new branch). You need to &lt;strong&gt;make your changes on this new branch&lt;/strong&gt;.&lt;/p&gt;
-&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git checkout -b NAME-OF-NEW-BRANCH&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now you should have all the files necessary.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;step-2-write-your-blog-post-using-r-markdown&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Step 2: Write your blog post using R Markdown&lt;/h2&gt;
-&lt;p&gt;Write your blog post in RStudio as an R Markdown file, and save your &lt;code&gt;.Rmd&lt;/code&gt; file in the &lt;code&gt;/content/post&lt;/code&gt; folder. You &lt;em&gt;do not&lt;/em&gt; need to compile this file into html anywhere.&lt;/p&gt;
-&lt;p&gt;Any figures that you link to in your markdown file need to live in the &lt;code&gt;static&lt;/code&gt; folder. Where you put it in this folder is up to you (for example, for the anova blog post, I put all of the images in the &lt;code&gt;static/img/anova&lt;/code&gt; folder).&lt;/p&gt;
-&lt;p&gt;Once you’re done, add and commit your blog post:&lt;/p&gt;
-&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git add FILENAME
-git commit -m &amp;quot;A brief message about what files you&amp;#39;re adding&amp;quot;&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;step-3-submit-a-pull-request&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Step 3: Submit a pull request&lt;/h2&gt;
-&lt;p&gt;Now that you’re all done adding things, you need to merge it into the website. You do this in two steps: you’ll push it to your GitHub repo and then submit a &lt;strong&gt;pull request&lt;/strong&gt;, asking us to pull your changes into the website. First, push your changes to your repo:&lt;/p&gt;
-&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git push origin NAME-OF-NEW-BRANCH&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now, navigate back to &lt;a href=&#34;https://github.com/rlbarter/Practical-Statistics&#34;&gt;the original repo&lt;/a&gt;. At the top of the repo, the new branch will show up with a green Pull Request button - click it and submit the request.&lt;/p&gt;
-&lt;p&gt;Now, the maintainers will either merge your changes into the website, or may ask you to make modifications first. If the latter happens, follow this same process of commits and pushes, and they will automatically get added to your open pull request.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;advanced-steps&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Advanced steps&lt;/h2&gt;
-&lt;p&gt;If you would like to be able to render the website locally on your machine before submitting your post or any changes to the public version, you need to follow the instructions on the RStudio &lt;a href=&#34;https://github.com/rstudio/blogdown&#34;&gt;blogdown github page&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Basically, set your working directory to your cloned folder, install the blogdown package in R, and run &lt;code&gt;blogdown::serve_site()&lt;/code&gt;. The website should appear in the Viewer pane.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;divergence-between-the-main-repository-and-your-fork&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Divergence between the main repository and your fork&lt;/h2&gt;
-&lt;p&gt;As the website gets updated, the main repo will change, but yours will &lt;strong&gt;not&lt;/strong&gt; be automatically updated. To keep yours in sync, you need to set up access to the main repo:&lt;/p&gt;
-&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git remote add upstream https://github.com/rlbarter/Practical-Statistics&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Before, you did pushes and pulls from your fork, which was called &lt;code&gt;origin&lt;/code&gt;. &lt;code&gt;upstream&lt;/code&gt; refers to the original repo. You could name these whatever you wanted, but &lt;code&gt;origin&lt;/code&gt; and &lt;code&gt;upstream&lt;/code&gt; are the conventions. You can see where else you have push/pull access to by running git remote with the &lt;code&gt;-v&lt;/code&gt; flag:&lt;/p&gt;
-&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git remote -v&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now to actually update your local clone and your fork on GitHub, you’d run&lt;/p&gt;
-&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git checkout gh-pages
-git pull upstream gh-pages
-git push origin gh-pages&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The steps here are pretty straightforward: make sure you’re on the right branch, pull from that branch in the main repo, and push the updated branch on your machine to your GitHub fork. You can do this for the master branch as well.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;deleting-old-branches&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Deleting old branches&lt;/h2&gt;
-&lt;p&gt;After you’re done making a pull request, you might want to get rid of old branches that have already been merged. You can see what branches you have by running&lt;/p&gt;
-&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git branch -v&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To delete a branch, first delete it locally and then delete the branch on your GitHub:&lt;/p&gt;
-&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git branch -d OLD-BRANCH
-git push origin :OLD-BRANCH&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-
-&lt;!-- BLOGDOWN-HEAD
-
-
-
-
-/BLOGDOWN-HEAD --&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>What are we doing here?</title>
-      <link>/2016/12/27/what-are-we-doing-here/</link>
-      <pubDate>Tue, 27 Dec 2016 21:13:14 -0500</pubDate>
-      
-      <guid>/2016/12/27/what-are-we-doing-here/</guid>
-      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
-
-/BLOGDOWN-BODY-BEFORE --&gt;
-
-&lt;p&gt;Welcome to the “Practical Statistics” group for &lt;strong&gt;statistical methods that people expect us to know but that we have no idea about.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Members of this group meet once every two weeks for the purpose of learning common statistical methods that we should, but don’t, know how to use in practice (but that people in other fields think we do).&lt;/p&gt;
-&lt;p&gt;Such topics include&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;ANOVA&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Mixed effects models&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Power calculations&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Clustered standard errors&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;These methods are used constantly in other fields and the fact that we rarely learn how and when to use them makes it hard for us to help people in consulting or in other venues.&lt;/p&gt;
-&lt;div id=&#34;what-do-the-meetings-involve&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;What do the meetings involve?&lt;/h2&gt;
-&lt;p&gt;We will get together every one or two weeks and teach each other a method that is not commonly taught to Statisticians, but is used widely in other fields. Each meeting will involve:&lt;/p&gt;
-&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;A 20 minute presentation by a volunteer on a pre-determined topic&lt;/strong&gt;: the presentations should be short and high-level. Only one equation is allowed. The focus should not be on the technical aspects of the method, but rather on how and when it is used in practice (and when it shouldn’t be used in practice), with examples. For example, blog posts might be more helpful than technical papers when preparing presentations.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;Discussion&lt;/strong&gt;: the remainder of the meeting will be discussion-based, so that everyone can offer their take on the topic and we can clear up any ambiguities.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;A short explanatory blog post&lt;/strong&gt;: each topic will be accompanied by a blog post describing the method to a layperson. This blog post will either be written by the presenter, volunteers amongst the attendees, or both.&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Our aim is to understand how methods work at a high level, who uses these methods, what kind of data and problems they are used for, and what the necessary assumptions are to make things go.&lt;/p&gt;
 &lt;/div&gt;
 
 

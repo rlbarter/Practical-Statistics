@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Fixed, Mixed, and Random Effects &middot; </title>
+        <meta name="description" content="Last time Practical Statistics met to try to wrap our heads around fixed, mixed, and random effects. Chelsea Zhang gave a great chalk-talk (white board marker-talk just doesn’t have the same ring to it), and I will give a brief summary of the content before going through a real-life example.
+Who Uses Fixed, Mixed, and Random Effects? Two main groups use these terms but are referring to different models. The economists and broadly speaking, ``bio folks&quot; are the two main crowds who use these types of models.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.18.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="../../../../dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+
+
+
+
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="Practical Statistics" href="../../../../">Practical Statistics</a>
+                            </h1>
+                        
+                        <a class="button-square" href="../../../../index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="About" href="../../../../about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Blog" href="../../../../post/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Schedule" href="../../../../schedule/">Schedule</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="GitHub" href="https://github.com/rlbarter/Practical-Statistics">GitHub</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Fixed, Mixed, and Random Effects</h1>
+    
+    <p class="post-date">
+        <span>Published <time datetime="2017-02-24" itemprop="datePublished">Fri, Feb 24, 2017</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="" itemprop="author" rel="author">Sara Stoudt</a>
+            </span>
+        </span>
+    </p>
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+
+
+<p>Last time Practical Statistics met to try to wrap our heads around fixed, mixed, and random effects. Chelsea Zhang gave a great chalk-talk (white board marker-talk just doesn’t have the same ring to it), and I will give a brief summary of the content before going through a real-life example.</p>
+<div id="who-uses-fixed-mixed-and-random-effects" class="section level4">
+<h4>Who Uses Fixed, Mixed, and Random Effects?</h4>
+<p>Two main groups use these terms but are referring to different models. The economists and broadly speaking, ``bio folks&quot; are the two main crowds who use these types of models. Full disclaimer: I think about these terms in the second way, so economists should feel free to comment on anything I miss, get wrong, etc.</p>
+<p>Economists are motivated by panel data (repeated measures for individuals over time) and account for unobserved individual effects on an outcome that are fixed over time in order to better analyze the effects of time-varying variables of interest.</p>
+<p>Bio folks are motivated by data that has structure that if left unaccounted for, would violate the uncorrelated, homoscedastic error assumption needed for traditional linear models. We may be interested in how much structure is imposed by certain variables, and for other variables, we may be uninterested in learning about the structure, we are just accounting for it to better estimate other quantities.</p>
+</div>
+<div id="okay-but-what-are-fixed-mixed-and-random-effects" class="section level4">
+<h4>Okay, but what are Fixed, Mixed, and Random Effects?</h4>
+<p>First we will look at the definitions from the bio perspective.</p>
+<p>Before we look at the formulas, let’s just jump right in with a mixed effect example, which is a situation where there are both fixed and random effects, and try to develop an intuition for what might be a fixed effect versus a random effect. If not having the equation background stresses you out, feel free to scroll past this part and come back after familiarizing yourself with the math.</p>
+<p>Suppose we are interested in measuring the total energies (TE) for the ground-state configuration of atoms. To get an estimate for this we both need to take a physical measurement (M) and use a black box calculation (C) to arrive at an answer. How could we arrive at an estimate for each atom? We will extend to the case where multiple atoms are of interest jointly later on.</p>
+<p>We expect a vague form:</p>
+<p><span class="math display">\[TE \sim f(M,C)+ \epsilon\]</span></p>
+<p>where the estimate of total energy is affected by the measurement and the calculation.</p>
+<p>And we expect that many different experimental scenarios could occur:</p>
+<ul>
+<li>different labs take measurements</li>
+<li>within a lab multiple measurement equipment types could be used</li>
+<li>within a lab multiple of one equipment type could be used</li>
+<li>within a lab multiple different scientists could use the same machine</li>
+<li>a few ``standard&quot; black box calculation techniques are used in this field</li>
+</ul>
+<p>For all of these scenarios we can use mixed effects to tackle the final estimation of the total energy of interest. We can notice natural groupings in the data, and we expect each group to have some effect on the answer. How do we decide which is a fixed and random effect? We should ask ourselves two key questions:</p>
+<ol style="list-style-type: decimal">
+<li>Can the groups we see be considered the full population of possible groups we could see, or are they more like a random sample of a larger set of groups?</li>
+</ol>
+<ul>
+<li>Full Population: Fixed</li>
+<li>Random Sample: Random</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li>Do we want to estimate a coefficient for this grouping, or do we just want to account for the anticipated structure that the groups may impose on our observations?</li>
+</ol>
+<ul>
+<li>Y: Fixed</li>
+<li>N: Random</li>
+</ul>
+<p>So let’s answer these questions for each of the possible scenarios for our measurement example.</p>
+<ul>
+<li>different labs take measurements</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>If you are doing a key comparison where all the major labs are participating, then a <strong>fixed</strong> effect probably makes sense. An argument can be made for a random effect if you truly think you have a random set of labs doing the measurement.<br />
+</li>
+<li>We probably don’t care about an individual lab’s effect, so we could go with a <strong>random</strong> effect.</li>
+</ol>
+<p>Eek, already we have a discrepancy! Let’s persevere for now, and come back to this conflicting advice.</p>
+<ul>
+<li>within a lab multiple measurement equipment types could be used</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Do you have one of each of the main instrument types? If so, then a <strong>fixed</strong> effect probably makes sense. If you have a random subset of possible instrument types, then an arguent can be made for a <strong>random</strong> effect.</li>
+<li>There may be cases where you care about an instrument type’s effect (you may be interested in which instrument type is better for measuring total energy) in which case <strong>fixed</strong> effects all the way. Otherwise, you probably wouldn’t have a vested interest in assessing an instrument type’s effect directly and you could go with a <strong>random</strong> effect.</li>
+</ol>
+<ul>
+<li>within a lab multiple of one equipment type could be used</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>You have a random sample of all of that particular instruments ever produced in your lab, so use a <strong>random</strong> effect.</li>
+<li>You don’t care about an individual instrument’s effect, so use a <strong>random</strong> effect.</li>
+</ol>
+<ul>
+<li>within a lab multiple different scientists could use the same machine</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>You have a random sample of all scientistis, so go with a <strong>random</strong> effect.</li>
+<li>You don’t care about an individual scientist’s effect, so you can use a <strong>random</strong> effect.</li>
+</ol>
+<ul>
+<li>a few ``standard&quot; black box calculation techniques are used in this field</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>There could be many different ways of calculating your quantity of interest even if there are few main techniques. Additionally, perhaps there is randomness involved in the estimation process itself. You are probably better off with a <strong>random</strong> effect.</li>
+<li>It is hard to think of a case where you would be explicitly interested in the effect of the calculation, so let’s go with a <strong>random</strong> effect</li>
+</ol>
+<p>Now we can see that often the answer to these two questions line up, and you have a good idea of whether to use a fixed or random effect. However, we saw with the first setup that this isn’t always the case. This is part of the ``art&quot; of statistical modelling. You have to think about what you are most interested in estimating and consider what the limitations of your data are. Later on we will talk about assumptions of each effect, which can help you in your decision making process.</p>
+</div>
+<div id="great-but-you-still-havent-really-told-me-what-fixed-and-random-effects-are" class="section level4">
+<h4>Great, but you still haven’t really told me what Fixed and Random Effects are?</h4>
+<p>Fixed and random effects partition the variability in a regression type approach for observations that are correlated. For example, we expect measurements done in the same lab to be correlated with one another. By allowing for fixed and random effects that are correlated, we ``soak up&quot; the correlated variability leaving the remaining variability as the necessary heteroscedastic, uncorrelated, and normal error that we expect, essentially relying on ordinary least squares techniques to finish the estimation. So let’s see how the regression models could look:</p>
+<p>Different labs and different calculation methods</p>
+<p><span class="math display">\[TE_{l,c}= \alpha_l+\beta_c+\epsilon_{l,c}\]</span></p>
+<p>Different labs (multiple replicates) and different scientists</p>
+<p><span class="math display">\[TE_{l,s}= \alpha_l+\beta_s+\epsilon_{l,s}\]</span></p>
+<p>Different labs and different instrument types (interested in type effect)</p>
+<p><span class="math display">\[TE_{l,t}= \alpha_l+\beta_t+\epsilon_{l,t}\]</span></p>
+<p>Now we are studying multiple atoms (ah, another choice, fixed or random?)</p>
+<p><span class="math display">\[TE_{a,l,t}= \lambda_a+\alpha_l+\beta_t+\epsilon_{l,t}\]</span></p>
+<p>Maybe we think certain instruments are better at measuring certain atoms</p>
+<p><span class="math display">\[TE_{a,l,c}= \lambda_a+\alpha_l+\beta_{ac}+\epsilon_{a,l,c}\]</span></p>
+<p>What if all possible structures above occur?</p>
+<p><span class="math display">\[TE_{a,l,c,s,t}= \lambda_a+\alpha_l+\beta_{ac}+\delta_{s}+\omega_t+\epsilon_{a,l,c,s,t}\]</span></p>
+<p>Note that in all of these examples we are mainly trying to break up the value that we obtain from each experiment into parts of the measurement process that contribute variability. There are no other covariates (here we don’t have extra information about the labs, scientistis, etc. ). For fixed effects we are estimating a coefficient per group. For random effects we are estimating the variance of that group.</p>
+</div>
+<div id="economists-perspective" class="section level4">
+<h4>Economists’ Perspective</h4>
+<p><strong>Fixed Effect</strong></p>
+<p><span class="math display">\[y_{it}=X_{it}\beta +\alpha_i+\epsilon_{it}\]</span></p>
+<ul>
+<li><span class="math inline">\(X\)</span>: contains covariates that are not time constant</li>
+<li><span class="math inline">\(\alpha_i\)</span>: unobserved individual level effect fixed over time (fixed effect) could also incorporate a fixed effect for time <span class="math inline">\(\lambda_t\)</span></li>
+<li><span class="math inline">\(\epsilon_{it}\)</span>: idiosyncratic error</li>
+</ul>
+<p><span class="math display">\[y_{it}-\bar{y_i}=(X_{it}-\bar{X_i})\beta + (\alpha_i-\bar{\alpha_i})+(\epsilon_{it}-\bar{\epsilon_i})\]</span></p>
+<p>Because we require <span class="math inline">\(\alpha_i\)</span> to be constant over time, <span class="math inline">\((\alpha_i-\bar{\alpha_i})=0\)</span> Now we have reduced our problem to an ordinary least squares problem.</p>
+<p><strong>Assumptions</strong></p>
+<ul>
+<li>correct model specification</li>
+<li>strict exogeneity: <span class="math inline">\(E[\epsilon_{it}| X_i, \alpha_i]=0\)</span> [In words, the idiosyncratic errors are uncorrelated with the covariates and the fixed effects.]</li>
+<li>no multicollinearity* [This is why we can’t have time constant covariates in X; they would be collinear with the fixed effect which is also time invariant.]</li>
+<li>idiosyncratic error is uncorrelated and homoscedastic [This is not really true because by detrending the errors, we have introduced some dependence, to get around this we need to use the Huber White sandwich estimator (another topic of its own) to adjust the standard errors for <span class="math inline">\(\beta\)</span>]</li>
+</ul>
+<p>*As an aside: Rebecca Barter gave some great intution about why multicollinearity is an assumption that often comes up. In regression settings we are interested in estimating a coefficient that is intepreted as follows ``if everything else is held constant, then this coefficient represents the change in the response due to a change in this predictor“. If two covariates are multicollinear (or highly correlated), then it doesn’t make sense to imagine keeping one fixed while we are changing the other.</p>
+<p><strong>Random Effect</strong></p>
+<p><span class="math display">\[y_{it}=X_{it}\beta +\alpha_i+\epsilon_{it}\]</span></p>
+<p>Add an additional (strong) assumption that the random effects <span class="math inline">\(\alpha_i\)</span> are uncorrelated with <span class="math inline">\(X\)</span>. Now we allow for time constant variables in <span class="math inline">\(X\)</span>, but this means that we no longer get the nice property that <span class="math inline">\(\alpha_i-\bar{\alpha_i}=0\)</span>. Therefore we need to estimate our effects via optimization which can be sensitive to starting values. In general, estimating random effects is harder than estimating fixed effects. Also, random effects are often received very skeptically in the economics literature because of the strong assumptions going into the setup.</p>
+<p><strong>Choosing Between Fixed and Random Effects: Connection to Shrinkage/Pooling </strong></p>
+<p>*See Chapter 14 of Wooldridge for more details</p>
+<p>In the econometric framework, random effects models act as an intermediary between pooled OLS and fixed effects models. Shrinkage/pooling can be useful to leverage information across groups, especially if certain groups have smaller sample sizes. For pooled OLS we collapse the individual effect, masking any group-level variation:</p>
+<p><span class="math display">\[y_{it}=X_{it}\beta +\alpha+\epsilon_{it}\]</span></p>
+<p>If the unobserved effects <span class="math inline">\(a_i\)</span> have smaller variance relative to that of the error, <span class="math inline">\(\epsilon_{it}\)</span>, then pooled OLS may be appropriate. On the other end of the spectrum, as the number of time intervals gets large and/or the variance of the <span class="math inline">\(a_i\)</span> is larger relative to the variance of the error, the fixed effect model is appropriate.</p>
+<p>The random effect model lies in between, so in practice, many fit the fixed effect, random effect, and pooled OLS models and compare the results to assess where on the spectrum they may be. More formally, one can fit the fixed effect and the random effect models and then apply the Hausman test. The null hypothesis is that the random effect model is appropriate. Therefore, a rejection means that the assumptions needed for the random effect model to be valid are not met. In practice, failing to reject means that the two models are fairly close, and either can be used or that there is so much variation in the fixed effect estimates that you will have low power to find practically significant differences between the groups. It should be noted that if the assumptions underpinning the random effects models are in fact reasonably met, the estimation under this model is more efficient than in the pooled OLS case.</p>
+</div>
+<div id="connection-between-two-frameworks" class="section level4">
+<h4>Connection Between Two Frameworks</h4>
+<p>We can consider the economists’ point of view as a formalization of the intuition of partitioning that exists in the bio point of view, giving more formal identification rules that govern what is allowed to be a fixed and random effect given our data. For example, in the bio case, random effects are often assumed to come from a normal distribution with an unknown variance to be estimated and to be uncorrelated with the other covariates in the model. There are ways to get around this (we can imagine a case where the effects might ``bleed&quot; into one another if they were correlated), but out-of-the-box implementations have this assumption built in. These assumptions should be considered when choosing between what is a fixed effect and what is a random effect, making the model selection process more similar to that of the economist.</p>
+</div>
+<div id="how-do-i-fit-a-mixed-effect-model" class="section level4">
+<h4>How do I fit a mixed effect model?</h4>
+<p>I’m going to do this in R (sorry Python users) with the package lme4. This example is from the National Institute of Standards and Technology and follows the hypothetical example above. Here we are accounting for the atom effect and the analysis method effect. However, now the response is a relative error between the estimate of the total energy and the theoretical ``truth“.</p>
+<pre class="r"><code>require(lme4)
+
+## Example E28 NIST Simple GUM
+## data from Exhibit 42 
+perNum=rep(c(4,12,20,38,56,88),3)
+atom=rep(c(&quot;Be&quot;,&quot;Mg&quot;,&quot;Ca&quot;,&quot;Sr&quot;,&quot;Ba&quot;,&quot;Ra&quot;),3)
+method=c(rep(1,length(atom)/3),rep(2,length(atom)/3),rep(3,length(atom)/3))
+relativeError=c(0.02019569,0.05340336,0.05203850,0.04773201,0.02748393,-0.03315584,
+              -0.03183248,0.00976185,0.01599646,0.01470489,-0.00244948,-0.06014852,
+              0.02024823,0.05467029,0.05566630,0.06270221,0.06102522,0.06543755)
+
+data=as.data.frame(cbind(perNum,atom,method,relativeError))
+## atom and method are factors
+data$perNum=as.numeric(as.character(data$perNum))
+data$relativeError=as.numeric(as.character(data$relativeError))
+
+plot(data[which(data$method==1),&quot;perNum&quot;],data[which(data$method==1),&quot;relativeError&quot;],ylim=c(-0.1,0.2),type=&quot;b&quot;,col=&quot;red&quot;,xlab=&quot;atomic number&quot;,ylab=&quot;relative error&quot;)
+lines(data[which(data$method==2),&quot;perNum&quot;],data[which(data$method==2),&quot;relativeError&quot;],type=&quot;b&quot;,col=&quot;blue&quot;)
+lines(data[which(data$method==3),&quot;perNum&quot;],data[which(data$method==3),&quot;relativeError&quot;],type=&quot;b&quot;,col=&quot;forestgreen&quot;)
+legend(&quot;topleft&quot;,col=c(&quot;red&quot;,&quot;blue&quot;,&quot;forestgreen&quot;),c(&quot;Method 1&quot;,&quot;Method 2&quot;,&quot;Method 3&quot;),lty=1,lwd=2,bty=&quot;n&quot;)</code></pre>
+<p><img src="figures/unnamed-chunk-1-1.png" width="672" /></p>
+<p>NIST is interested in the following relationship:</p>
+<p><span class="math display">\[RE_{ij}=\alpha_i+\beta_j+\epsilon_{ij}\]</span></p>
+<p>where <span class="math inline">\(i\)</span> indexes the atom and <span class="math inline">\(j\)</span> indexes the analysis method.</p>
+<p>They treat the effect of atom as fixed and the analysis method as random. To understand NIST’s motivations a bit better, and therefore their modeling choices, the goal is to understand for each atom, what we can expect for a relative error from a subset of reasonable analysis method implementations. They assume that the analysis method effect is drawn from a normal distribution with mean zero and some unknown variance.</p>
+<p>Here we use the typical model structure where fixed effects are added in as you would covariates. To add a random effect <span class="math inline">\(x\)</span> we add <span class="math inline">\((1|x)\)</span> which says we are adding an intercept level random effect. It is possible to add a slope level effect, but we won’t go into that in this blog post.</p>
+<pre class="r"><code>mod=lmer(relativeError~atom+(1|method),data=data)
+summary(mod)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: relativeError ~ atom + (1 | method)
+##    Data: data
+## 
+## REML criterion at convergence: -47.2
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -1.32921 -0.42664  0.01711  0.26112  2.30624 
+## 
+## Random effects:
+##  Groups   Name        Variance  Std.Dev.
+##  method   (Intercept) 0.0009100 0.03017 
+##  Residual             0.0004266 0.02065 
+## Number of obs: 18, groups:  method, 3
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  0.02869    0.02111   1.359
+## atomBe      -0.02582    0.01686  -1.531
+## atomCa       0.01255    0.01686   0.744
+## atomMg       0.01059    0.01686   0.628
+## atomRa      -0.03798    0.01686  -2.252
+## atomSr       0.01303    0.01686   0.772
+## 
+## Correlation of Fixed Effects:
+##        (Intr) atomBe atomCa atomMg atomRa
+## atomBe -0.399                            
+## atomCa -0.399  0.500                     
+## atomMg -0.399  0.500  0.500              
+## atomRa -0.399  0.500  0.500  0.500       
+## atomSr -0.399  0.500  0.500  0.500  0.500</code></pre>
+<p>So what have we estimated? The fixed effects for each atom are estimated. The unknown variance of the random effect for method is also estimated. Remember this makes sense with our decision making process. We care about the values of the effects for each atom so we estimate them. We only really care about accounting for the variability structure of the method choice, so we just estimate the variance.</p>
+<p>We can see that our fixed effect estimates are centered around zero with fairly small t values suggesting that these differences aren’t statistically significant. We can also see that for the random effects, the standard deviation for the residuals (within element variability) and for the method are fairly close. NIST concludes ``for the alkaline earth metals at least, the dispersion of values attributable to differences between computational approximations is comparable to the intrinsic (in)accuracy of the individual approximation methods.&quot;</p>
+<p>Just as an FYI, if you have a regular covariate (not a factor) of interest as well, you can just add that in as usual. This will also be considered a fixed effect.</p>
+<pre class="r"><code>data2=cbind(data,fake=rnorm(nrow(data),0,1))
+mod2=lmer(relativeError~atom+fake+(1|method),data=data2)
+summary(mod2)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: relativeError ~ atom + fake + (1 | method)
+##    Data: data2
+## 
+## REML criterion at convergence: -39.5
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -1.28682 -0.39006  0.01492  0.26873  2.19150 
+## 
+## Random effects:
+##  Groups   Name        Variance  Std.Dev.
+##  method   (Intercept) 0.0009045 0.03008 
+##  Residual             0.0004728 0.02174 
+## Number of obs: 18, groups:  method, 3
+## 
+## Fixed effects:
+##              Estimate Std. Error t value
+## (Intercept)  0.029021   0.021575   1.345
+## atomBe      -0.025816   0.017755  -1.454
+## atomCa       0.012909   0.017962   0.719
+## atomMg       0.009780   0.018781   0.521
+## atomRa      -0.038385   0.018021  -2.130
+## atomSr       0.012220   0.018767   0.651
+## fake         0.001154   0.008698   0.133
+## 
+## Correlation of Fixed Effects:
+##        (Intr) atomBe atomCa atomMg atomRa atomSr
+## atomBe -0.411                                   
+## atomCa -0.389  0.494                            
+## atomMg -0.427  0.473  0.418                     
+## atomRa -0.425  0.493  0.461  0.522              
+## atomSr -0.427  0.473  0.418  0.553  0.522       
+## fake    0.117  0.000  0.152 -0.326 -0.171 -0.324</code></pre>
+<p><strong>Assumptions</strong></p>
+<p><span class="math display">\[RE_{ij}=\alpha_i+\beta_j+\epsilon_{ij}\]</span></p>
+<p>Here we assume that <span class="math inline">\(\epsilon_{ij}\)</span> are an iid sample from a Gaussian distribution with mean zero and standard deviation <span class="math inline">\(\sigma\)</span> and interpret it as the leftover error after we have partitioned out all of the correlated error induced by grouping structures. You can check this assumption by looking at plots of the residuals such as the QQ plot.</p>
+<p>Check for residuals with mean zero.</p>
+<pre class="r"><code>mean(resid(mod))</code></pre>
+<pre><code>## [1] -3.252607e-18</code></pre>
+<p>Check for normality.</p>
+<pre class="r"><code>qqnorm(resid(mod))
+qqline(resid(mod))</code></pre>
+<p><img src="figures/unnamed-chunk-5-1.png" width="672" /></p>
+<p>This doesn’t look great, but with small sample sizes, it probably isn’t unreasonable. We could try a log transformation of the relative errors if we feel compelled to make this a bit more normal.</p>
+<p>By treating <span class="math inline">\(\beta_j\)</span> as a random effect we are assuming that they are a random sample from a Gaussian distribution with mean 0 and a standard deviation <span class="math inline">\(\tau\)</span> that we estimate. We can plot the QQ plots per method, but it will be hard to assess normality with so few points.</p>
+<pre class="r"><code>## by method
+par(mfrow=c(1,3))
+qqnorm(resid(mod)[1:6])
+qqline(resid(mod)[1:6])
+
+qqnorm(resid(mod)[7:12])
+qqline(resid(mod)[7:12])
+
+qqnorm(resid(mod)[13:18])
+qqline(resid(mod)[13:18])</code></pre>
+<p><img src="figures/unnamed-chunk-6-1.png" width="672" /></p>
+<p>By using a random effect at the intercept level we are assuming that whatever the effect of each method is, it’s going to be the same across atoms. If we didn’t think this was the case, we could look to slope varying models. This could be its own discussion/blog topic, so I won’t go into it here. We should note that unless we have good reason to believe that the slope varies and/or we have a lot of data with sufficient replication, we should avoid fitting the more complicated slope varying model.</p>
+<p>*Note: The Hausman test for the panel data can be found in plm::phtest.</p>
+</div>
+<div id="summary" class="section level4">
+<h4>Summary</h4>
+<p>In summary, we have seen how two schools of thought treat fixed and random effects, discussed when to use fixed effects and when to use random effects in both frameworks, discussed the assumptions behind the models, and seen how to implement a mixed effect model in R. Fixed and random effect models still remain a bit mysterious, but I hope that this discussion cleared up a few things. An important take away is that the terminology has fundamentally different interpretations depending on the field, so it is important to define how you interpret these models, especially in interdiscplinary collaborations. Feel free to offer suggestions to this blog post.</p>
+</div>
+<div id="references-and-resources" class="section level4">
+<h4>References and Resources</h4>
+<p>Thanks to Chelsea Zhang for providing the resources that she found while preparing for her talk and for her suggestions and edits while I prepared this blog post.</p>
+<p>Econometric Point of View:</p>
+<ul>
+<li>Introductory Econometrics: A Modern Apprach by Jeffrey M. Wooldridge</li>
+</ul>
+<p>Biostatistics Point of View:</p>
+<ul>
+<li><a href="https://www.stats.ox.ac.uk/~snijders/FixedRandomEffects.pdf" class="uri">https://www.stats.ox.ac.uk/~snijders/FixedRandomEffects.pdf</a></li>
+</ul>
+<p>More Information on Multilevel Modeling Including Random Slopes Models:</p>
+<ul>
+<li>Data Analysis Using Regression and Multilevel/Hierarchical Models by Andrew Gelman and Jennifer Hill</li>
+</ul>
+<p>Confirmation that this topic is confusing:</p>
+<ul>
+<li><a href="http://andrewgelman.com/2005/01/25/why_i_dont_use/" class="uri">http://andrewgelman.com/2005/01/25/why_i_dont_use/</a></li>
+</ul>
+<p>Example Data and Setup:</p>
+<ul>
+<li>Possolo, Antonio. ``Simple Guide for Evaluating and Expressing the Uncertainty of NIST Measurement Results.&quot; <em>NIST Technical Note</em> (1900).</li>
+</ul>
+<p>Implementation of Fits:</p>
+<p>-Linear Mixed-Effects Models Using R by Andrzej Galeck and Tomasz Burzykowski</p>
+</div>
+
+
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Fixed%2c%20Mixed%2c%20and%20Random%20Effects&url=%2f2017%2f02%2f24%2ffixed-mixed-and-random-effects%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2f2017%2f02%2f24%2ffixed-mixed-and-random-effects%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2f2017%2f02%2f24%2ffixed-mixed-and-random-effects%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="Practical Statistics" href="../../../../">Practical Statistics</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2017 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="../../../../js/jquery-1.11.3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+        <script src="../../../../js/jquery.fitvids.js"></script>
+        <script src="../../../../js/scripts.js"></script>
+	   <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+    </script>
+    <script type="text/javascript"
+      src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+	    </body>
+</html>
+

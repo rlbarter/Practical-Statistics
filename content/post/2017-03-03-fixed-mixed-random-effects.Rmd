@@ -1,7 +1,9 @@
 ---
 title: "Fixed, Mixed, and Random Effects"
 author: "Sara Stoudt"
-date: "February 24, 2017"
+categories: [Method]
+tags: [mixed effects, random effects, mixed effects, linear models]
+date: 2017-03-03T21:13:14-05:00
 output: html_document
 ---
 
@@ -16,7 +18,7 @@ Last time Practical Statistics met to try to wrap our heads around fixed, mixed,
 
 #### Who Uses Fixed, Mixed, and Random Effects?
 
-Two main groups use these terms but are referring to different models. The economists and broadly speaking, ``bio folks" are the two main crowds who use these types of models. Full disclaimer: I think about these terms in the second way, so economists should feel free to comment on anything I miss, get wrong, etc.
+Two main groups use these terms but are referring to different models. The economists and broadly speaking, "bio folks" are the two main crowds who use these types of models. Full disclaimer: I think about these terms in the second way, so economists should feel free to comment on anything I miss, get wrong, etc.
 
 Economists are motivated by panel data (repeated measures for individuals over time) and account for unobserved individual effects on an outcome that are fixed over time in order to better analyze the effects of time-varying variables of interest.
 
@@ -42,7 +44,7 @@ And we expect that many different experimental scenarios could occur:
 - within a lab multiple measurement equipment types could be used
 - within a lab multiple of one equipment type could be used
 - within a lab multiple different scientists could use the same machine
-- a few ``standard" black box calculation techniques are used in this field
+- a few "standard" black box calculation techniques are used in this field
 
 For all of these scenarios we can use mixed effects to tackle the final estimation of the total energy of interest. We can notice natural groupings in the data, and we expect each group to have some effect on the answer. How do we decide which is a fixed and random effect? We should ask ourselves two key questions:
 
@@ -80,16 +82,16 @@ Eek, already we have a discrepancy! Let's persevere for now, and come back to th
 1. You have a random sample of all scientistis, so go with a **random** effect.
 2. You don't care about an individual scientist's effect, so you can use a **random** effect.
 
-- a few ``standard" black box calculation techniques are used in this field
+- a few "standard" black box calculation techniques are used in this field
 
 1. There could be many different ways of calculating your quantity of interest even if there are few main techniques. Additionally, perhaps there is randomness involved in the estimation process itself. You are probably better off with a **random** effect.
 2. It is hard to think of a case where you would be explicitly interested in the effect of the calculation, so let's go with a **random** effect
 
-Now we can see that often the answer to these two questions line up, and you have a good idea of whether to use a fixed or random effect. However, we saw with the first setup that this isn't always the case. This is part of the ``art" of statistical modelling. You have to think about what you are most interested in estimating and consider what the limitations of your data are. Later on we will talk about assumptions of each effect, which can help you in your decision making process. 
+Now we can see that often the answer to these two questions line up, and you have a good idea of whether to use a fixed or random effect. However, we saw with the first setup that this isn't always the case. This is part of the "art" of statistical modelling. You have to think about what you are most interested in estimating and consider what the limitations of your data are. Later on we will talk about assumptions of each effect, which can help you in your decision making process. 
 
 #### Great, but you still haven't really told me what Fixed and Random Effects are?
 
-Fixed and random effects partition the variability in a regression type approach for observations that are correlated. For example, we expect measurements done in the same lab to be correlated with one another. By allowing for fixed and random effects that are correlated, we ``soak up" the correlated variability leaving the remaining variability as the necessary heteroscedastic, uncorrelated, and normal error that we expect, essentially relying on ordinary least squares techniques to finish the estimation. So let's see how the regression models could look:
+Fixed and random effects partition the variability in a regression type approach for observations that are correlated. For example, we expect measurements done in the same lab to be correlated with one another. By allowing for fixed and random effects that are correlated, we "soak up" the correlated variability leaving the remaining variability as the necessary heteroscedastic, uncorrelated, and normal error that we expect, essentially relying on ordinary least squares techniques to finish the estimation. So let's see how the regression models could look:
 
 Different labs and different calculation methods
 
@@ -139,7 +141,7 @@ Because we require $\alpha_i$ to be constant over time, $(\alpha_i-\bar{\alpha_i
 -  no multicollinearity* [This is why we can't have time constant covariates in X; they would be collinear with the fixed effect which is also time invariant.]
 - idiosyncratic error is uncorrelated and homoscedastic [This is not really true because by detrending the errors, we have introduced some dependence, to get around this we need to use the Huber White sandwich estimator (another topic of its own) to adjust the standard errors for $\beta$]
 
-*As an aside: Rebecca Barter gave some great intution about why multicollinearity is an assumption that often comes up. In regression settings we are interested in estimating a coefficient that is intepreted as follows ``if everything else is held constant, then this coefficient represents the change in the response due to a change in this predictor". If two covariates are multicollinear (or highly correlated), then it doesn't make sense to imagine keeping one fixed while we are changing the other. 
+*As an aside: Rebecca Barter gave some great intution about why multicollinearity is an assumption that often comes up. In regression settings we are interested in estimating a coefficient that is intepreted as follows "if everything else is held constant, then this coefficient represents the change in the response due to a change in this predictor". If two covariates are multicollinear (or highly correlated), then it doesn't make sense to imagine keeping one fixed while we are changing the other. 
 
 **Random Effect**
 
@@ -163,11 +165,11 @@ The random effect model lies in between, so in practice, many fit the fixed effe
 
 #### Connection Between Two Frameworks
 
-We can consider the economists' point of view as a formalization of the intuition of partitioning that exists in the bio point of view, giving more formal identification rules that govern what is allowed to be a fixed and random effect given our data. For example, in the bio case, random effects are often assumed to come from a normal distribution with an unknown variance to be estimated and to be uncorrelated with the other covariates in the model. There are ways to get around this (we can imagine a case where the effects might ``bleed" into one another if they were correlated), but out-of-the-box implementations have this assumption built in. These assumptions should be considered when choosing between what is a fixed effect and what is a random effect, making the model selection process more similar to that of the economist.
+We can consider the economists' point of view as a formalization of the intuition of partitioning that exists in the bio point of view, giving more formal identification rules that govern what is allowed to be a fixed and random effect given our data. For example, in the bio case, random effects are often assumed to come from a normal distribution with an unknown variance to be estimated and to be uncorrelated with the other covariates in the model. There are ways to get around this (we can imagine a case where the effects might "bleed" into one another if they were correlated), but out-of-the-box implementations have this assumption built in. These assumptions should be considered when choosing between what is a fixed effect and what is a random effect, making the model selection process more similar to that of the economist.
 
 #### How do I fit a mixed effect model?
 
-I'm going to do this in R (sorry Python users) with the package lme4. This example is from the National Institute of Standards and Technology and follows the hypothetical example above. Here we are accounting for the atom effect and the analysis method effect. However, now the response is a relative error between the estimate of the total energy and the theoretical ``truth".
+I'm going to do this in R (sorry Python users) with the package lme4. This example is from the National Institute of Standards and Technology and follows the hypothetical example above. Here we are accounting for the atom effect and the analysis method effect. However, now the response is a relative error between the estimate of the total energy and the theoretical "truth".
 
 ```{r,message=F}
 require(lme4)
@@ -209,7 +211,7 @@ summary(mod)
 
 So what have we estimated? The fixed effects for each atom are estimated. The unknown variance of the random effect for method is also estimated. Remember this makes sense with our decision making process. We care about the values of the effects for each atom so we estimate them. We only really care about accounting for the variability structure of the method choice, so we just estimate the variance. 
 
-We can see that our fixed effect estimates are centered around zero with fairly small t values suggesting that these differences aren't statistically significant. We can also see that for the random effects, the standard deviation for the residuals (within element variability) and for the method are fairly close. NIST concludes ``for the alkaline earth metals at least, the dispersion of values attributable to differences between computational approximations is comparable to the intrinsic (in)accuracy of the individual approximation methods." 
+We can see that our fixed effect estimates are centered around zero with fairly small t values suggesting that these differences aren't statistically significant. We can also see that for the random effects, the standard deviation for the residuals (within element variability) and for the method are fairly close. NIST concludes "for the alkaline earth metals at least, the dispersion of values attributable to differences between computational approximations is comparable to the intrinsic (in)accuracy of the individual approximation methods." 
 
 Just as an FYI, if you have a regular covariate (not a factor) of interest as well, you can just add that in as usual. This will also be considered a fixed effect.
 
@@ -286,7 +288,7 @@ Confirmation that this topic is confusing:
 
 Example Data and Setup:
 
-- Possolo, Antonio. ``Simple Guide for Evaluating and Expressing the Uncertainty of NIST Measurement Results." _NIST Technical Note_ (1900).
+- Possolo, Antonio. "Simple Guide for Evaluating and Expressing the Uncertainty of NIST Measurement Results." _NIST Technical Note_ (1900).
 
 Implementation of Fits:
 
