@@ -69,7 +69,7 @@ Eek, already we have a discrepancy! Let's persevere for now, and come back to th
 
 - within a lab multiple measurement equipment types could be used
 
-1. Do you have one of each of the main instrument types? If so, then a **fixed** effect probably makes sense. If you have a random subset of possible instrument types, then an arguent can be made for a **random** effect.
+1. Do you have one of each of the main instrument types? If so, then a **fixed** effect probably makes sense. If you have a random subset of possible instrument types, then an argument can be made for a **random** effect.
 2. There may be cases where you care about an instrument type's effect (you may be interested in which instrument type is better for measuring total energy) in which case **fixed** effects all the way. Otherwise, you probably wouldn't have a vested interest in assessing an instrument type's effect directly and you could go with a **random** effect.
 
 - within a lab multiple of one equipment type could be used
@@ -79,7 +79,7 @@ Eek, already we have a discrepancy! Let's persevere for now, and come back to th
 
 - within a lab multiple different scientists could use the same machine
 
-1. You have a random sample of all scientistis, so go with a **random** effect.
+1. You have a random sample of all scientists, so go with a **random** effect.
 2. You don't care about an individual scientist's effect, so you can use a **random** effect.
 
 - a few "standard" black box calculation techniques are used in this field
@@ -118,7 +118,7 @@ What if all possible structures above occur?
 $$TE_{a,l,c,s,t}= \lambda_a+\alpha_l+\beta_{ac}+\delta_{s}+\omega_t+\epsilon_{a,l,c,s,t}$$
 
 
-Note that in all of these examples we are mainly trying to break up the value that we obtain from each experiment into parts of the measurement process that contribute variability. There are no other covariates (here we don't have extra information about the labs, scientistis, etc. ). For fixed effects we are estimating a coefficient per group. For random effects we are estimating the variance of that group.
+Note that in all of these examples we are mainly trying to break up the value that we obtain from each experiment into parts of the measurement process that contribute variability. There are no other covariates (here we don't have extra information about the labs, scientists, etc. ). For fixed effects we are estimating a coefficient per group. For random effects we are estimating the variance of that group.
 
 #### Economists' Perspective
 
@@ -141,7 +141,7 @@ Because we require $\alpha_i$ to be constant over time, $(\alpha_i-\bar{\alpha_i
 -  no multicollinearity* [This is why we can't have time constant covariates in X; they would be collinear with the fixed effect which is also time invariant.]
 - idiosyncratic error is uncorrelated and homoscedastic [This is not really true because by detrending the errors, we have introduced some dependence, to get around this we need to use the Huber White sandwich estimator (another topic of its own) to adjust the standard errors for $\beta$]
 
-*As an aside: Rebecca Barter gave some great intution about why multicollinearity is an assumption that often comes up. In regression settings we are interested in estimating a coefficient that is intepreted as follows "if everything else is held constant, then this coefficient represents the change in the response due to a change in this predictor". If two covariates are multicollinear (or highly correlated), then it doesn't make sense to imagine keeping one fixed while we are changing the other. 
+*As an aside: Rebecca Barter gave some great intuition about why multicollinearity is an assumption that often comes up. In regression settings we are interested in estimating a coefficient that is interpreted as follows "if everything else is held constant, then this coefficient represents the change in the response due to a change in this predictor". If two covariates are multicollinear (or highly correlated), then it doesn't make sense to imagine keeping one fixed while we are changing the other. 
 
 **Random Effect**
 
@@ -264,7 +264,7 @@ the effect of each method is, it’s going to be the same across atoms. If we di
 
 #### Summary
 
-In summary, we have seen how two schools of thought treat fixed and random effects, discussed when to use fixed effects and when to use random effects in both frameworks, discussed the assumptions behind the models, and seen how to implement a mixed effect model in R. Fixed and random effect models still remain a bit mysterious, but I hope that this discussion cleared up a few things. An important take away is that the terminology has fundamentally different interpretations depending on the field, so it is important to define how you interpret these models, especially in interdiscplinary collaborations. Feel free to offer suggestions to this blog post.
+In summary, we have seen how two schools of thought treat fixed and random effects, discussed when to use fixed effects and when to use random effects in both frameworks, discussed the assumptions behind the models, and seen how to implement a mixed effect model in R. Fixed and random effect models still remain a bit mysterious, but I hope that this discussion cleared up a few things. An important take away is that the terminology has fundamentally different interpretations depending on the field, so it is important to define how you interpret these models, especially in interdisciplinary collaborations. Feel free to offer suggestions to this blog post.
 
 #### References and Resources
 
@@ -272,7 +272,7 @@ Thanks to Chelsea Zhang for providing the resources that she found while prepari
 
 Econometric Point of View: 
 
-- Introductory Econometrics: A Modern Apprach by Jeffrey M. Wooldridge
+- Introductory Econometrics: A Modern Approach by Jeffrey M. Wooldridge
 
 Biostatistics Point of View:
 

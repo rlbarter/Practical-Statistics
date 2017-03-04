@@ -64,7 +64,7 @@ output: html_document
 <li>within a lab multiple measurement equipment types could be used</li>
 </ul>
 <ol style="list-style-type: decimal">
-<li>Do you have one of each of the main instrument types? If so, then a <strong>fixed</strong> effect probably makes sense. If you have a random subset of possible instrument types, then an arguent can be made for a <strong>random</strong> effect.</li>
+<li>Do you have one of each of the main instrument types? If so, then a <strong>fixed</strong> effect probably makes sense. If you have a random subset of possible instrument types, then an argument can be made for a <strong>random</strong> effect.</li>
 <li>There may be cases where you care about an instrument type’s effect (you may be interested in which instrument type is better for measuring total energy) in which case <strong>fixed</strong> effects all the way. Otherwise, you probably wouldn’t have a vested interest in assessing an instrument type’s effect directly and you could go with a <strong>random</strong> effect.</li>
 </ol>
 <ul>
@@ -78,7 +78,7 @@ output: html_document
 <li>within a lab multiple different scientists could use the same machine</li>
 </ul>
 <ol style="list-style-type: decimal">
-<li>You have a random sample of all scientistis, so go with a <strong>random</strong> effect.</li>
+<li>You have a random sample of all scientists, so go with a <strong>random</strong> effect.</li>
 <li>You don’t care about an individual scientist’s effect, so you can use a <strong>random</strong> effect.</li>
 </ol>
 <ul>
@@ -105,7 +105,7 @@ output: html_document
 <p><span class="math display">\[TE_{a,l,c}= \lambda_a+\alpha_l+\beta_{ac}+\epsilon_{a,l,c}\]</span></p>
 <p>What if all possible structures above occur?</p>
 <p><span class="math display">\[TE_{a,l,c,s,t}= \lambda_a+\alpha_l+\beta_{ac}+\delta_{s}+\omega_t+\epsilon_{a,l,c,s,t}\]</span></p>
-<p>Note that in all of these examples we are mainly trying to break up the value that we obtain from each experiment into parts of the measurement process that contribute variability. There are no other covariates (here we don’t have extra information about the labs, scientistis, etc. ). For fixed effects we are estimating a coefficient per group. For random effects we are estimating the variance of that group.</p>
+<p>Note that in all of these examples we are mainly trying to break up the value that we obtain from each experiment into parts of the measurement process that contribute variability. There are no other covariates (here we don’t have extra information about the labs, scientists, etc. ). For fixed effects we are estimating a coefficient per group. For random effects we are estimating the variance of that group.</p>
 </div>
 <div id="economists-perspective" class="section level4">
 <h4>Economists’ Perspective</h4>
@@ -125,7 +125,7 @@ output: html_document
 <li>no multicollinearity* [This is why we can’t have time constant covariates in X; they would be collinear with the fixed effect which is also time invariant.]</li>
 <li>idiosyncratic error is uncorrelated and homoscedastic [This is not really true because by detrending the errors, we have introduced some dependence, to get around this we need to use the Huber White sandwich estimator (another topic of its own) to adjust the standard errors for <span class="math inline">\(\beta\)</span>]</li>
 </ul>
-<p>*As an aside: Rebecca Barter gave some great intution about why multicollinearity is an assumption that often comes up. In regression settings we are interested in estimating a coefficient that is intepreted as follows “if everything else is held constant, then this coefficient represents the change in the response due to a change in this predictor”. If two covariates are multicollinear (or highly correlated), then it doesn’t make sense to imagine keeping one fixed while we are changing the other.</p>
+<p>*As an aside: Rebecca Barter gave some great intuition about why multicollinearity is an assumption that often comes up. In regression settings we are interested in estimating a coefficient that is interpreted as follows “if everything else is held constant, then this coefficient represents the change in the response due to a change in this predictor”. If two covariates are multicollinear (or highly correlated), then it doesn’t make sense to imagine keeping one fixed while we are changing the other.</p>
 <p><strong>Random Effect</strong></p>
 <p><span class="math display">\[y_{it}=X_{it}\beta +\alpha_i+\epsilon_{it}\]</span></p>
 <p>Add an additional (strong) assumption that the random effects <span class="math inline">\(\alpha_i\)</span> are uncorrelated with <span class="math inline">\(X\)</span>. Now we allow for time constant variables in <span class="math inline">\(X\)</span>, but this means that we no longer get the nice property that <span class="math inline">\(\alpha_i-\bar{\alpha_i}=0\)</span>. Therefore we need to estimate our effects via optimization which can be sensitive to starting values. In general, estimating random effects is harder than estimating fixed effects. Also, random effects are often received very skeptically in the economics literature because of the strong assumptions going into the setup.</p>
@@ -213,36 +213,36 @@ summary(mod2)</code></pre>
 ## Formula: relativeError ~ atom + fake + (1 | method)
 ##    Data: data2
 ## 
-## REML criterion at convergence: -39.4
+## REML criterion at convergence: -40.3
 ## 
 ## Scaled residuals: 
 ##      Min       1Q   Median       3Q      Max 
-## -1.36625 -0.34202 -0.06826  0.32426  2.09654 
+## -1.25873 -0.34278 -0.04997  0.44990  1.89531 
 ## 
 ## Random effects:
-##  Groups   Name        Variance Std.Dev.
-##  method   (Intercept) 0.001020 0.03193 
-##  Residual             0.000447 0.02114 
+##  Groups   Name        Variance  Std.Dev.
+##  method   (Intercept) 0.0007128 0.02670 
+##  Residual             0.0004239 0.02059 
 ## Number of obs: 18, groups:  method, 3
 ## 
 ## Fixed effects:
 ##              Estimate Std. Error t value
-## (Intercept)  0.025561   0.022759   1.123
-## atomBe      -0.024134   0.017505  -1.379
-## atomCa       0.018456   0.020045   0.921
-## atomMg       0.011307   0.017307   0.653
-## atomRa      -0.033253   0.019087  -1.742
-## atomSr       0.015301   0.017703   0.864
-## fake         0.004061   0.007002   0.580
+## (Intercept)  0.029468   0.019476   1.513
+## atomBe      -0.019115   0.017642  -1.083
+## atomCa       0.016122   0.017051   0.946
+## atomMg       0.008776   0.016873   0.520
+## atomRa      -0.039246   0.016841  -2.330
+## atomSr       0.017097   0.017122   0.998
+## fake        -0.007429   0.005932  -1.252
 ## 
 ## Correlation of Fixed Effects:
 ##        (Intr) atomBe atomCa atomMg atomRa atomSr
-## atomBe -0.413                                   
-## atomCa -0.447  0.509                            
-## atomMg -0.395  0.504  0.466                     
-## atomRa -0.444  0.517  0.606  0.481              
-## atomSr -0.422  0.518  0.532  0.502  0.535       
-## fake   -0.237  0.166  0.508  0.071  0.427  0.222</code></pre>
+## atomBe -0.402                                   
+## atomCa -0.420  0.520                            
+## atomMg -0.433  0.449  0.477                     
+## atomRa -0.433  0.457  0.482  0.502              
+## atomSr -0.418  0.525  0.516  0.473  0.479       
+## fake   -0.032 -0.303 -0.167  0.086  0.060 -0.190</code></pre>
 <p><strong>Assumptions</strong></p>
 <p><span class="math display">\[RE_{ij}=\alpha_i+\beta_j+\epsilon_{ij}\]</span></p>
 <p>Here we assume that <span class="math inline">\(\epsilon_{ij}\)</span> are an iid sample from a Gaussian distribution with mean zero and standard deviation <span class="math inline">\(\sigma\)</span> and interpret it as the leftover error after we have partitioned out all of the correlated error induced by grouping structures. You can check this assumption by looking at plots of the residuals such as the QQ plot.</p>
@@ -271,14 +271,14 @@ qqline(resid(mod)[13:18])</code></pre>
 </div>
 <div id="summary" class="section level4">
 <h4>Summary</h4>
-<p>In summary, we have seen how two schools of thought treat fixed and random effects, discussed when to use fixed effects and when to use random effects in both frameworks, discussed the assumptions behind the models, and seen how to implement a mixed effect model in R. Fixed and random effect models still remain a bit mysterious, but I hope that this discussion cleared up a few things. An important take away is that the terminology has fundamentally different interpretations depending on the field, so it is important to define how you interpret these models, especially in interdiscplinary collaborations. Feel free to offer suggestions to this blog post.</p>
+<p>In summary, we have seen how two schools of thought treat fixed and random effects, discussed when to use fixed effects and when to use random effects in both frameworks, discussed the assumptions behind the models, and seen how to implement a mixed effect model in R. Fixed and random effect models still remain a bit mysterious, but I hope that this discussion cleared up a few things. An important take away is that the terminology has fundamentally different interpretations depending on the field, so it is important to define how you interpret these models, especially in interdisciplinary collaborations. Feel free to offer suggestions to this blog post.</p>
 </div>
 <div id="references-and-resources" class="section level4">
 <h4>References and Resources</h4>
 <p>Thanks to Chelsea Zhang for providing the resources that she found while preparing for her talk and for her suggestions and edits while I prepared this blog post.</p>
 <p>Econometric Point of View:</p>
 <ul>
-<li>Introductory Econometrics: A Modern Apprach by Jeffrey M. Wooldridge</li>
+<li>Introductory Econometrics: A Modern Approach by Jeffrey M. Wooldridge</li>
 </ul>
 <p>Biostatistics Point of View:</p>
 <ul>
