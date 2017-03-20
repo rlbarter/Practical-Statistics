@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Publishing on Practical Statistics</title>
+    <link>/tags/publishing/index.xml</link>
+    <description>Recent content in Publishing on Practical Statistics</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="/tags/publishing/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>How to post your blog post</title>
+      <link>/2016/12/27/how-to-post-your-blog-post/</link>
+      <pubDate>Tue, 27 Dec 2016 21:13:14 -0500</pubDate>
+      
+      <guid>/2016/12/27/how-to-post-your-blog-post/</guid>
+      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
+
+/BLOGDOWN-BODY-BEFORE --&gt;
+
+&lt;p&gt;So… how does one get their blog post on here? That’s an excellent question and I’m so glad that you asked!&lt;/p&gt;
+&lt;p&gt;It’s quite easy, really (especially if you avoid the advanced steps which will require you to spend some time pulling out your hair trying to understand how jekyll, github pages, and R Markdown interact with one another).&lt;/p&gt;
+&lt;p&gt;All you need to do is follow the so-simple-and-easy-to-implement steps below! Hooray!&lt;/p&gt;
+&lt;div id=&#34;step-1-fork-the-github-repository&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Step 1: Fork the github repository&lt;/h2&gt;
+&lt;p&gt;First thing’s first, you need to &lt;strong&gt;fork the git repo&lt;/strong&gt; on which this site is hosted: &lt;a href=&#34;https://github.com/rlbarter/Practical-Statistics&#34; class=&#34;uri&#34;&gt;https://github.com/rlbarter/Practical-Statistics&lt;/a&gt;. Go to this repository and in the top righthand corner, click the Fork button. This creates your own copy of the repo in your GitHub account.&lt;/p&gt;
+&lt;p&gt;Now, you need to copy the repo onto your local machine. Basically you will write the following code in the &lt;strong&gt;command line&lt;/strong&gt; i.e. terminal (assuming that you’ve installed git at some point in your life):&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git clone https://github.com/YOUR-USERNAME/Practical-Statistics&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Notice that you want to clone &lt;strong&gt;your fork&lt;/strong&gt; of the repo, not the original repo. The clone operation only pulls the master branch of the repo, but the website lives on the gh-pages branch. To set that up, you would run the following commands:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git pull origin gh-pages
+git checkout -b NAME-OF-NEW-BRANCH&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The first line pulls the gh-pages branch from your fork on GitHub to your local machine. The second line creates a new branch on your local machine (&lt;code&gt;git checkout&lt;/code&gt; is for switching branches and the &lt;code&gt;-b&lt;/code&gt; flag says to create a new branch). You need to &lt;strong&gt;make your changes on a new branch&lt;/strong&gt;; the gh-pages branch won’t work. Now you should have all the files necessary.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;step-2-write-your-blog-post-using-r-markdown&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Step 2: Write your blog post using R Markdown&lt;/h2&gt;
+&lt;p&gt;Write your blog post in RStudio as an R Markdown file (please copy the format of existing blog posts), and save your &lt;code&gt;.Rmd&lt;/code&gt; file in the &lt;code&gt;/content/post&lt;/code&gt; folder (which lives on the &lt;code&gt;gh_pages&lt;/code&gt; branch). Once you’re done, add and commit your blog post:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git add FILENAME
+git commit -m &amp;quot;A brief message about what files you&amp;#39;re adding&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;step-3-submit-a-pull-request&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Step 3: Submit a pull request&lt;/h2&gt;
+&lt;p&gt;Now that you’re all done adding things, we need to merge it into the website. We do this in two steps: you’ll push it to your GitHub repo and then submit a &lt;strong&gt;pull request&lt;/strong&gt;, asking us to pull your changes into the website. First, push your changes to your repo:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git push origin NAME-OF-NEW-BRANCH&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, navigate back to &lt;a href=&#34;https://github.com/rlbarter/Practical-Statistics&#34;&gt;the original repo&lt;/a&gt;. At the top of the repo, the new branch will show up with a green Pull Request button - click it and submit the request, &lt;strong&gt;making sure that you set the base branch as gh-pages&lt;/strong&gt;. Now, the maintainers will either merge your changes into the website, or may ask you to make modifications first. If the latter happens, follow this same process of commits and pushes, and they will automatically get added to your open pull request.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;advanced-steps&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Advanced steps&lt;/h2&gt;
+&lt;p&gt;If you would like to be able to render the website locally on your machine before submitting your post or any changes to the public version, you need to follow the instructions on the RStudio &lt;a href=&#34;https://github.com/rstudio/blogdown&#34;&gt;blogdown github page&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;divergence-between-the-main-repository-and-your-fork&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Divergence between the main repository and your fork&lt;/h2&gt;
+&lt;p&gt;As the website gets updated, the main repo will change, but yours will &lt;strong&gt;not&lt;/strong&gt; be automatically updated. To keep yours in sync, you need to set up access to the main repo:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git remote add upstream https://github.com/rlbarter/Practical-Statistics&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Before, you did pushes and pulls from your fork, which was called &lt;code&gt;origin&lt;/code&gt;. &lt;code&gt;upstream&lt;/code&gt; refers to the original repo. You could name these whatever you wanted, but &lt;code&gt;origin&lt;/code&gt; and &lt;code&gt;upstream&lt;/code&gt; are the conventions. You can see where else you have push/pull access to by running git remote with the &lt;code&gt;-v&lt;/code&gt; flag:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git remote -v&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now to actually update your local clone and your fork on GitHub, you’d run&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git checkout gh-pages
+git pull upstream gh-pages
+git push origin gh-pages&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The steps here are pretty straightforward: make sure you’re on the right branch, pull from that branch in the main repo, and push the updated branch on your machine to your GitHub fork. You can do this for the master branch as well.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;deleting-old-branches&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Deleting old branches&lt;/h2&gt;
+&lt;p&gt;After you’re done making a pull request, you might want to get rid of old branches that have already been merged. You can see what branches you have by running&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git branch -v&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To delete a branch, first delete it locally and then delete the branch on your GitHub:&lt;/p&gt;
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;git branch -d OLD-BRANCH
+git push origin :OLD-BRANCH&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+
+&lt;!-- BLOGDOWN-HEAD
+
+
+
+
+/BLOGDOWN-HEAD --&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

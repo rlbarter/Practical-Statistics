@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>ANOVA &middot; </title>
+        <meta name="description" content="-- Last week, practical statistics met to discuss all things ANOVA. Below you will find the slides from my talk, but read on if you would like to learn all about ANOVA.
+   When ANOVA is used and who uses it? ANOVA is used all the time and by almost everyone (or so it seems…). Some examples of questions that can be answered by ANOVA are as follows:">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.18.1" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="../../../../dist/styles.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+
+
+
+
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <a class="site-logo" title="" href="">
+                                <img src="#ZgotmplZ" alt="" />
+                            </a>
+                        
+                        <a class="button-square" href="../../../../index.xml"><i class="fa fa-rss"></i></a>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+    <li class="site-nav-item">
+        <a title="About" href="../../../../about/">About</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Blog" href="../../../../post/">Blog</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="Schedule" href="../../../../schedule/">Schedule</a>
+    </li>
+
+    <li class="site-nav-item">
+        <a title="GitHub" href="https://github.com/rlbarter/Practical-Statistics">GitHub</a>
+    </li>
+
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container">
+        <header class="post-header">
+    <h1 class="post-title">ANOVA</h1>
+    
+</header>
+
+        <div class="post-content clearfix">
+    
+
+
+
+<!-- <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+<p>Last week, practical statistics met to discuss all things ANOVA. Below you will find the slides from my talk, but read on if you would like to learn all about ANOVA.</p>
+<center>
+<iframe src="https://docs.google.com/presentation/d/1mjaZs2ynGK7-qHFFr0nzjHmwqT3BhLDf0h-R5h6RsfU/embed?start=false&amp;loop=false&amp;delayms=3000" frameborder="0" width="480" height="299" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
+</iframe>
+</center>
+<div id="when-anova-is-used-and-who-uses-it" class="section level2">
+<h2>When ANOVA is used and who uses it?</h2>
+<p>ANOVA is used all the time and by almost everyone (or so it seems…). Some examples of questions that can be answered by ANOVA are as follows:</p>
+<ul>
+<li><p><em>Is there a difference between the average number of times articles are shared on social media based on day of the week?</em></p></li>
+<li><p><em>Is there a difference in average waiting room times for a set of 3 different hospitals?</em></p></li>
+<li><p><em>Does the presence of other people have an influence on the amount of time taken for a person to help someone in distress?</em></p></li>
+</ul>
+<p>The third question is not like the others; can you see why? The first two questions are asking about a difference between mean values of some outcome (article shares or waiting room time) across multiple groups (day of week or hospital). The last question, however, does not seem to satisfy this criteria: while it has a clear outcome (amount of time taken for a person to help someone in distress), it has no obvious groupings.</p>
+<p><a href="http://www.wadsworth.com/psychology_d/templates/student_resources/0155060678_rathus/ps/ps19.html">Darley and Latané (1969)</a> used ANOVA to answer the question of whether the presence of other people had an influence on the amount of time taken for a person to help someone in distress by setting up an appropriate experiment. In doing so, they were the first to demonstrate the “<a href="https://en.wikipedia.org/wiki/Bystander_effect">bystander effect</a>”. The experiment was as follows: <font color="red">describe the experiment</font>.</p>
+<p>Given these examples, the definition of ANOVA provided in the following paragraph shouldn’t come as much of a surprise.</p>
+</div>
+<div id="anova-in-a-nutshell" class="section level2">
+<h2>ANOVA in a nutshell</h2>
+<p><strong>AN</strong>alysis <strong>O</strong>f <strong>VA</strong>riance (<strong>ANOVA</strong>), is a widely used method designed for <em>comparing differences in means among three or more groups.</em></p>
+<p>For example, we might be interested in comparing the average waiting times in the emergency rooms of three different hospitals. Or perhaps we have conducted a clinical trial comparing the effectiveness of five different drugs for reducing blood pressure.</p>
+<p>The key is that each individual falls into a group described by a <em>categorical variable</em> (e.g. hospital or drug group) and for each individual we measure some <em>continuous outcome</em> (e.g. waiting time or blood pressure).</p>
+<p>Although there are multiple types of ANOVA, the simplest (“one-way” ANOVA) can be thought of as a generalization of a two-sample t-test. One-way ANOVA involves testing the <em>omnibus hypothesis</em> that <em>k</em> population means are identical:</p>
+<p><span class="math display">\[H_0: \mu_1 = \mu_2 = ... = \mu_k.\]</span></p>
+<p>Note that the two-sample t-test tested the hypothesis that <em>two</em> population means are equal (i.e. <em>k = 2</em>).</p>
+<p>The alternative hypothesis for ANOVA states that <em>any one</em> of the population mean equalities does not hold:</p>
+<p><span class="math display">\[H_1: \mu_i \neq \mu_j~~ \text{ for some } ~~i \neq j.\]</span></p>
+<p>It is important to note that a rejection of the null hypothesis <strong>does not tell you which of the population means differ</strong>. It only tells you that there is <em>some</em> population whose mean is different from at least one other population (it could be that all of the means are different from one another!)</p>
+<div id="a-simple-toy-example-hospital-waiting-times" class="section level3">
+<h3>A simple toy example: hospital waiting times</h3>
+<p>Suppose that we have three hospitals, let’s call them A, B and C (creative names, I know), and we are interested in asking whether the average waiting room time is the same for all three hospitals.</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-1"></span>
+<img src="../images/anova/hospitals.png" alt="Three hospitals: A, B and C."  />
+<p class="caption">
+Figure 1: Three hospitals: A, B and C.
+</p>
+</div>
+<p>We measured the waiting time for 20 unique individuals at each of these three hospitals (accurately pictured above). These waiting times (in hours) are recorded below.</p>
+<p>As pictures are much more informative than tables (in most cases), we present a plot of these waiting times below. To aid the visualization, the x-position of each point is jittered to gently increase the space between the points.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Hospital A</th>
+<th align="right">Hospital B</th>
+<th align="right">Hospital C</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1.8</td>
+<td align="right">0.9</td>
+<td align="right">1.4</td>
+</tr>
+<tr class="even">
+<td align="right">1.4</td>
+<td align="right">0.7</td>
+<td align="right">2.1</td>
+</tr>
+<tr class="odd">
+<td align="right">0.7</td>
+<td align="right">2.6</td>
+<td align="right">1.4</td>
+</tr>
+<tr class="even">
+<td align="right">0.8</td>
+<td align="right">1.7</td>
+<td align="right">1.2</td>
+</tr>
+<tr class="odd">
+<td align="right">0.5</td>
+<td align="right">2.5</td>
+<td align="right">2.1</td>
+</tr>
+<tr class="even">
+<td align="right">2.1</td>
+<td align="right">2.4</td>
+<td align="right">2.3</td>
+</tr>
+<tr class="odd">
+<td align="right">0.9</td>
+<td align="right">2.4</td>
+<td align="right">1.7</td>
+</tr>
+<tr class="even">
+<td align="right">2.2</td>
+<td align="right">2.3</td>
+<td align="right">1.2</td>
+</tr>
+<tr class="odd">
+<td align="right">1.2</td>
+<td align="right">2.0</td>
+<td align="right">1.1</td>
+</tr>
+<tr class="even">
+<td align="right">1.3</td>
+<td align="right">1.7</td>
+<td align="right">1.3</td>
+</tr>
+<tr class="odd">
+<td align="right">1.1</td>
+<td align="right">2.1</td>
+<td align="right">0.3</td>
+</tr>
+<tr class="even">
+<td align="right">1.1</td>
+<td align="right">0.9</td>
+<td align="right">1.7</td>
+</tr>
+<tr class="odd">
+<td align="right">0.4</td>
+<td align="right">2.7</td>
+<td align="right">1.5</td>
+</tr>
+<tr class="even">
+<td align="right">1.4</td>
+<td align="right">1.5</td>
+<td align="right">1.7</td>
+</tr>
+<tr class="odd">
+<td align="right">0.8</td>
+<td align="right">2.0</td>
+<td align="right">2.0</td>
+</tr>
+<tr class="even">
+<td align="right">1.1</td>
+<td align="right">1.9</td>
+<td align="right">0.8</td>
+</tr>
+<tr class="odd">
+<td align="right">0.6</td>
+<td align="right">2.6</td>
+<td align="right">2.0</td>
+</tr>
+<tr class="even">
+<td align="right">1.1</td>
+<td align="right">2.4</td>
+<td align="right">2.4</td>
+</tr>
+<tr class="odd">
+<td align="right">1.6</td>
+<td align="right">1.5</td>
+<td align="right">2.2</td>
+</tr>
+<tr class="even">
+<td align="right">0.9</td>
+<td align="right">1.7</td>
+<td align="right">2.0</td>
+</tr>
+</tbody>
+</table>
+<p>Most people seem to wait over an hour, with some unlucky individuals waiting for almost 3 hours. The mean waiting time for each hospital is highlighted by a red bar.</p>
+<p><img src="figures/wait2-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p>The question of interest is whether or not the average waiting time for each of the three hospitals is the same. This question might be naively interpreted as: “are the red bars at the same height?”, but the intended question is asking about equality between the underlying <em>population</em> of waiting times from the hospital. The former question is asking about the waiting times for the <em>sample</em> of 20 patients from each hospital, while the latter is asking about all patients who have ever, and will ever, wait in these waiting rooms, regardless of whether they fall in our sample.</p>
+<p>Although the sample means clearly aren’t identical, <strong>do we have enough evidence to show that the <em>underlying population</em> waiting time means are different?</strong>. The alternative is that the differences that we observe are simply reflection of the inherent noise in the data.</p>
+<p>This is the question that lies at the heart of hypothesis testing.</p>
+</div>
+<div id="why-is-anova-called-analysis-of-variance" class="section level3">
+<h3>Why is ANOVA called “Analysis of Variance”?</h3>
+<p>So what does comparing means have to do with variability?</p>
+<p>Quite a lot it turns out… simply by asking “are the means different”, you are essentially asking a question about whether the variance of the means is large. However, the variability that you observe between the means themselves can only be considered relative to the overall variance in the data. For example, if the raw observations themselves are extremely variable, then it might be reasonable to expect that the observed group-specific averages might exhibit some variance (even if the underlying true averages are identical).</p>
+<p>There are two types of variance at play here:</p>
+<ul>
+<li><p><strong>within-group variability</strong>: the variance of the individual observations within a group, and</p></li>
+<li><p><strong>between-group variability</strong>: the variance between the averages of the groups.</p></li>
+</ul>
+<p>In the figure below, the left panel highlights the <em>within-group variance</em>, while the right panel highlights the <em>between-group variance</em>.</p>
+<p><img src="figures/unnamed-chunk-4-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>The basic idea is that <strong>if the variability between the groups is greater than the variability within the groups</strong>, then we have evidence that the differences between the groups is not simply reflecting random noise.</p>
+<p>Quantifying the within and between group variability is typically done by calculating a mean sum of squares: add up the squared vertical distances and divide by the <em>degrees of freedom</em>.</p>
+<p><img src="../images/anova/F-stat.png" style="display: block; margin: auto;" /></p>
+<p>For those not opposed to formulae, here is how one would formulate these sum of squares quantities:</p>
+<p><span class="math display">\[WSS =\sum_{i = 1}^K \sum_{j = 1}^{n_K} (y_{ij} - \overline{y}_{i\cdot})^2\]</span></p>
+<p><span class="math display">\[BSS = \sum_{i=1}^K (\overline{y}_{\cdot \cdot} - \overline{y}_{i\cdot})^2\]</span></p>
+<p>where <span class="math inline">\(y_{ij}\)</span>, defines the waiting room time (outcome) for patient <span class="math inline">\(j\)</span> from hospital <span class="math inline">\(i\)</span>, <span class="math inline">\(\overline{y}_{\cdot \cdot}\)</span> defines the global average waiting time and <span class="math inline">\(\overline{y}_{i \cdot}\)</span> defines the average waiting time for hospital <span class="math inline">\(i\)</span>.</p>
+</div>
+</div>
+<div id="what-assumptions-are-required" class="section level2">
+<h2>What assumptions are required?</h2>
+<p>If our data satisfies a few parametric assumptions, then we can show that this test statistic follows and <span class="math inline">\(F\)</span> distribution and can do a straightforward parametric hypothesis test.</p>
+<p>These assumptions are as follows</p>
+<blockquote>
+<p>Assumption 1: The samples are <strong>independent</strong>.</p>
+</blockquote>
+<p>Independence is an extremely common assumption that is hard to test in general.</p>
+<blockquote>
+<p>Assumption 2: The data are <strong>normally distributed</strong>.</p>
+</blockquote>
+<p>Not being a fan of such distributional assumptions myself, I am inclined to point the reader in the direction of non-parametric versions of ANOVA, including the <a href="https://en.wikipedia.org/wiki/Kruskal%E2%80%93Wallis_one-way_analysis_of_variance">Kruskal-Wallis test</a>, however since this is a blog post about ANOVA, we will leave non-parametric readings to the interested user. Those wishing to test the normality of their data can do so using a variety of methods such as plotting a QQ-plot or use a number of tests for this purpose (see the <a href="https://en.wikipedia.org/wiki/Normality_test">Wikipedia page on normality tests</a>).</p>
+<blockquote>
+<p>Assumption 3: Each group has the <strong>same variance</strong>.</p>
+</blockquote>
+<p>If one is being careful, they should probably test this variance assumption using common tests, such as the <a href="https://en.wikipedia.org/wiki/Bartlett%27s_test">Bartlett test</a> and the <a href="http://www.statsref.com/HTML/index.html?fligner-killeen_test.html">Fligner-Killeen test</a>, which are easily implemented in R. Below, we will also discuss methods for adapting ANOVA when this assumption is violated.</p>
+</div>
+<div id="working-through-our-waiting-times-example" class="section level2">
+<h2>Working through our waiting times example</h2>
+<p>For our hospital waiting times example, it might be a good idea to explore these assumptions.</p>
+<p>Unfortunately, independence is hard to judge statistically, but if, for example, each person was randomly selected for the sample (rather than, e.g. selecting 5 members of the same family all of whom came to the hospital together in some freak accident), then the assumption of independence is probably ok.</p>
+<p>The figure below plots the density estimation for the waiting times from each hospital. We know that if our data is normally distributed, it should look vaguely like a bell-curve.</p>
+<p><img src="figures/unnamed-chunk-6-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>One might argue that these are some pretty funky-looking bell-curves… However, as I was the one who simulated this data in the first place, I can assure you that they are in fact normally distributed, and you can use this as a lesson in drawing conclusions on normality from small samples (in this case, we have 20 observations in each group).</p>
+<p>Finally, based on a visual assessment, the same variance assumption is probably fairly reasonable (and, again, since I simulated this data, I can confirm that the variance is the same).</p>
+<p>We have now concluded that the assumptions for ANOVA are satisfied, and can proceed to do our calculations.</p>
+<p><span class="math display">\[\frac{BSS}{K - 1} = \frac{5.94}{3 - 1} = 2.97 ~~~~~~ \text{and} ~~~~~ \frac{WSS}{N - K} = \frac{16.96}{60 - 3} = 0.30\]</span></p>
+<p>Thus</p>
+<p><span class="math display">\[F = \frac{BSS/(K-1)}{WSS/(N-k)} = \frac{2.97}{0.3} = 9.98\]</span></p>
+<p>and since our assumptions are satisfied, this F-statistic follows an F distribution with suitable degrees of freedom. Our p-value can thus be calculated as follows:</p>
+<p><span class="math display">\[P(F_{2, 53} \geq 9.98) = 0.000192\]</span></p>
+<p>In R, one could simply use the <code>aov()</code> function:</p>
+<pre class="r"><code>summary(aov(time ~ hospital, data = data))</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## variable     2  5.938  2.9688   9.981 0.000192 ***
+## Residuals   57 16.955  0.2975                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div id="anova-as-a-linear-model" class="section level3">
+<h3>ANOVA as a linear model</h3>
+<p>So far we have discussed ANOVA as if it were a simple hypothesis test comparing two different types of variability. More common, however, is a formulation of ANOVA as a <strong>linear model</strong>.</p>
+<p><img src="../images/anova/model.png" style="display: block; margin: auto;" /></p>
+<p>The question I’m sure is on the edge of your tongue: <strong>how is this possibly equivalent to the hypothesis test discussed above?</strong></p>
+<p>The answer is simple:</p>
+<p><img src="../images/anova/equivalence.png" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="common-pitfalls-of-anova" class="section level2">
+<h2>Common pitfalls of ANOVA</h2>
+<p>There may be repeated measurements (in which case you should be using a mixed effects model).</p>
+<p>ANOVA doesn’t tell us which groups are different… it just tells us that there is a difference.</p>
+</div>
+<div id="advanced-topics-generalizations-of-anova" class="section level2">
+<h2>Advanced topics: generalizations of ANOVA</h2>
+<div id="two-way-anova" class="section level3">
+<h3>Two-way ANOVA</h3>
+<p><img src="../images/anova/two-way.png" style="display: block; margin: auto;" /></p>
+</div>
+<div id="nested-anova" class="section level3">
+<h3>Nested ANOVA</h3>
+<p><img src="../images/anova/nested.png" style="display: block; margin: auto;" /></p>
+</div>
+<div id="manova-multivariate-anova" class="section level3">
+<h3>MANOVA: multivariate ANOVA</h3>
+<p><img src="../images/anova/manova.png" style="display: block; margin: auto;" /></p>
+</div>
+<div id="repeated-measures-anova" class="section level3">
+<h3>Repeated Measures ANOVA</h3>
+<p><img src="../images/anova/normal-anova.png" style="display: block; margin: auto;" /><img src="../images/anova/repeated-anova.png" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ancova-controlling-for-covariates" class="section level3">
+<h3>ANCOVA: controlling for covariates</h3>
+<p><span class="math display">\[y_{ij} = \mu + \tau_i + B(x_{ij} - \overline{x}_{i \cdot}) + \epsilon_{ij}\]</span></p>
+</div>
+</div>
+
+
+
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="../../../../tags/anova/">anova</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=ANOVA&url=%2f1%2f01%2f01%2fanova%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=%2f1%2f01%2f01%2fanova%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=%2f1%2f01%2f01%2fanova%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="Practical Statistics" href="../../../../">Practical Statistics</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2017 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="../../../../js/jquery-1.11.3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+        <script src="../../../../js/jquery.fitvids.js"></script>
+        <script src="../../../../js/scripts.js"></script>
+    </body>
+</html>
+

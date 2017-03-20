@@ -15,7 +15,7 @@ Feb. 9     | ANOVA                      | Rebecca            | Rebecca
 Feb. 23    | Fixed/mixed effects models | Chelsea            | Sara
 March 9    | Mediation analysis         | Nelle              | ?
 March 23   | Clustered standard errors  | Garret             | ?
-April 6    | GEE                        | Johnny             | Kellie
+April 6    | Imputation                        | Orianna             | ?
 April 20   | Survival analysis          | Jake               | Jon
-May 4      | Imputation                 | Orianna            | ?
+May 4      | GEE                             | Johnny            | Kellie
 May 18     | Design of experiments      | Steve              | ?

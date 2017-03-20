@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical Statistics</title>
+    <link>/index.xml</link>
+    <description>Recent content on Practical Statistics</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 20 Feb 2017 21:48:51 -0700</lastBuildDate>
+    <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Mon, 20 Feb 2017 21:48:51 -0700</pubDate>
+      
+      <guid>/about/</guid>
+      <description>
+
+&lt;p&gt;Welcome to the &amp;ldquo;Practical Statistics&amp;rdquo; group for &lt;strong&gt;statistical methods that people expect us to know but that we have no idea about.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Members of this group meet at Thursdays at 9AM every two weeks for the purpose of learning common statistical methods that we should, but don&amp;rsquo;t, know how to use in practice (but that people in other fields think we do).&lt;/p&gt;
+
+&lt;p&gt;Such topics include&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;ANOVA&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Mixed effects models&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Power calculations&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Clustered standard errors&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;These methods are used constantly in other fields and the fact that we rarely learn how and when to use them makes it hard for us to help people in consulting or in other venues.&lt;/p&gt;
+
+&lt;h2 id=&#34;what-do-the-meetings-involve&#34;&gt;What do the meetings involve?&lt;/h2&gt;
+
+&lt;p&gt;We will get together every one or two weeks and teach each other a method that is not commonly taught to Statisticians, but is used widely in other fields. Each meeting will involve:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;A 20 minute presentation by a volunteer on a pre-determined topic&lt;/strong&gt;: the presentations should be short and high-level. Only one equation is allowed. The focus should not be on the technical aspects of the method, but rather on how and when it is used in practice (and when it shouldn’t be used in practice), with examples. For example, blog posts might be more helpful than technical papers when preparing presentations.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Discussion&lt;/strong&gt;: the remainder of the meeting will be discussion-based, so that everyone can offer their take on the topic and we can clear up any ambiguities.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;A short explanatory blog post&lt;/strong&gt;: each topic will be accompanied by a blog post describing the method to a layperson. This blog post will either be written by the presenter, volunteers amongst the attendees, or both.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Our aim is to understand how methods work at a high level, who uses these methods, what kind of data and problems they are used for, and what the necessary assumptions are to make things go.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Schedule of talks</title>
+      <link>/schedule/</link>
+      <pubDate>Mon, 20 Feb 2017 21:48:51 -0700</pubDate>
+      
+      <guid>/schedule/</guid>
+      <description>&lt;p&gt;The current schedule of talks is below. We meet at 9am in 1011 Evans
+every other week.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Topic&lt;/th&gt;
+&lt;th&gt;Presenter&lt;/th&gt;
+&lt;th&gt;Blogger&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Feb. 9&lt;/td&gt;
+&lt;td&gt;ANOVA&lt;/td&gt;
+&lt;td&gt;Rebecca&lt;/td&gt;
+&lt;td&gt;Rebecca&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Feb. 23&lt;/td&gt;
+&lt;td&gt;Fixed/mixed effects models&lt;/td&gt;
+&lt;td&gt;Chelsea&lt;/td&gt;
+&lt;td&gt;Sara&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;March 9&lt;/td&gt;
+&lt;td&gt;Mediation analysis&lt;/td&gt;
+&lt;td&gt;Nelle&lt;/td&gt;
+&lt;td&gt;?&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;March 23&lt;/td&gt;
+&lt;td&gt;Clustered standard errors&lt;/td&gt;
+&lt;td&gt;Garret&lt;/td&gt;
+&lt;td&gt;?&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;April 6&lt;/td&gt;
+&lt;td&gt;GEE&lt;/td&gt;
+&lt;td&gt;Johnny&lt;/td&gt;
+&lt;td&gt;Kellie&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;April 20&lt;/td&gt;
+&lt;td&gt;Survival analysis&lt;/td&gt;
+&lt;td&gt;Jake&lt;/td&gt;
+&lt;td&gt;Jon&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;May 4&lt;/td&gt;
+&lt;td&gt;Imputation&lt;/td&gt;
+&lt;td&gt;Orianna&lt;/td&gt;
+&lt;td&gt;?&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;May 18&lt;/td&gt;
+&lt;td&gt;Design of experiments&lt;/td&gt;
+&lt;td&gt;Steve&lt;/td&gt;
+&lt;td&gt;?&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
