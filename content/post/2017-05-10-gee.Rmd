@@ -1,0 +1,217 @@
+---
+title: "Generalized Estimating Equations (GEE)"
+author: "Johnny Hong and Kellie Ottoboni"
+categories: [Method]
+tags: [generalized estimating equations, linear models]
+output: html_document
+---
+
+Motivation
+========================================================
+
+Suppose we observe repeated measurements (responses and/or covariates) on a group of subjects.
+We're interested in modeling the expected response for an individual based on these covariates.
+Some examples might include
+
+* assigning individuals to one of several controlled diets and measuring their cholesterol over time
+* studying the relationship of some variable with earnings over time
+* determining the effect of having children on a woman's probability of participation in the labor force
+
+The benefit of having panel data (repeated measurements) like this is that we can control for time-invariant, unobservable differences between individuals.
+Having multiple observations per individual allows us to base estimates on the variation *within* individuals.
+
+The easiest way to do answer these questions would be to fit a linear model to the data, where the covariates have an additive effect on the outcome.
+If the variables follow something other than a linear relationship (e.g. the response of interest is a probability), a *generalized* linear model (GLM) would be more appropriate.
+GLMs have the following form:
+$$Y_i = \mu_i + \varepsilon_i, \qquad g(\mu_i) = X_i'\beta$$
+
+where for individual $i$, $Y_i$ is the response, $X_i$ are covariates, $\beta$ is a vector of coefficients, $\varepsilon_i$ is a random error term, and $g$ is a **link function** that maps from the set of possible responses to a linear function of the covariates.
+
+To estimate parameters and do inference with a GLM, we must assume that errors are independent and identically distributed.
+With panel data, this clearly isn't the case: observations for each individual are correlated.
+
+As we saw in an earlier presentation, one possible solution is to include [subject-specific random effects](https://rlbarter.github.io/Practical-Statistics/2017/03/03/fixed-mixed-and-random-effects/) in the model fitting.
+This method is called a **Generalized Linear Mixed Model (GLMM)**.
+GLMMs require some parametric assumptions; if you're like me (Kellie), assuming that everything is Gaussian probably makes you uncomfortable.
+
+Generalized estimating equations (GEE) are a nonparametric way to handle this.
+The idea of GEE is to average over all subjects and make a good guess on the *within-subject covariance structure*.
+Instead of assuming that data were generated from a certain distribution, uses moment assumptions to iteratively choose the best $\beta$ to describe the relationship between covariates and response.
+
+**Warning:** Notice that I did not specify the objective of the analysis. 
+The interpretations of the resultingestimates are different (!) for GLMM and GEE.
+
+Subject-specific versus Population-averaged
+========================================================
+
+GEE estimates **population average** effects.
+Consider the following two scenarios:
+
+- Scenario 1: You are a doctor. You want to know how much a statin drug will lower your patient’s odds of getting a heart attack.
+- Scenario 2: You are a state health official. You want to know how the number of people who die of heart attacks would change if everyone in the at-risk population took the stain drug.
+
+*Source: Allison, P. (2009)*
+
+In the first scenario, we want to know the subject-specific odds.
+In the second, we are interested in the prediction for the entire population.
+GEE can give us estimates for the second, but not the first.
+
+
+Nuts and Bolts of GEE
+========================================================
+
+GEE estimates **population-averaged** model parameters and their standard errors.
+The assumptions for GEE are similar to the assumptions for GLMs:
+
+1. The responses $Y_1, Y_2, \dots, Y_n$ are correlated or clustered
+2. There is a linear relationship between the covariates and a transformation of the response, described by the link function $g$.
+3. Within-subject covariance has some structure ("working covariance"):
+- independence (observations over time are independent)
+- exchangeable (all observations over time have the same correlation)
+- AR(1) (correlation decreases as a power of how many timepoints apart two observations are)
+- unstructured (correlation between all timepoints may be different)
+
+We need to pick one of these working covariance structures in order to fit the GEE.
+As with GLMs, GEE is done using a flavor of (iteratively reweighted least squares)[https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares], plugging in the working covariance matrix as a weight.
+The weighted least squares problems we fit are the eponymous **estimating equations**.
+If you're familiar with maximum likelihood, you can think of this equation as the (score function)[https://en.wikipedia.org/wiki/Score_(statistics)].
+This function equals 0 at the optimal choice of $\beta$.
+
+GEE is a **semiparametric method**: while we impose some structure on the data generating process (linearity), we do not fully specify its distribution.
+Estimating $\beta$ is purely an exercise in optimization.
+
+
+What if I am worried that the covariance is misspecified?
+========================================================
+
+We have to pick the covariance structure in order to estimate $\beta$, but what if it's not right?
+
+Since the estimating equations are really based on the first moment, $\beta$ will be estimated consistently, even if the working covariance structure is wrong.
+However, the standard errors computed from this will be wrong.
+To fix this, use GEE with the Huber-White "sandwich estimator" for robustness.
+The idea behind the sandwich variance estimator is to use the empirical residuals to approximate the underlying covariance.
+
+
+Why bother specifying the working covariance to begin with?
+
+  1. Statistical efficiency
+  2. Sandwich robustness is a large-sample property
+
+
+Should we use sandwich all the time?
+
+No, it is problematic if
+
+  1. The number of independent subjects is much smaller than the number of repeated measures
+  2. The design is unbalanced -- the number of repeated measures differs across individuals
+
+
+
+
+Example: Pigs
+========================================================
+
+**Question:** How does Vitamin E and copper level in the feeds affect the weights of pigs?
+
+- Data
+  
+  - weight of slaughter pigs measured weekly for 12 weeks
+  - start weight (i.e. the weight at week 1)
+  - cumulated feed intake
+- Treatments (3x3 factorial design)  
+  
+  - Vitamin E (dose: 0, 100, 200 mg dl-alpha-tocopheryl acetat/kg feed) 
+  - Copper (dose: 0, 35, 175 mg/kg feed)
+
+*Source: Lauridsen, C., Højsgaard, S.,Sørensen, M.T. C. (1999).*
+
+
+- Implementation in R: `geepack`
+
+```{r, }
+library("geepack")
+data(dietox)
+dietox$Cu <- as.factor(dietox$Cu)
+dietox$Evit <- as.factor(dietox$Evit)
+mf <- formula(Weight ~ Time + Evit + Cu)
+head(dietox)
+```
+
+#### Independence Working Covariance
+
+```{r}
+geeInd <- geeglm(mf, id=Pig, data=dietox, family=gaussian, corstr="ind")
+summary(geeInd)
+anova(geeInd)
+```
+
+#### Exchangeable Working Covariance
+
+
+```{r}
+geeEx <- geeglm(mf, id=Pig, data=dietox, family=gaussian, corstr="ex")
+summary(geeEx)
+anova(geeEx)
+```
+
+#### AR(1) Working Covariance
+
+
+```{r}
+geeAr1 <- geeglm(mf, id=Pig, data=dietox, family=gaussian, corstr="ar1")
+summary(geeAr1)
+anova(geeAr1)
+```
+
+Advantages
+========================================================
+- Computationally simple relative to MLE counterparts.
+- No distributional assumptions.
+- Estimates are consistent even if the correlation structure is misspecified (assuming that the model for the mean response is correct)
+
+Limitations
+========================================================
+- Likelihood-based methods are not available for usual statistical inference. GEE is a quasi-likelihood method.
+- Unclear on how to perform model selection, as GEE is just an estimating procedure. There is no goodness-of-fit measure readily available.
+- No subject-specific estimates; if that is the goal of your study, use a different method.
+
+Extensions of GEE
+========================================================
+- GEE2: second-order extension
+  - The GEE version in this presentation is GEE1.
+  - Idea: use more complex equations to study the covariance
+- Alternating Logistic Regression (ALR) (Carey, Zeger, and Diggle (1993)): model an outcome conditional on another outcome
+  - Idea: use log odd ratios instead of correlations to model associations
+
+Take-Home Messages about GEE
+========================================================
+- ONLY the first the **mean** and the **covariance** matter (quasi-likelihood approach)
+- Use a **sandwich estimator** to guard against covariance mispecification
+- Model **population-averaged** effects
+- Useful when the within-subject dependence is unobserved/unknown
+- Still assume subject independence (conditioned on covariates)
+
+References
+========================================================
+
+#### GEE
+- Liang, K., and S. L. Zeger (1986). Longitudinal data analysis using generalized linear models. Biometrika, 73:13–22.
+- Fitzmaurice, G. M., Ware, J.H. and Laird, N. M. (2004). Applied Longitudinal Analysis. Wiley. (Chapter 13)
+- Molenberghs, Geert and Verbeke, Geert (2005). Models for Discrete Longitudinal Data. Springer. (Chapter 8)
+
+#### To GEE or not to GEE:
+- Hubbard, A.E., Ahern, J., Fleischer, N.L., Van der Laan, M., Lippman, S.A., Jewell, N., Bruckner, T., Satariano, W.A. (2010). To GEE or not to GEE: comparing population average and mixed models for estimating the associations between neighborhood risk factors and health. Epidemiology 21:467–474.
+
+"...We conclude that the estimation-equation approach of population average models provides a more useful approximation of the truth."
+
+#### Subject-specific versus Population-averaged:
+Allison, P. D. (2009). Fixed Effects Regression Models (Quantitative Applications in the Social Sciences). SAGE.
+
+#### Blog post:
+Dealing with ugly data: Generalized Estimating Equations (GEE) by BOUSTERHOUT:
+https://wildlifesnpits.wordpress.com/2014/10/24/dealing-with-ugly-data-generalized-estimating-equations-gee/
+
+#### Dataset:
+Lauridsen, C., Højsgaard, S.,Sørensen, M.T. C. (1999). Influence of Dietary Rapeseed Oli, Vitamin E, and Copper on Performance and Antioxidant and Oxidative Status of Pigs. J. Anim. Sci.77:906-916
+
+*Available in the R package geepack*
