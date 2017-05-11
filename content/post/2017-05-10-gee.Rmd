@@ -4,6 +4,7 @@ author: "Johnny Hong and Kellie Ottoboni"
 categories: [Method]
 tags: [generalized estimating equations, linear models]
 output: html_document
+date: 2017-05-10T21:13:14-05:00
 ---
 
 Motivation
@@ -113,12 +114,13 @@ Example: Pigs
 
 **Question:** How does Vitamin E and copper level in the feeds affect the weights of pigs?
 
-- Data
+Data
   
   - weight of slaughter pigs measured weekly for 12 weeks
   - start weight (i.e. the weight at week 1)
   - cumulated feed intake
-- Treatments (3x3 factorial design)  
+
+Treatments (3x3 factorial design)  
   
   - Vitamin E (dose: 0, 100, 200 mg dl-alpha-tocopheryl acetat/kg feed) 
   - Copper (dose: 0, 35, 175 mg/kg feed)
