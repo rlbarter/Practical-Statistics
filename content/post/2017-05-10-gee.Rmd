@@ -67,15 +67,15 @@ The assumptions for GEE are similar to the assumptions for GLMs:
 1. The responses $Y_1, Y_2, \dots, Y_n$ are correlated or clustered
 2. There is a linear relationship between the covariates and a transformation of the response, described by the link function $g$.
 3. Within-subject covariance has some structure ("working covariance"):
-- independence (observations over time are independent)
-- exchangeable (all observations over time have the same correlation)
-- AR(1) (correlation decreases as a power of how many timepoints apart two observations are)
-- unstructured (correlation between all timepoints may be different)
+  - independence (observations over time are independent)
+  - exchangeable (all observations over time have the same correlation)
+  - AR(1) (correlation decreases as a power of how many timepoints apart two observations are)
+  - unstructured (correlation between all timepoints may be different)
 
 We need to pick one of these working covariance structures in order to fit the GEE.
-As with GLMs, GEE is done using a flavor of (iteratively reweighted least squares)[https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares], plugging in the working covariance matrix as a weight.
+As with GLMs, GEE is done using a flavor of [iteratively reweighted least squares](https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares), plugging in the working covariance matrix as a weight.
 The weighted least squares problems we fit are the eponymous **estimating equations**.
-If you're familiar with maximum likelihood, you can think of this equation as the (score function)[https://en.wikipedia.org/wiki/Score_(statistics)].
+If you're familiar with maximum likelihood, you can think of this equation as the [score function](https://en.wikipedia.org/wiki/Score_(statistics)).
 This function equals 0 at the optimal choice of $\beta$.
 
 GEE is a **semiparametric method**: while we impose some structure on the data generating process (linearity), we do not fully specify its distribution.
