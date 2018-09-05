@@ -1,0 +1,76 @@
+---
+title:  "How to post your blog post"
+author: "Rebecca Barter and Kellie Ottoboni"
+categories: ["introduction"]
+tags: ["publishing", "blog posts"]
+date: 2016-12-27T21:13:14-05:00
+---
+
+
+
+<p>So… how does one get their blog post on here? That’s an excellent question and I’m so glad that you asked!</p>
+<p>It’s quite easy, really. All you need to do is follow the so-simple-and-easy-to-implement steps below! Hooray!</p>
+<div id="step-1-fork-the-github-repository" class="section level2">
+<h2>Step 1: Fork the github repository</h2>
+<p>First thing’s first, you need to <strong>fork the git repo</strong> on which this site is hosted: <a href="https://github.com/rlbarter/Practical-Statistics" class="uri">https://github.com/rlbarter/Practical-Statistics</a>.
+Go to this repository and in the top righthand corner, click the Fork button.
+This creates your own copy of the repo in your GitHub account.</p>
+<p>Now, you need to <strong>copy the repo</strong> onto your local machine.
+Basically you will write the following code in the <strong>command line</strong> i.e. terminal (assuming that you’ve installed git at some point in your life):</p>
+<pre class="bash"><code>git clone https://github.com/YOUR-USERNAME/Practical-Statistics</code></pre>
+<p>Notice that you want to clone <strong>your fork</strong> of the repo, not the original repo.</p>
+<p>Next, create a new branch on your local machine (<code>git checkout</code> is for switching branches and the <code>-b</code> flag says to create a new branch).
+You need to <strong>make your changes on this new branch</strong>.</p>
+<pre class="bash"><code>git checkout -b NAME-OF-NEW-BRANCH</code></pre>
+<p>Now you should have all the files necessary.</p>
+</div>
+<div id="step-2-write-your-blog-post-using-r-markdown" class="section level2">
+<h2>Step 2: Write your blog post using R Markdown</h2>
+<p>Write your blog post in RStudio as an R Markdown file, and save your <code>.Rmd</code> file in the <code>/content/post</code> folder. You <em>do not</em> need to compile this file into html anywhere.</p>
+<p>Any figures that you link to in your markdown file need to live in the <code>static</code> folder. Where you put it in this folder is up to you (for example, for the anova blog post, I put all of the images in the <code>static/img/anova</code> folder).</p>
+<p>Once you’re done, add and commit your blog post:</p>
+<pre class="bash"><code>git add FILENAME
+git commit -m &quot;A brief message about what files you&#39;re adding&quot;</code></pre>
+</div>
+<div id="step-3-submit-a-pull-request" class="section level2">
+<h2>Step 3: Submit a pull request</h2>
+<p>Now that you’re all done adding things, you need to merge it into the website.
+You do this in two steps: you’ll push it to your GitHub repo and then submit a <strong>pull request</strong>, asking us to pull your changes into the website.
+First, push your changes to your repo:</p>
+<pre class="bash"><code>git push origin NAME-OF-NEW-BRANCH</code></pre>
+<p>Now, navigate back to <a href="https://github.com/rlbarter/Practical-Statistics">the original repo</a>.
+At the top of the repo, the new branch will show up with a green Pull Request button - click it and submit the request.</p>
+<p>Now, the maintainers will either merge your changes into the website, or may ask you to make modifications first.
+If the latter happens, follow this same process of commits and pushes, and they will automatically get added to your open pull request.</p>
+</div>
+<div id="advanced-steps" class="section level2">
+<h2>Advanced steps</h2>
+<p>If you would like to be able to render the website locally on your machine before submitting your post or any changes to the public version, you need to follow the instructions on the RStudio <a href="https://github.com/rstudio/blogdown">blogdown github page</a>.</p>
+<p>Basically, set your working directory to your cloned folder, install the blogdown package in R, and run <code>blogdown::serve_site()</code>. The website should appear in the Viewer pane.</p>
+</div>
+<div id="divergence-between-the-main-repository-and-your-fork" class="section level2">
+<h2>Divergence between the main repository and your fork</h2>
+<p>As the website gets updated, the main repo will change, but yours will <strong>not</strong> be automatically updated.
+To keep yours in sync, you need to set up access to the main repo:</p>
+<pre class="bash"><code>git remote add upstream https://github.com/rlbarter/Practical-Statistics</code></pre>
+<p>Before, you did pushes and pulls from your fork, which was called <code>origin</code>.
+<code>upstream</code> refers to the original repo.
+You could name these whatever you wanted, but <code>origin</code> and <code>upstream</code> are the conventions.
+You can see where else you have push/pull access to by running git remote with the <code>-v</code> flag:</p>
+<pre class="bash"><code>git remote -v</code></pre>
+<p>Now to actually update your local clone and your fork on GitHub, you’d run</p>
+<pre class="bash"><code>git checkout gh-pages
+git pull upstream gh-pages
+git push origin gh-pages</code></pre>
+<p>The steps here are pretty straightforward: make sure you’re on the right branch, pull from that branch in the main repo, and push the updated branch on your machine to your GitHub fork.
+You can do this for the master branch as well.</p>
+</div>
+<div id="deleting-old-branches" class="section level2">
+<h2>Deleting old branches</h2>
+<p>After you’re done making a pull request, you might want to get rid of old branches that have already been merged.
+You can see what branches you have by running</p>
+<pre class="bash"><code>git branch -v</code></pre>
+<p>To delete a branch, first delete it locally and then delete the branch on your GitHub:</p>
+<pre class="bash"><code>git branch -d OLD-BRANCH
+git push origin :OLD-BRANCH</code></pre>
+</div>

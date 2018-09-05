@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Practical Statistics</title>
+    <link>/tags/</link>
+    <description>Recent content in Tags on Practical Statistics</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 27 Dec 2016 21:13:14 -0500</lastBuildDate>
+    
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>About</title>
+      <link>/tags/about/</link>
+      <pubDate>Tue, 27 Dec 2016 21:13:14 -0500</pubDate>
+      
+      <guid>/tags/about/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Anova</title>
+      <link>/tags/anova/</link>
+      <pubDate>Mon, 20 Feb 2017 21:13:14 -0500</pubDate>
+      
+      <guid>/tags/anova/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Blog Posts</title>
+      <link>/tags/blog-posts/</link>
+      <pubDate>Tue, 27 Dec 2016 21:13:14 -0500</pubDate>
+      
+      <guid>/tags/blog-posts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Generalized Estimating Equations</title>
+      <link>/tags/generalized-estimating-equations/</link>
+      <pubDate>Wed, 10 May 2017 21:13:14 -0500</pubDate>
+      
+      <guid>/tags/generalized-estimating-equations/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linear Models</title>
+      <link>/tags/linear-models/</link>
+      <pubDate>Wed, 10 May 2017 21:13:14 -0500</pubDate>
+      
+      <guid>/tags/linear-models/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mixed Effects</title>
+      <link>/tags/mixed-effects/</link>
+      <pubDate>Fri, 03 Mar 2017 21:13:14 -0500</pubDate>
+      
+      <guid>/tags/mixed-effects/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Publishing</title>
+      <link>/tags/publishing/</link>
+      <pubDate>Tue, 27 Dec 2016 21:13:14 -0500</pubDate>
+      
+      <guid>/tags/publishing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Random Effects</title>
+      <link>/tags/random-effects/</link>
+      <pubDate>Fri, 03 Mar 2017 21:13:14 -0500</pubDate>
+      
+      <guid>/tags/random-effects/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

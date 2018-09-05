@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
     <loc>/2017/05/10/generalized-estimating-equations-gee/</loc>
@@ -115,6 +116,7 @@
   
   <url>
     <loc>/tags/</loc>
+    <lastmod>2016-12-27T21:13:14-05:00</lastmod>
     <priority>0</priority>
   </url>
   

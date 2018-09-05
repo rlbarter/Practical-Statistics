@@ -8,7 +8,7 @@
  assigning individuals to one of several controlled diets and measuring their cholesterol over time studying the relationship of some variable with earnings over time determining the effect of having children on a woman’s probability of participation in the labor force  The benefit of having panel data (repeated measurements) like this is that we can control for time-invariant, unobservable differences between individuals.">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
-        <meta name="generator" content="Hugo 0.18.1" />
+        <meta name="generator" content="Hugo 0.40.3" />
         <meta name="robots" content="index,follow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
@@ -16,10 +16,6 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         
-
-
-
-
     </head>
     <body>
         
@@ -87,37 +83,51 @@
         <div class="post-content clearfix" itemprop="articleBody">
     
 
-
-
-<div id="motivation" class="section level1">
+    <div id="motivation" class="section level1">
 <h1>Motivation</h1>
-<p>Suppose we observe repeated measurements (responses and/or covariates) on a group of subjects. We’re interested in modeling the expected response for an individual based on these covariates. Some examples might include</p>
+<p>Suppose we observe repeated measurements (responses and/or covariates) on a group of subjects.
+We’re interested in modeling the expected response for an individual based on these covariates.
+Some examples might include</p>
 <ul>
 <li>assigning individuals to one of several controlled diets and measuring their cholesterol over time</li>
 <li>studying the relationship of some variable with earnings over time</li>
 <li>determining the effect of having children on a woman’s probability of participation in the labor force</li>
 </ul>
-<p>The benefit of having panel data (repeated measurements) like this is that we can control for time-invariant, unobservable differences between individuals. Having multiple observations per individual allows us to base estimates on the variation <em>within</em> individuals.</p>
-<p>The easiest way to do answer these questions would be to fit a linear model to the data, where the covariates have an additive effect on the outcome. If the variables follow something other than a linear relationship (e.g. the response of interest is a probability), a <em>generalized</em> linear model (GLM) would be more appropriate. GLMs have the following form: <span class="math display">\[Y_i = \mu_i + \varepsilon_i, \qquad g(\mu_i) = X_i&#39;\beta\]</span></p>
+<p>The benefit of having panel data (repeated measurements) like this is that we can control for time-invariant, unobservable differences between individuals.
+Having multiple observations per individual allows us to base estimates on the variation <em>within</em> individuals.</p>
+<p>The easiest way to do answer these questions would be to fit a linear model to the data, where the covariates have an additive effect on the outcome.
+If the variables follow something other than a linear relationship (e.g. the response of interest is a probability), a <em>generalized</em> linear model (GLM) would be more appropriate.
+GLMs have the following form:
+<span class="math display">\[Y_i = \mu_i + \varepsilon_i, \qquad g(\mu_i) = X_i&#39;\beta\]</span></p>
 <p>where for individual <span class="math inline">\(i\)</span>, <span class="math inline">\(Y_i\)</span> is the response, <span class="math inline">\(X_i\)</span> are covariates, <span class="math inline">\(\beta\)</span> is a vector of coefficients, <span class="math inline">\(\varepsilon_i\)</span> is a random error term, and <span class="math inline">\(g\)</span> is a <strong>link function</strong> that maps from the set of possible responses to a linear function of the covariates.</p>
-<p>To estimate parameters and do inference with a GLM, we must assume that errors are independent and identically distributed. With panel data, this clearly isn’t the case: observations for each individual are correlated.</p>
-<p>As we saw in an earlier presentation, one possible solution is to include <a href="https://rlbarter.github.io/Practical-Statistics/2017/03/03/fixed-mixed-and-random-effects/">subject-specific random effects</a> in the model fitting. This method is called a <strong>Generalized Linear Mixed Model (GLMM)</strong>. GLMMs require some parametric assumptions; if you’re like me (Kellie), assuming that everything is Gaussian probably makes you uncomfortable.</p>
-<p>Generalized estimating equations (GEE) are a nonparametric way to handle this. The idea of GEE is to average over all subjects and make a good guess on the <em>within-subject covariance structure</em>. Instead of assuming that data were generated from a certain distribution, uses moment assumptions to iteratively choose the best <span class="math inline">\(\beta\)</span> to describe the relationship between covariates and response.</p>
-<p><strong>Warning:</strong> Notice that I did not specify the objective of the analysis. The interpretations of the resultingestimates are different (!) for GLMM and GEE.</p>
+<p>To estimate parameters and do inference with a GLM, we must assume that errors are independent and identically distributed.
+With panel data, this clearly isn’t the case: observations for each individual are correlated.</p>
+<p>As we saw in an earlier presentation, one possible solution is to include <a href="https://rlbarter.github.io/Practical-Statistics/2017/03/03/fixed-mixed-and-random-effects/">subject-specific random effects</a> in the model fitting.
+This method is called a <strong>Generalized Linear Mixed Model (GLMM)</strong>.
+GLMMs require some parametric assumptions; if you’re like me (Kellie), assuming that everything is Gaussian probably makes you uncomfortable.</p>
+<p>Generalized estimating equations (GEE) are a nonparametric way to handle this.
+The idea of GEE is to average over all subjects and make a good guess on the <em>within-subject covariance structure</em>.
+Instead of assuming that data were generated from a certain distribution, uses moment assumptions to iteratively choose the best <span class="math inline">\(\beta\)</span> to describe the relationship between covariates and response.</p>
+<p><strong>Warning:</strong> Notice that I did not specify the objective of the analysis.
+The interpretations of the resultingestimates are different (!) for GLMM and GEE.</p>
 </div>
 <div id="subject-specific-versus-population-averaged" class="section level1">
 <h1>Subject-specific versus Population-averaged</h1>
-<p>GEE estimates <strong>population average</strong> effects. Consider the following two scenarios:</p>
+<p>GEE estimates <strong>population average</strong> effects.
+Consider the following two scenarios:</p>
 <ul>
 <li>Scenario 1: You are a doctor. You want to know how much a statin drug will lower your patient’s odds of getting a heart attack.</li>
 <li>Scenario 2: You are a state health official. You want to know how the number of people who die of heart attacks would change if everyone in the at-risk population took the stain drug.</li>
 </ul>
 <p><em>Source: Allison, P. (2009)</em></p>
-<p>In the first scenario, we want to know the subject-specific odds. In the second, we are interested in the prediction for the entire population. GEE can give us estimates for the second, but not the first.</p>
+<p>In the first scenario, we want to know the subject-specific odds.
+In the second, we are interested in the prediction for the entire population.
+GEE can give us estimates for the second, but not the first.</p>
 </div>
 <div id="nuts-and-bolts-of-gee" class="section level1">
 <h1>Nuts and Bolts of GEE</h1>
-<p>GEE estimates <strong>population-averaged</strong> model parameters and their standard errors. The assumptions for GEE are similar to the assumptions for GLMs:</p>
+<p>GEE estimates <strong>population-averaged</strong> model parameters and their standard errors.
+The assumptions for GEE are similar to the assumptions for GLMs:</p>
 <ol style="list-style-type: decimal">
 <li>The responses <span class="math inline">\(Y_1, Y_2, \dots, Y_n\)</span> are correlated or clustered</li>
 <li>There is a linear relationship between the covariates and a transformation of the response, described by the link function <span class="math inline">\(g\)</span>.</li>
@@ -129,13 +139,21 @@
 <li>AR(1) (correlation decreases as a power of how many timepoints apart two observations are)</li>
 <li>unstructured (correlation between all timepoints may be different)</li>
 </ul>
-<p>We need to pick one of these working covariance structures in order to fit the GEE. As with GLMs, GEE is done using a flavor of (iteratively reweighted least squares)[<a href="https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares" class="uri">https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares</a>], plugging in the working covariance matrix as a weight. The weighted least squares problems we fit are the eponymous <strong>estimating equations</strong>. If you’re familiar with maximum likelihood, you can think of this equation as the (score function)[<a href="https://en.wikipedia.org/wiki/Score_(statistics)" class="uri">https://en.wikipedia.org/wiki/Score_(statistics)</a>]. This function equals 0 at the optimal choice of <span class="math inline">\(\beta\)</span>.</p>
-<p>GEE is a <strong>semiparametric method</strong>: while we impose some structure on the data generating process (linearity), we do not fully specify its distribution. Estimating <span class="math inline">\(\beta\)</span> is purely an exercise in optimization.</p>
+<p>We need to pick one of these working covariance structures in order to fit the GEE.
+As with GLMs, GEE is done using a flavor of <a href="https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares">iteratively reweighted least squares</a>, plugging in the working covariance matrix as a weight.
+The weighted least squares problems we fit are the eponymous <strong>estimating equations</strong>.
+If you’re familiar with maximum likelihood, you can think of this equation as the <a href="https://en.wikipedia.org/wiki/Score_(statistics)">score function</a>.
+This function equals 0 at the optimal choice of <span class="math inline">\(\beta\)</span>.</p>
+<p>GEE is a <strong>semiparametric method</strong>: while we impose some structure on the data generating process (linearity), we do not fully specify its distribution.
+Estimating <span class="math inline">\(\beta\)</span> is purely an exercise in optimization.</p>
 </div>
 <div id="what-if-i-am-worried-that-the-covariance-is-misspecified" class="section level1">
 <h1>What if I am worried that the covariance is misspecified?</h1>
 <p>We have to pick the covariance structure in order to estimate <span class="math inline">\(\beta\)</span>, but what if it’s not right?</p>
-<p>Since the estimating equations are really based on the first moment, <span class="math inline">\(\beta\)</span> will be estimated consistently, even if the working covariance structure is wrong. However, the standard errors computed from this will be wrong. To fix this, use GEE with the Huber-White “sandwich estimator” for robustness. The idea behind the sandwich variance estimator is to use the empirical residuals to approximate the underlying covariance.</p>
+<p>Since the estimating equations are really based on the first moment, <span class="math inline">\(\beta\)</span> will be estimated consistently, even if the working covariance structure is wrong.
+However, the standard errors computed from this will be wrong.
+To fix this, use GEE with the Huber-White “sandwich estimator” for robustness.
+The idea behind the sandwich variance estimator is to use the empirical residuals to approximate the underlying covariance.</p>
 <p>Why bother specifying the working covariance to begin with?</p>
 <ol style="list-style-type: decimal">
 <li>Statistical efficiency</li>
@@ -323,11 +341,15 @@ summary(geeAr1)</code></pre>
 <div id="extensions-of-gee" class="section level1">
 <h1>Extensions of GEE</h1>
 <ul>
-<li>GEE2: second-order extension</li>
+<li>GEE2: second-order extension
+<ul>
 <li>The GEE version in this presentation is GEE1.</li>
 <li>Idea: use more complex equations to study the covariance</li>
-<li>Alternating Logistic Regression (ALR) (Carey, Zeger, and Diggle (1993)): model an outcome conditional on another outcome</li>
+</ul></li>
+<li>Alternating Logistic Regression (ALR) (Carey, Zeger, and Diggle (1993)): model an outcome conditional on another outcome
+<ul>
 <li>Idea: use log odd ratios instead of correlations to model associations</li>
+</ul></li>
 </ul>
 </div>
 <div id="take-home-messages-about-gee" class="section level1">
@@ -363,7 +385,8 @@ summary(geeAr1)</code></pre>
 </div>
 <div id="blog-post" class="section level4">
 <h4>Blog post:</h4>
-<p>Dealing with ugly data: Generalized Estimating Equations (GEE) by BOUSTERHOUT: <a href="https://wildlifesnpits.wordpress.com/2014/10/24/dealing-with-ugly-data-generalized-estimating-equations-gee/" class="uri">https://wildlifesnpits.wordpress.com/2014/10/24/dealing-with-ugly-data-generalized-estimating-equations-gee/</a></p>
+<p>Dealing with ugly data: Generalized Estimating Equations (GEE) by BOUSTERHOUT:
+<a href="https://wildlifesnpits.wordpress.com/2014/10/24/dealing-with-ugly-data-generalized-estimating-equations-gee/" class="uri">https://wildlifesnpits.wordpress.com/2014/10/24/dealing-with-ugly-data-generalized-estimating-equations-gee/</a></p>
 </div>
 <div id="dataset" class="section level4">
 <h4>Dataset:</h4>
@@ -371,8 +394,6 @@ summary(geeAr1)</code></pre>
 <p><em>Available in the R package geepack</em></p>
 </div>
 </div>
-
-
 
 </div>
 

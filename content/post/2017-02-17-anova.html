@@ -1,0 +1,333 @@
+---
+title:  "ANOVA"
+author: "Rebecca Barter"
+categories: [Method]
+tags: [anova]
+date: 2017-02-20T21:13:14-05:00
+---
+
+
+
+<p>Last week, practical statistics met to discuss all things ANOVA. Below you will find the slides from my talk, but read on if you would like to learn all about ANOVA.</p>
+<center>
+<iframe src="https://docs.google.com/presentation/d/1mjaZs2ynGK7-qHFFr0nzjHmwqT3BhLDf0h-R5h6RsfU/embed?start=false&amp;loop=false&amp;delayms=3000" frameborder="0" width="720" height="449" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
+</iframe>
+</center>
+<div id="when-anova-is-used-and-who-uses-it" class="section level2">
+<h2>When ANOVA is used and who uses it?</h2>
+<p>ANOVA is used far and wide by the scientific community and beyond. Unfortunately, scientists also frequently misuse ANOVA. A study by <a href="https://www.hindawi.com/journals/tswj/2011/139494/">Wu et al. (2011)</a> showed that from a survey of 10 leading Chinese medical journals in 2008, 446 articles used ANOVA, and of those articles, <a href="https://www.hindawi.com/journals/tswj/2011/139494/tab1/"><strong>59% of them used ANOVA incorrectly</strong></a>.</p>
+<p>In this post, I will describe the general framework for ANOVA, the assumptions it requires, and many common pitfalls. While I will introduce a few equations, I will not provide extensive details or derivations. Instead, I will focus on developing intuition for <em>why</em> these equations make sense for the type of problem at hand.</p>
+<p>Let’s start by getting an idea of what kind of questions one can answer using ANOVA. Three examples are presented below.</p>
+<ul>
+<li><p><em>Is there a difference between the average number of times articles are shared on social media based on day of the week?</em></p></li>
+<li><p><em>Is there a difference in average waiting room times for a set of 3 different hospitals?</em></p></li>
+<li><p><em>Does the presence of other people have an influence on the amount of time taken for a person to help someone in distress?</em></p></li>
+</ul>
+<p>The third question is not like the others; can you see why? The first two questions are asking about a difference between mean values of some outcome (article shares or waiting room time) across multiple groups (day of week or hospital). The last question, however, does not seem to satisfy this criteria: while it has a clear outcome (amount of time taken for a person to help someone in distress), it has no obvious groupings.</p>
+<p><a href="http://www.wadsworth.com/psychology_d/templates/student_resources/0155060678_rathus/ps/ps19.html">Darley and Latané (1969)</a> used ANOVA to answer the question of whether the presence of other people had an influence on the amount of time taken for a person to help someone in distress by setting up an appropriate experiment. In doing so, they were the first to demonstrate the “<a href="https://en.wikipedia.org/wiki/Bystander_effect">bystander effect</a>”.</p>
+<p>In their experiment, the experimenter had the subject wait in a room with either 0, 2, or 4 other individuals. The experimenter announces that the study will begin shortly and walks into an adjacent room. In a few moments the people in the waiting room hear her fall and cry out. The outcome variable is the number of seconds it takes the subject to help the experimenter, and the grouping variable is the number of other people in the room (0, 2, or 4).</p>
+<p>Given these examples, the definition of ANOVA provided in the following paragraph shouldn’t come as much of a surprise.</p>
+</div>
+<div id="anova-in-a-nutshell" class="section level2">
+<h2>ANOVA in a nutshell</h2>
+<p><strong>AN</strong>alysis <strong>O</strong>f <strong>VA</strong>riance (<strong>ANOVA</strong>), is a widely used method designed for <em>comparing differences in means among three or more groups.</em></p>
+<p>For example, we might be interested in comparing the average waiting times in the emergency rooms of three different hospitals. Or perhaps we have conducted a clinical trial comparing the effectiveness of five different drugs for reducing blood pressure.</p>
+<p>The key is that each individual falls into a group described by a <em>(categorical) grouping variable</em> (e.g. hospital or drug group) and for each individual we measure some <em>continuous outcome</em> (e.g. waiting time or blood pressure).</p>
+<p>Although there are multiple types of ANOVA, the simplest (“one-way” ANOVA) can be thought of as a generalization of a two-sample t-test. One-way ANOVA involves testing the <em>omnibus hypothesis</em> that <em>k</em> population means are identical:</p>
+<p><span class="math display">\[H_0: \mu_1 = \mu_2 = ... = \mu_k.\]</span></p>
+<p>Note that the two-sample t-test tested the hypothesis that <em>two</em> population means are equal (i.e. <em>k = 2</em>).</p>
+<p>The alternative hypothesis for ANOVA states that <em>any one</em> of the population mean equalities does not hold:</p>
+<p><span class="math display">\[H_1: \mu_i \neq \mu_j~~ \text{ for some } ~~i \neq j.\]</span></p>
+<p>It is important to note that a rejection of the null hypothesis <strong>does not tell you which of the population means differ</strong>. It only tells you that there is <em>some</em> population whose mean is different from at least one other population (it could be that all of the means are different from one another!)</p>
+<div id="a-simple-toy-example-hospital-waiting-times" class="section level3">
+<h3>A simple toy example: hospital waiting times</h3>
+<p>Suppose that we have three hospitals, let’s call them A, B and C (creative names, I know). We are interested in whether all three hospitals have the same the average waiting time for the emergency room.</p>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-1"></span>
+<img src="/img/anova/hospitals.png" alt="Three hospitals: A, B and C."  />
+<p class="caption">
+Figure 1: Three hospitals: A, B and C.
+</p>
+</div>
+<p>We measured the waiting time for 20 unique individuals at each of these three hospitals (so there are 60 individuals in total). These waiting times (in hours) are recorded below.</p>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.1</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Hospital A</th>
+<th align="right">Hospital B</th>
+<th align="right">Hospital C</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1.8</td>
+<td align="right">0.9</td>
+<td align="right">1.4</td>
+</tr>
+<tr class="even">
+<td align="right">1.4</td>
+<td align="right">0.7</td>
+<td align="right">2.1</td>
+</tr>
+<tr class="odd">
+<td align="right">0.7</td>
+<td align="right">2.6</td>
+<td align="right">1.4</td>
+</tr>
+<tr class="even">
+<td align="right">0.8</td>
+<td align="right">1.7</td>
+<td align="right">1.2</td>
+</tr>
+<tr class="odd">
+<td align="right">0.5</td>
+<td align="right">2.5</td>
+<td align="right">2.1</td>
+</tr>
+<tr class="even">
+<td align="right">2.1</td>
+<td align="right">2.4</td>
+<td align="right">2.3</td>
+</tr>
+<tr class="odd">
+<td align="right">0.9</td>
+<td align="right">2.4</td>
+<td align="right">1.7</td>
+</tr>
+<tr class="even">
+<td align="right">2.2</td>
+<td align="right">2.3</td>
+<td align="right">1.2</td>
+</tr>
+<tr class="odd">
+<td align="right">1.2</td>
+<td align="right">2.0</td>
+<td align="right">1.1</td>
+</tr>
+<tr class="even">
+<td align="right">1.3</td>
+<td align="right">1.7</td>
+<td align="right">1.3</td>
+</tr>
+<tr class="odd">
+<td align="right">1.1</td>
+<td align="right">2.1</td>
+<td align="right">0.3</td>
+</tr>
+<tr class="even">
+<td align="right">1.1</td>
+<td align="right">0.9</td>
+<td align="right">1.7</td>
+</tr>
+<tr class="odd">
+<td align="right">0.4</td>
+<td align="right">2.7</td>
+<td align="right">1.5</td>
+</tr>
+<tr class="even">
+<td align="right">1.4</td>
+<td align="right">1.5</td>
+<td align="right">1.7</td>
+</tr>
+<tr class="odd">
+<td align="right">0.8</td>
+<td align="right">2.0</td>
+<td align="right">2.0</td>
+</tr>
+<tr class="even">
+<td align="right">1.1</td>
+<td align="right">1.9</td>
+<td align="right">0.8</td>
+</tr>
+<tr class="odd">
+<td align="right">0.6</td>
+<td align="right">2.6</td>
+<td align="right">2.0</td>
+</tr>
+<tr class="even">
+<td align="right">1.1</td>
+<td align="right">2.4</td>
+<td align="right">2.4</td>
+</tr>
+<tr class="odd">
+<td align="right">1.6</td>
+<td align="right">1.5</td>
+<td align="right">2.2</td>
+</tr>
+<tr class="even">
+<td align="right">0.9</td>
+<td align="right">1.7</td>
+<td align="right">2.0</td>
+</tr>
+</tbody>
+</table>
+<p>As pictures tend to be more informative than tables, we present a plot of these waiting times below. To aid the visualization, the x-position of each point is jittered to gently increase the space between the points.</p>
+<p>Most people seem to wait over an hour, with some unlucky individuals waiting for almost 3 hours. The mean waiting time for each hospital is highlighted by a red bar.</p>
+<p><img src="/post/2017-02-17-anova_files/figure-html/wait2-1.png" width="288" style="display: block; margin: auto;" /></p>
+<p>The question of interest is whether or not the average waiting time for each of the three hospitals is the same. This question might be naively interpreted as: “are the red bars at the same height?”, i.e. is there a difference between the waiting times for the <em>sample</em> of 20 patients from each hospital. The intended question is actually asking about equality between the average waiting times from the population of all patients who have ever, and will ever, wait in these waiting rooms, regardless of whether they fall in our sample.</p>
+<p>Although the sample means clearly aren’t identical (the red bars are all at different heights), <strong>do we have enough evidence to show that the <em>underlying population</em> waiting time means are different</strong>, or are the differences that we observe are simply reflection of the inherent noise in the data?</p>
+<p>This is the question that lies at the heart of hypothesis testing.</p>
+</div>
+<div id="why-is-anova-called-analysis-of-variance" class="section level3">
+<h3>Why is ANOVA called “Analysis of Variance”?</h3>
+<p>What does comparing means have to do with variability?</p>
+<p>Quite a lot it turns out… simply by asking “are the means different”, we are essentially asking a question about whether the variance of the means is large. However, the variability that we observe between the means themselves only makes sense relative to the overall variance in the data. For example, if the individual observations themselves are extremely variable, then it might be reasonable to expect that the observed group-specific averages might exhibit some variance (even if the underlying true averages are identical).</p>
+<p>There are two types of variance at play here:</p>
+<ul>
+<li><p><strong>within-group variability</strong>: the variance of the individual observations within a group, and</p></li>
+<li><p><strong>between-group variability</strong>: the variance between the averages of the groups.</p></li>
+</ul>
+<p>In the figure below, the red bars in the left panel highlight the <em>within-group variance</em>, while the red bars in the right panel highlight the <em>between-group variance</em>.</p>
+<p><img src="/post/2017-02-17-anova_files/figure-html/unnamed-chunk-4-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>The basic idea is that <strong>if the variability between the groups is greater than the variability within the groups</strong>, then we have evidence that the differences between the groups is not simply reflecting random noise.</p>
+<p>Quantifying the within and between group variability is typically done by calculating a mean sum of squares: add up the squared vertical distances and divide by the <em>degrees of freedom</em>.</p>
+<p>This means that we are comparing the</p>
+<ul>
+<li>between sum of squares (BSS): the squared distances from the group means (average over all individuals separately <em>for each hospital</em>) to the global mean (average over all individuals),</li>
+</ul>
+<p>to the</p>
+<ul>
+<li>within sum of squares (WSS): the squared distances from each individual to their group mean (average over all individuals within the same hospital).</li>
+</ul>
+<p>Using this idea we can formulate a test statistic:</p>
+<p><img src="/img/anova/F-stat.png" style="display: block; margin: auto;" /></p>
+<p>To spell it out mathematically, we can write these expressions as follows:</p>
+<p><span class="math display">\[WSS =\sum_{i = 1}^K \sum_{j = 1}^{n_i} (y_{ij} - \overline{y}_{i\cdot})^2 ~~~~~ \text{ and } ~~~~~ BSS = \sum_{i=1}^K (\overline{y}_{\cdot \cdot} - \overline{y}_{i\cdot})^2\]</span></p>
+<p>where <span class="math inline">\(y_{ij}\)</span>, defines the waiting room time (outcome) for patient <span class="math inline">\(j\)</span> from hospital <span class="math inline">\(i\)</span>, <span class="math inline">\(\overline{y}_{\cdot \cdot}\)</span> defines the global average waiting time and <span class="math inline">\(\overline{y}_{i \cdot}\)</span> defines the average waiting time for hospital <span class="math inline">\(i\)</span>. <span class="math inline">\(K\)</span> is the number of hospitals, and <span class="math inline">\(n_i\)</span> is the number of patients sampled from hospital <span class="math inline">\(i\)</span>.</p>
+<p>Note that in the test statistic above, each quantity is scaled by its <strong>degrees of freedom</strong>, which when comparing the groups is the number of groups minus 1 (<span class="math inline">\(K-1\)</span>), and when comparing individuals is the number of individuals minus the number of groups (<span class="math inline">\(N-K\)</span>).</p>
+</div>
+</div>
+<div id="what-assumptions-are-required" class="section level2">
+<h2>What assumptions are required?</h2>
+<p>If our data satisfies a few parametric assumptions, then we can show that this test statistic follows an <span class="math inline">\(F\)</span> distribution and we can do a straightforward parametric hypothesis test:</p>
+<p><span class="math display">\[\text{p-value} = P\left(F_{K-1, N-k} \geq \frac{BSS/(K-1)}{WSS/(N-K)}\right).\]</span></p>
+<p>These assumptions are as follows</p>
+<div id="assumption-1-the-samples-are-independent." class="section level3">
+<h3>Assumption 1: The samples are <strong>independent</strong>.</h3>
+<p>Independence is an extremely common assumption that is hard to test in general.</p>
+</div>
+<div id="assumption-2-the-data-are-normally-distributed." class="section level3">
+<h3>Assumption 2: The data are <strong>normally distributed</strong>.</h3>
+<p>Not being a fan of such distributional assumptions myself, I am inclined to point the reader in the direction of non-parametric versions of ANOVA, including the <a href="https://en.wikipedia.org/wiki/Kruskal%E2%80%93Wallis_one-way_analysis_of_variance">Kruskal-Wallis test</a>, however since this is a blog post about ANOVA, we will leave non-parametric readings to the interested parties. Those wishing to test the normality of their data can do so using a variety of methods such as plotting a QQ-plot, or using a normality test (see the <a href="https://en.wikipedia.org/wiki/Normality_test">Wikipedia page on normality tests</a>).</p>
+</div>
+<div id="assumption-3-each-group-has-the-same-variance." class="section level3">
+<h3>Assumption 3: Each group has the <strong>same variance</strong>.</h3>
+<p>The common variance assumption can be tested using common tests, such as the <a href="https://en.wikipedia.org/wiki/Bartlett%27s_test">Bartlett test</a> and the <a href="http://www.statsref.com/HTML/index.html?fligner-killeen_test.html">Fligner-Killeen test</a>, which are easily implemented in R.</p>
+</div>
+</div>
+<div id="working-through-our-waiting-times-example" class="section level2">
+<h2>Working through our waiting times example</h2>
+<p>Let’s examine these assumptions for our Hospital waiting times example.</p>
+<p>Unfortunately, independence is hard to judge statistically, but if, for example, each person was randomly selected from a splattering of visitors to the waiting room at different times (rather than, e.g. selecting 5 members of the same family all of whom came to the hospital together in some freak accident), then the assumption of independence is probably ok.</p>
+<p>The figure below plots the density estimation for the waiting times from each hospital. We know that if our data is normally distributed, it should look vaguely like a bell-curve.</p>
+<p><img src="/post/2017-02-17-anova_files/figure-html/unnamed-chunk-6-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>One might argue that these are some pretty funky-looking bell-curves…</p>
+<p>However, as I was the one who simulated this data in the first place, I can assure you that they are in fact normally distributed, and you can use this as a lesson on the difficult of drawing conclusions on normality from small samples (in this case, we have 20 observations in each group).</p>
+<p>A <a href="http://stat.ethz.ch/R-manual/R-devel/library/stats/html/shapiro.test.html">Shapiro-Wilk test for normality</a> provides p-values of 0.39, 0.087, 0.52 for hospitals A, B and C, respectively. Although none of these values are “significant” (even unadjusted for multiple testing), we have stumbled upon another lesson: small p-values (<span class="math inline">\(p = 0.087\)</span> for hospital B) can certainly occur when the null hypothesis is true (in this case, the null hypothesis is that the data are normally distributed)! Remember that when the null hypothesis is true, p-values are uniformly distributed.</p>
+<p>Finally, based on a visual assessment, the common variance assumption is probably fairly reasonable (and, again, since I simulated this data, I can confirm that the variance is the same for each hospital).</p>
+<p>To test this formally, <a href="https://en.wikipedia.org/wiki/Bartlett&#39;s_test">Bartlett’s test for homogeneity of variances</a> yields a p-value of 0.68, indicating that we do not have evidence that the variances are different.</p>
+<p>We have now concluded that the assumptions for ANOVA are satisfied, and can proceed to do our calculations.</p>
+<p>Calculating the between-sum-of-squares (BSS) and scaling by the degrees of freedom (the number of groups minus 1), and the within-sum-of-squares (WSS) and scaling by the degrees of freedom (the number of observations minus the number of groups), we get that</p>
+<p><span class="math display">\[\frac{BSS}{K - 1} = \frac{5.94}{3 - 1} = 2.97 ~~~~~~ \text{and} ~~~~~ \frac{WSS}{N - K} = \frac{16.96}{60 - 3} = 0.30.\]</span></p>
+<p>Our test statistic turns out to be quite large indeed:</p>
+<p><span class="math display">\[F = \frac{BSS/(K-1)}{WSS/(N-k)} = \frac{2.97}{0.3} = 9.98.\]</span></p>
+<p>Since we are confident that the ANOVA assumptions are satisfied, this F-statistic must follow an F distribution with suitable degrees of freedom. Our p-value can thus be calculated as follows:</p>
+<p><span class="math display">\[P(F_{2, 53} \geq 9.98) = 0.000192\]</span></p>
+<p>And we can claim to have evidence that the three group means are not all identical. Note that we can interpret this as the distances between the group means and the global mean is quite large relative to the distances between the individual observations and the group means. Recall that these distances are scaled by their respective degrees of freedom.</p>
+<p>Rather than conducting these calculations by hand, in R, one could simply use the <code>aov()</code> function:</p>
+<pre class="r"><code>summary(aov(time ~ hospital, data = data))</code></pre>
+<pre><code>##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## variable     2  5.938  2.9688   9.981 0.000192 ***
+## Residuals   57 16.955  0.2975                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>obtaining the same p-value.</p>
+<div id="anova-as-a-linear-model" class="section level3">
+<h3>ANOVA as a linear model</h3>
+<p>So far we have discussed ANOVA purely as a hypothesis test comparing two different types of variability. It is, however, more common to talk about ANOVA as a <strong>linear model</strong>.</p>
+<p>The anova linear model can be written as follows:</p>
+<p><img src="/img/anova/model.png" style="display: block; margin: auto;" /></p>
+<p><span class="math inline">\(\mu\)</span> represents the overall average wait time across all hospitals, and <span class="math inline">\(\tau_i\)</span> represents the amount of time that is either added or subtracted from the overall average as a result of being at hospital <span class="math inline">\(i\)</span>. To get the average wait time for hospital <span class="math inline">\(i\)</span> we can calculate <span class="math inline">\(\mu_i := \mu + \tau_i\)</span>.</p>
+<p>Finally, <span class="math inline">\(\epsilon_{ij}\)</span> represents the “noise” term; the quantity that defines how the waiting time for individual <span class="math inline">\(j\)</span> differs from the mean (within their group).</p>
+<p>We typically assume that the expected value (the average over the population) for <span class="math inline">\(\epsilon_{ij}\)</span> is equal to zero, and that the <span class="math inline">\(\tau_i\)</span>s add up to zero. Note that if we do not assume that <span class="math inline">\(\tau_i\)</span>s sum to zero, then the model is “over-parametrized” in that there would be an infinite number of ways to define the <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\tau_i\)</span>s such that they add up to the group mean <span class="math inline">\(\mu_i\)</span>.</p>
+<p>The question that is sure to be on the edge of your tongue is <strong>“how is this possibly equivalent to the hypothesis test discussed above?”</strong></p>
+<p>The answer is simple and can be summarized by the diagram below.</p>
+<p><img src="/img/anova/equivalence.png" style="display: block; margin: auto;" /></p>
+<p>Specifically, if the hospital-specific effects <span class="math inline">\(\tau_A, \tau_B,\)</span> and <span class="math inline">\(\tau_C\)</span> are all equal to zero, then the average effect across all groups is the same: <span class="math inline">\(\mu_A = \mu_B = \mu_C = \mu\)</span>.</p>
+</div>
+</div>
+<div id="common-pitfalls-of-anova-and-alternative-approaches" class="section level2">
+<h2>Common pitfalls of ANOVA and alternative approaches</h2>
+<p>Despite its perceived simplicity, scientists frequently misuse ANOVA. A study by <a href="https://www.hindawi.com/journals/tswj/2011/139494/">Wu et al. (2011)</a> showed that from a survey of 10 leading Chinese medical journals in 2008, 446 articles used ANOVA, and of those articles, <a href="https://www.hindawi.com/journals/tswj/2011/139494/tab1/"><strong>59% of them used ANOVA incorrectly</strong></a>.</p>
+<p>Below we will discuss many of the common pitfalls.</p>
+<div id="using-one-way-anova-when-there-is-more-than-one-grouping-variable" class="section level3">
+<h3>Using one-way ANOVA when there is more than one grouping variable</h3>
+<p>Suppose that instead of solely measuring waiting times from emergency waiting rooms at each hospital, we instead measured the waiting times from three medical departments from each hospital: <em>surgery</em>, <em>pediatrics</em>, and <em>dentistry</em>.</p>
+<p><img src="/img/anova/two-way.png" style="display: block; margin: auto;" /></p>
+<p>In this scenario we should adapt the model to take the second grouping variable into account. This is called <strong>two-way ANOVA</strong>, and the model can be adapted as follows:</p>
+<p><span class="math display">\[y_{ijk} = \mu + \tau_i + \gamma_j + \beta_{ij} + \epsilon_{ijk}\]</span></p>
+<p>where <span class="math inline">\(\tau_i\)</span> represents the hospital-specific effect on waiting time and <span class="math inline">\(\gamma_j\)</span> represents the department-specific effect. <span class="math inline">\(\beta_{ij}\)</span> represents an interaction term between these two effects.</p>
+<p>Another adaptation of ANOVA when the second grouping variable (medical department) is not the same across each hospital is called <strong>nested ANOVA</strong> (see fig below). For example, perhaps we are comparing both hospitals and medical departments, but we are not examining the same medical department in each hospital.</p>
+<p><img src="/img/anova/nested.png" style="display: block; margin: auto;" /></p>
+</div>
+<div id="conducting-anova-multiple-times-for-multiple-outcomes" class="section level3">
+<h3>Conducting ANOVA multiple times for multiple outcomes</h3>
+<p>Suppose that instead of simply being interested in whether there is a difference between waiting time for each hospital, we were also interested in differences in average <em>length of hospital stay</em> and <em>cost of visit</em>. Then the incorrect way to proceed would be to generate three separate ANOVA models and draw our conclusions separately for each model. This reeks of multiple testing issues and does not take into account any dependence between the different outcome variables.</p>
+<p>Instead, one should use Multivariate Analysis of Variance (<strong>MANOVA</strong>), which can be written as follows:</p>
+<p><span class="math display">\[ \left[\begin{array}a  y_{ij1} \\ y_{ij2} \\ y_{ij3} \end{array} \right]= \mu + \tau_i +  \epsilon_{ij}\]</span>
+where</p>
+<ul>
+<li><span class="math inline">\(y_{ij1}\)</span> is the waiting time for individual <span class="math inline">\(j\)</span> from hospital <span class="math inline">\(i\)</span>,</li>
+<li><span class="math inline">\(y_{ij2}\)</span> is the length of hospital stay for individual <span class="math inline">\(j\)</span> from hospital <span class="math inline">\(i\)</span>, and</li>
+<li><span class="math inline">\(y_{ij3}\)</span> is the cost of the visit for individual <span class="math inline">\(j\)</span> from hospital <span class="math inline">\(i\)</span>.</li>
+</ul>
+</div>
+<div id="incorrectly-conducting-multiple-pair-wise-comparisons-following-anova" class="section level3">
+<h3>Incorrectly conducting multiple pair-wise comparisons following ANOVA</h3>
+<p>Upon obtaining a “significant” ANOVA p-value, a common mistake is to then go and test all of the pairwise differences to identify <em>which</em> of the populations had different means. This is another example of multiple hypothesis testing, and corrections on these p-values must be made. See the <a href="https://en.wikipedia.org/wiki/Multiple_comparisons_problem">Wikipedia page</a> for details on this common issue.</p>
+</div>
+<div id="using-anova-to-analyse-repeated-measures-data" class="section level3">
+<h3>Using ANOVA to analyse repeated-measures data</h3>
+<p>What if, instead of having measured the waiting room times on a different set of 20 people at each hospital (left-panel in fig below), we instead measured the waiting room times on the same set of 20 people at each hospital (right-panel in fig below)?</p>
+<p><img src="/img/anova/repeated-normal-anova.png" width="100" height="200" style="display: block; margin: auto;" /></p>
+<p>We have certainly violated the assumption that our observations are independent. Fortunately, <strong>repeated measures ANOVA (rANOVA)</strong> is a method for exactly this situation.</p>
+<p>Basically, rANOVA simply splits the within sum of squares into the individual-level sum of squares and the random error sum of squares. An excellent article describing rANOVA can be found <a href="https://statistics.laerd.com/statistical-guides/repeated-measures-anova-statistical-guide.php">here</a>. A common repeated measures experimental design involves observations being made at different <em>time points</em> (as opposed to at different hospitals).</p>
+<p>According to the Wikipedia article,</p>
+<blockquote>
+<p>rANOVA is not always the best statistical analysis for repeated measure designs. The rANOVA is vulnerable to effects from missing values, imputation, unequivalent time points between subjects and violations of sphericity. These issues can result in sampling bias and inflated rates of Type I error. In such cases it may be better to consider use of a linear mixed model.</p>
+</blockquote>
+</div>
+</div>
+<div id="freqently-asked-questions" class="section level2">
+<h2>Freqently asked questions</h2>
+<div id="can-i-use-anova-if-my-data-violates-the-assumption-of-common-variances" class="section level3">
+<h3>Can I use ANOVA if my data violates the assumption of common variances?</h3>
+<p>According to this post on <a href="http://stats.stackexchange.com/questions/56971/alternative-to-one-way-anova-unequal-variance">Stats Stack Exchange</a>, if the sample size in each group is similar, and the difference between variance isn’t too bad, you should be ok.</p>
+<p>According to user <em>gung</em>, with similar group sizes there is a rule of thumb that states that</p>
+<blockquote>
+<p>ANOVA is robust to heterogeneity of variance so long as the largest variance is not more than 4 times the smallest variance.</p>
+</blockquote>
+<p>I’ll admit that I haven’t checked this claim, but I’d be willing to believe it.</p>
+<p>If, however, your data has wildly different group variances or varying group sizes, then I’m not entirely sure of what options exist (note that the non-parametric alternative also assumes that the population variances are similar).</p>
+</div>
+<div id="if-my-data-are-not-normal-can-i-simply-transform-it-and-draw-the-conclusions-as-normal" class="section level3">
+<h3>If my data are not normal, can I simply transform it and draw the conclusions as normal?</h3>
+<p>Yes, probably.</p>
+</div>
+<div id="how-does-the-anova-for-model-comparison-work" class="section level3">
+<h3>How does the ANOVA for model comparison work?</h3>
+<p>It is common to use the <code>anova()</code> function in R to compare two different models. Specifically, it compares <em>nested</em> models wherein one model consists of a subset of the set of variables of the other model.</p>
+<p>Note that the use of the word “nested” here has nothing to do with the nested anova discussed above in which the grouping variables themselves (rather than the models) were nested.</p>
+<p>The comparison being made by ANOVA in this situation is whether the residual sum of squares (which is essentially the <em>within sum of squares</em> from one-way ANOVA) for model 1 (the larger model) is larger than the residual sum of squares for model 2 (the smaller model).</p>
+<p>Specifically, it calculates the F-statistic</p>
+<p><span class="math display">\[F = \frac{(RSS_{\text{model 2}} - RSS_{\text{model 1}})/(p_1 - p_2)}{RSS_{\text{model 1}}/(n - p_1)}\]</span></p>
+<p>The idea is that since model 2 is a special case of model 1, model 1 is more complex
+so <span class="math inline">\(RSS_{\text{model 2}}\)</span> will always be as least as large as <span class="math inline">\(RSS_{\text{model 1}}\)</span>. The question is whether the difference is “statistically significant”.</p>
+<p>Note that if you call the <code>anova()</code> function with a single model, it will compare the first variable in the model to a baseline model with no predictors. If there is a second variable, it compares the model with both variables against the model with just one variable, and so on and so forth.</p>
+<p>See this <a href="http://www.statpower.net/Content/311/Lecture%20Notes/RegressionIntro.pdf">set of slides</a> by James Steiger if you’re interested in further details.</p>
+</div>
+</div>
+<div id="the-end" class="section level2">
+<h2>The end…</h2>
+<p>While this post has only scratched the surface of all things ANOVA, I hope that you have developed a general intuition for how ANOVA works, what assumptions are needed to make things go, and common pitfalls to avoid.</p>
+</div>

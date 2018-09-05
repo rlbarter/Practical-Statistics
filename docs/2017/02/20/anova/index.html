@@ -8,7 +8,7 @@
    When ANOVA is used and who uses it? ANOVA is used far and wide by the scientific community and beyond. Unfortunately, scientists also frequently misuse ANOVA. A study by Wu et al. (2011) showed that from a survey of 10 leading Chinese medical journals in 2008, 446 articles used ANOVA, and of those articles, 59% of them used ANOVA incorrectly.">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
-        <meta name="generator" content="Hugo 0.18.1" />
+        <meta name="generator" content="Hugo 0.40.3" />
         <meta name="robots" content="index,follow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
@@ -16,10 +16,6 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         
-
-
-
-
     </head>
     <body>
         
@@ -87,9 +83,7 @@
         <div class="post-content clearfix" itemprop="articleBody">
     
 
-
-
-<p>Last week, practical statistics met to discuss all things ANOVA. Below you will find the slides from my talk, but read on if you would like to learn all about ANOVA.</p>
+    <p>Last week, practical statistics met to discuss all things ANOVA. Below you will find the slides from my talk, but read on if you would like to learn all about ANOVA.</p>
 <center>
 <iframe src="https://docs.google.com/presentation/d/1mjaZs2ynGK7-qHFFr0nzjHmwqT3BhLDf0h-R5h6RsfU/embed?start=false&amp;loop=false&amp;delayms=3000" frameborder="0" width="720" height="449" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true">
 </iframe>
@@ -130,6 +124,7 @@ Figure 1: Three hospitals: A, B and C.
 </p>
 </div>
 <p>We measured the waiting time for 20 unique individuals at each of these three hospitals (so there are 60 individuals in total). These waiting times (in hours) are recorded below.</p>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.1</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -243,7 +238,7 @@ Figure 1: Three hospitals: A, B and C.
 </table>
 <p>As pictures tend to be more informative than tables, we present a plot of these waiting times below. To aid the visualization, the x-position of each point is jittered to gently increase the space between the points.</p>
 <p>Most people seem to wait over an hour, with some unlucky individuals waiting for almost 3 hours. The mean waiting time for each hospital is highlighted by a red bar.</p>
-<p><img src="figures/wait2-1.png" width="288" style="display: block; margin: auto;" /></p>
+<p><img src="../../../../post/2017-02-17-anova_files/figure-html/wait2-1.png" width="288" style="display: block; margin: auto;" /></p>
 <p>The question of interest is whether or not the average waiting time for each of the three hospitals is the same. This question might be naively interpreted as: “are the red bars at the same height?”, i.e. is there a difference between the waiting times for the <em>sample</em> of 20 patients from each hospital. The intended question is actually asking about equality between the average waiting times from the population of all patients who have ever, and will ever, wait in these waiting rooms, regardless of whether they fall in our sample.</p>
 <p>Although the sample means clearly aren’t identical (the red bars are all at different heights), <strong>do we have enough evidence to show that the <em>underlying population</em> waiting time means are different</strong>, or are the differences that we observe are simply reflection of the inherent noise in the data?</p>
 <p>This is the question that lies at the heart of hypothesis testing.</p>
@@ -258,7 +253,7 @@ Figure 1: Three hospitals: A, B and C.
 <li><p><strong>between-group variability</strong>: the variance between the averages of the groups.</p></li>
 </ul>
 <p>In the figure below, the red bars in the left panel highlight the <em>within-group variance</em>, while the red bars in the right panel highlight the <em>between-group variance</em>.</p>
-<p><img src="figures/unnamed-chunk-4-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="../../../../post/2017-02-17-anova_files/figure-html/unnamed-chunk-4-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>The basic idea is that <strong>if the variability between the groups is greater than the variability within the groups</strong>, then we have evidence that the differences between the groups is not simply reflecting random noise.</p>
 <p>Quantifying the within and between group variability is typically done by calculating a mean sum of squares: add up the squared vertical distances and divide by the <em>degrees of freedom</em>.</p>
 <p>This means that we are comparing the</p>
@@ -300,7 +295,7 @@ Figure 1: Three hospitals: A, B and C.
 <p>Let’s examine these assumptions for our Hospital waiting times example.</p>
 <p>Unfortunately, independence is hard to judge statistically, but if, for example, each person was randomly selected from a splattering of visitors to the waiting room at different times (rather than, e.g. selecting 5 members of the same family all of whom came to the hospital together in some freak accident), then the assumption of independence is probably ok.</p>
 <p>The figure below plots the density estimation for the waiting times from each hospital. We know that if our data is normally distributed, it should look vaguely like a bell-curve.</p>
-<p><img src="figures/unnamed-chunk-6-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="../../../../post/2017-02-17-anova_files/figure-html/unnamed-chunk-6-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>One might argue that these are some pretty funky-looking bell-curves…</p>
 <p>However, as I was the one who simulated this data in the first place, I can assure you that they are in fact normally distributed, and you can use this as a lesson on the difficult of drawing conclusions on normality from small samples (in this case, we have 20 observations in each group).</p>
 <p>A <a href="http://stat.ethz.ch/R-manual/R-devel/library/stats/html/shapiro.test.html">Shapiro-Wilk test for normality</a> provides p-values of 0.39, 0.087, 0.52 for hospitals A, B and C, respectively. Although none of these values are “significant” (even unadjusted for multiple testing), we have stumbled upon another lesson: small p-values (<span class="math inline">\(p = 0.087\)</span> for hospital B) can certainly occur when the null hypothesis is true (in this case, the null hypothesis is that the data are normally distributed)! Remember that when the null hypothesis is true, p-values are uniformly distributed.</p>
@@ -354,7 +349,8 @@ Figure 1: Three hospitals: A, B and C.
 <h3>Conducting ANOVA multiple times for multiple outcomes</h3>
 <p>Suppose that instead of simply being interested in whether there is a difference between waiting time for each hospital, we were also interested in differences in average <em>length of hospital stay</em> and <em>cost of visit</em>. Then the incorrect way to proceed would be to generate three separate ANOVA models and draw our conclusions separately for each model. This reeks of multiple testing issues and does not take into account any dependence between the different outcome variables.</p>
 <p>Instead, one should use Multivariate Analysis of Variance (<strong>MANOVA</strong>), which can be written as follows:</p>
-<p><span class="math display">\[ \left[\begin{array}a  y_{ij1} \\ y_{ij2} \\ y_{ij3} \end{array} \right]= \mu + \tau_i +  \epsilon_{ij}\]</span> where</p>
+<p><span class="math display">\[ \left[\begin{array}a  y_{ij1} \\ y_{ij2} \\ y_{ij3} \end{array} \right]= \mu + \tau_i +  \epsilon_{ij}\]</span>
+where</p>
 <ul>
 <li><span class="math inline">\(y_{ij1}\)</span> is the waiting time for individual <span class="math inline">\(j\)</span> from hospital <span class="math inline">\(i\)</span>,</li>
 <li><span class="math inline">\(y_{ij2}\)</span> is the length of hospital stay for individual <span class="math inline">\(j\)</span> from hospital <span class="math inline">\(i\)</span>, and</li>
@@ -400,7 +396,8 @@ Figure 1: Three hospitals: A, B and C.
 <p>The comparison being made by ANOVA in this situation is whether the residual sum of squares (which is essentially the <em>within sum of squares</em> from one-way ANOVA) for model 1 (the larger model) is larger than the residual sum of squares for model 2 (the smaller model).</p>
 <p>Specifically, it calculates the F-statistic</p>
 <p><span class="math display">\[F = \frac{(RSS_{\text{model 2}} - RSS_{\text{model 1}})/(p_1 - p_2)}{RSS_{\text{model 1}}/(n - p_1)}\]</span></p>
-<p>The idea is that since model 2 is a special case of model 1, model 1 is more complex so <span class="math inline">\(RSS_{\text{model 2}}\)</span> will always be as least as large as <span class="math inline">\(RSS_{\text{model 1}}\)</span>. The question is whether the difference is “statistically significant”.</p>
+<p>The idea is that since model 2 is a special case of model 1, model 1 is more complex
+so <span class="math inline">\(RSS_{\text{model 2}}\)</span> will always be as least as large as <span class="math inline">\(RSS_{\text{model 1}}\)</span>. The question is whether the difference is “statistically significant”.</p>
 <p>Note that if you call the <code>anova()</code> function with a single model, it will compare the first variable in the model to a baseline model with no predictors. If there is a second variable, it compares the model with both variables against the model with just one variable, and so on and so forth.</p>
 <p>See this <a href="http://www.statpower.net/Content/311/Lecture%20Notes/RegressionIntro.pdf">set of slides</a> by James Steiger if you’re interested in further details.</p>
 </div>
@@ -409,8 +406,6 @@ Figure 1: Three hospitals: A, B and C.
 <h2>The end…</h2>
 <p>While this post has only scratched the surface of all things ANOVA, I hope that you have developed a general intuition for how ANOVA works, what assumptions are needed to make things go, and common pitfalls to avoid.</p>
 </div>
-
-
 
 </div>
 

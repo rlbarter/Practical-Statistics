@@ -8,7 +8,7 @@
 Who Uses Fixed, Mixed, and Random Effects? Two main groups use these terms but are referring to different models. The economists and broadly speaking, “bio folks” are the two main crowds who use these types of models.">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
-        <meta name="generator" content="Hugo 0.18.1" />
+        <meta name="generator" content="Hugo 0.40.3" />
         <meta name="robots" content="index,follow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
@@ -16,10 +16,6 @@ Who Uses Fixed, Mixed, and Random Effects? Two main groups use these terms but a
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         
-
-
-
-
     </head>
     <body>
         
@@ -87,9 +83,7 @@ Who Uses Fixed, Mixed, and Random Effects? Two main groups use these terms but a
         <div class="post-content clearfix" itemprop="articleBody">
     
 
-
-
-<p>Last time Practical Statistics met to try to wrap our heads around fixed, mixed, and random effects. Chelsea Zhang gave a great chalk-talk (white board marker-talk just doesn’t have the same ring to it), and I will give a brief summary of the content before going through a real-life example.</p>
+    <p>Last time Practical Statistics met to try to wrap our heads around fixed, mixed, and random effects. Chelsea Zhang gave a great chalk-talk (white board marker-talk just doesn’t have the same ring to it), and I will give a brief summary of the content before going through a real-life example.</p>
 <div id="who-uses-fixed-mixed-and-random-effects" class="section level4">
 <h4>Who Uses Fixed, Mixed, and Random Effects?</h4>
 <p>Two main groups use these terms but are referring to different models. The economists and broadly speaking, “bio folks” are the two main crowds who use these types of models. Full disclaimer: I think about these terms in the second way, so economists should feel free to comment on anything I miss, get wrong, etc.</p>
@@ -240,7 +234,7 @@ plot(data[which(data$method==1),&quot;perNum&quot;],data[which(data$method==1),&
 lines(data[which(data$method==2),&quot;perNum&quot;],data[which(data$method==2),&quot;relativeError&quot;],type=&quot;b&quot;,col=&quot;blue&quot;)
 lines(data[which(data$method==3),&quot;perNum&quot;],data[which(data$method==3),&quot;relativeError&quot;],type=&quot;b&quot;,col=&quot;forestgreen&quot;)
 legend(&quot;topleft&quot;,col=c(&quot;red&quot;,&quot;blue&quot;,&quot;forestgreen&quot;),c(&quot;Method 1&quot;,&quot;Method 2&quot;,&quot;Method 3&quot;),lty=1,lwd=2,bty=&quot;n&quot;)</code></pre>
-<p><img src="figures/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="../../../../post/2017-03-03-fixed-mixed-random-effects_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>NIST is interested in the following relationship:</p>
 <p><span class="math display">\[RE_{ij}=\alpha_i+\beta_j+\epsilon_{ij}\]</span></p>
 <p>where <span class="math inline">\(i\)</span> indexes the atom and <span class="math inline">\(j\)</span> indexes the analysis method.</p>
@@ -290,36 +284,36 @@ summary(mod2)</code></pre>
 ## Formula: relativeError ~ atom + fake + (1 | method)
 ##    Data: data2
 ## 
-## REML criterion at convergence: -40.3
+## REML criterion at convergence: -45.5
 ## 
 ## Scaled residuals: 
 ##      Min       1Q   Median       3Q      Max 
-## -1.25873 -0.34278 -0.04997  0.44990  1.89531 
+## -1.36938 -0.44118 -0.00285  0.44320  1.36975 
 ## 
 ## Random effects:
-##  Groups   Name        Variance  Std.Dev.
-##  method   (Intercept) 0.0007128 0.02670 
-##  Residual             0.0004239 0.02059 
+##  Groups   Name        Variance Std.Dev.
+##  method   (Intercept) 0.001086 0.03296 
+##  Residual             0.000215 0.01466 
 ## Number of obs: 18, groups:  method, 3
 ## 
 ## Fixed effects:
 ##              Estimate Std. Error t value
-## (Intercept)  0.029468   0.019476   1.513
-## atomBe      -0.019115   0.017642  -1.083
-## atomCa       0.016122   0.017051   0.946
-## atomMg       0.008776   0.016873   0.520
-## atomRa      -0.039246   0.016841  -2.330
-## atomSr       0.017097   0.017122   0.998
-## fake        -0.007429   0.005932  -1.252
+## (Intercept)  0.028067   0.020829   1.348
+## atomBe      -0.008677   0.013079  -0.663
+## atomCa       0.002993   0.012327   0.243
+## atomMg       0.021063   0.012397   1.699
+## atomRa      -0.036768   0.011978  -3.070
+## atomSr       0.013380   0.011972   1.118
+## fake        -0.012165   0.003738  -3.254
 ## 
 ## Correlation of Fixed Effects:
 ##        (Intr) atomBe atomCa atomMg atomRa atomSr
-## atomBe -0.402                                   
-## atomCa -0.420  0.520                            
-## atomMg -0.433  0.449  0.477                     
-## atomRa -0.433  0.457  0.482  0.502              
-## atomSr -0.418  0.525  0.516  0.473  0.479       
-## fake   -0.032 -0.303 -0.167  0.086  0.060 -0.190</code></pre>
+## atomBe -0.267                                   
+## atomCa -0.277  0.349                            
+## atomMg -0.280  0.546  0.407                     
+## atomRa -0.288  0.470  0.478  0.491              
+## atomSr -0.287  0.461  0.483  0.485  0.500       
+## fake    0.009 -0.403  0.238 -0.260 -0.031 -0.009</code></pre>
 <p><strong>Assumptions</strong></p>
 <p><span class="math display">\[RE_{ij}=\alpha_i+\beta_j+\epsilon_{ij}\]</span></p>
 <p>Here we assume that <span class="math inline">\(\epsilon_{ij}\)</span> are an iid sample from a Gaussian distribution with mean zero and standard deviation <span class="math inline">\(\sigma\)</span> and interpret it as the leftover error after we have partitioned out all of the correlated error induced by grouping structures. You can check this assumption by looking at plots of the residuals such as the QQ plot.</p>
@@ -329,7 +323,7 @@ summary(mod2)</code></pre>
 <p>Check for normality.</p>
 <pre class="r"><code>qqnorm(resid(mod))
 qqline(resid(mod))</code></pre>
-<p><img src="figures/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="../../../../post/2017-03-03-fixed-mixed-random-effects_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>This doesn’t look great, but with small sample sizes, it probably isn’t unreasonable. We could try a log transformation of the relative errors if we feel compelled to make this a bit more normal.</p>
 <p>By treating <span class="math inline">\(\beta_j\)</span> as a random effect we are assuming that they are a random sample from a Gaussian distribution with mean 0 and a standard deviation <span class="math inline">\(\tau\)</span> that we estimate. We can plot the QQ plots per method, but it will be hard to assess normality with so few points.</p>
 <pre class="r"><code>## by method
@@ -342,8 +336,9 @@ qqline(resid(mod)[7:12])
 
 qqnorm(resid(mod)[13:18])
 qqline(resid(mod)[13:18])</code></pre>
-<p><img src="figures/unnamed-chunk-6-1.png" width="672" /></p>
-<p>By using a random effect at the intercept level we are assuming that whatever the effect of each method is, it’s going to be the same across atoms. If we didn’t think this was the case, we could look to slope varying models. This could be its own discussion/blog topic, so I won’t go into it here. We should note that unless we have good reason to believe that the slope varies and/or we have a lot of data with sufficient replication, we should avoid fitting the more complicated slope varying model.</p>
+<p><img src="../../../../post/2017-03-03-fixed-mixed-random-effects_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>By using a random effect at the intercept level we are assuming that whatever
+the effect of each method is, it’s going to be the same across atoms. If we didn’t think this was the case, we could look to slope varying models. This could be its own discussion/blog topic, so I won’t go into it here. We should note that unless we have good reason to believe that the slope varies and/or we have a lot of data with sufficient replication, we should avoid fitting the more complicated slope varying model.</p>
 <p>*Note: The Hausman test for the panel data can be found in plm::phtest.</p>
 </div>
 <div id="summary" class="section level4">
@@ -376,8 +371,6 @@ qqline(resid(mod)[13:18])</code></pre>
 <p>Implementation of Fits:</p>
 <p>-Linear Mixed-Effects Models Using R by Andrzej Galeck and Tomasz Burzykowski</p>
 </div>
-
-
 
 </div>
 

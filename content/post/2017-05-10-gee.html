@@ -1,0 +1,322 @@
+---
+title: "Generalized Estimating Equations (GEE)"
+author: "Johnny Hong and Kellie Ottoboni"
+categories: [Method]
+tags: [generalized estimating equations, linear models]
+output: html_document
+date: 2017-05-10T21:13:14-05:00
+---
+
+
+
+<div id="motivation" class="section level1">
+<h1>Motivation</h1>
+<p>Suppose we observe repeated measurements (responses and/or covariates) on a group of subjects.
+We’re interested in modeling the expected response for an individual based on these covariates.
+Some examples might include</p>
+<ul>
+<li>assigning individuals to one of several controlled diets and measuring their cholesterol over time</li>
+<li>studying the relationship of some variable with earnings over time</li>
+<li>determining the effect of having children on a woman’s probability of participation in the labor force</li>
+</ul>
+<p>The benefit of having panel data (repeated measurements) like this is that we can control for time-invariant, unobservable differences between individuals.
+Having multiple observations per individual allows us to base estimates on the variation <em>within</em> individuals.</p>
+<p>The easiest way to do answer these questions would be to fit a linear model to the data, where the covariates have an additive effect on the outcome.
+If the variables follow something other than a linear relationship (e.g. the response of interest is a probability), a <em>generalized</em> linear model (GLM) would be more appropriate.
+GLMs have the following form:
+<span class="math display">\[Y_i = \mu_i + \varepsilon_i, \qquad g(\mu_i) = X_i&#39;\beta\]</span></p>
+<p>where for individual <span class="math inline">\(i\)</span>, <span class="math inline">\(Y_i\)</span> is the response, <span class="math inline">\(X_i\)</span> are covariates, <span class="math inline">\(\beta\)</span> is a vector of coefficients, <span class="math inline">\(\varepsilon_i\)</span> is a random error term, and <span class="math inline">\(g\)</span> is a <strong>link function</strong> that maps from the set of possible responses to a linear function of the covariates.</p>
+<p>To estimate parameters and do inference with a GLM, we must assume that errors are independent and identically distributed.
+With panel data, this clearly isn’t the case: observations for each individual are correlated.</p>
+<p>As we saw in an earlier presentation, one possible solution is to include <a href="https://rlbarter.github.io/Practical-Statistics/2017/03/03/fixed-mixed-and-random-effects/">subject-specific random effects</a> in the model fitting.
+This method is called a <strong>Generalized Linear Mixed Model (GLMM)</strong>.
+GLMMs require some parametric assumptions; if you’re like me (Kellie), assuming that everything is Gaussian probably makes you uncomfortable.</p>
+<p>Generalized estimating equations (GEE) are a nonparametric way to handle this.
+The idea of GEE is to average over all subjects and make a good guess on the <em>within-subject covariance structure</em>.
+Instead of assuming that data were generated from a certain distribution, uses moment assumptions to iteratively choose the best <span class="math inline">\(\beta\)</span> to describe the relationship between covariates and response.</p>
+<p><strong>Warning:</strong> Notice that I did not specify the objective of the analysis.
+The interpretations of the resultingestimates are different (!) for GLMM and GEE.</p>
+</div>
+<div id="subject-specific-versus-population-averaged" class="section level1">
+<h1>Subject-specific versus Population-averaged</h1>
+<p>GEE estimates <strong>population average</strong> effects.
+Consider the following two scenarios:</p>
+<ul>
+<li>Scenario 1: You are a doctor. You want to know how much a statin drug will lower your patient’s odds of getting a heart attack.</li>
+<li>Scenario 2: You are a state health official. You want to know how the number of people who die of heart attacks would change if everyone in the at-risk population took the stain drug.</li>
+</ul>
+<p><em>Source: Allison, P. (2009)</em></p>
+<p>In the first scenario, we want to know the subject-specific odds.
+In the second, we are interested in the prediction for the entire population.
+GEE can give us estimates for the second, but not the first.</p>
+</div>
+<div id="nuts-and-bolts-of-gee" class="section level1">
+<h1>Nuts and Bolts of GEE</h1>
+<p>GEE estimates <strong>population-averaged</strong> model parameters and their standard errors.
+The assumptions for GEE are similar to the assumptions for GLMs:</p>
+<ol style="list-style-type: decimal">
+<li>The responses <span class="math inline">\(Y_1, Y_2, \dots, Y_n\)</span> are correlated or clustered</li>
+<li>There is a linear relationship between the covariates and a transformation of the response, described by the link function <span class="math inline">\(g\)</span>.</li>
+<li>Within-subject covariance has some structure (“working covariance”):</li>
+</ol>
+<ul>
+<li>independence (observations over time are independent)</li>
+<li>exchangeable (all observations over time have the same correlation)</li>
+<li>AR(1) (correlation decreases as a power of how many timepoints apart two observations are)</li>
+<li>unstructured (correlation between all timepoints may be different)</li>
+</ul>
+<p>We need to pick one of these working covariance structures in order to fit the GEE.
+As with GLMs, GEE is done using a flavor of <a href="https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares">iteratively reweighted least squares</a>, plugging in the working covariance matrix as a weight.
+The weighted least squares problems we fit are the eponymous <strong>estimating equations</strong>.
+If you’re familiar with maximum likelihood, you can think of this equation as the <a href="https://en.wikipedia.org/wiki/Score_(statistics)">score function</a>.
+This function equals 0 at the optimal choice of <span class="math inline">\(\beta\)</span>.</p>
+<p>GEE is a <strong>semiparametric method</strong>: while we impose some structure on the data generating process (linearity), we do not fully specify its distribution.
+Estimating <span class="math inline">\(\beta\)</span> is purely an exercise in optimization.</p>
+</div>
+<div id="what-if-i-am-worried-that-the-covariance-is-misspecified" class="section level1">
+<h1>What if I am worried that the covariance is misspecified?</h1>
+<p>We have to pick the covariance structure in order to estimate <span class="math inline">\(\beta\)</span>, but what if it’s not right?</p>
+<p>Since the estimating equations are really based on the first moment, <span class="math inline">\(\beta\)</span> will be estimated consistently, even if the working covariance structure is wrong.
+However, the standard errors computed from this will be wrong.
+To fix this, use GEE with the Huber-White “sandwich estimator” for robustness.
+The idea behind the sandwich variance estimator is to use the empirical residuals to approximate the underlying covariance.</p>
+<p>Why bother specifying the working covariance to begin with?</p>
+<ol style="list-style-type: decimal">
+<li>Statistical efficiency</li>
+<li>Sandwich robustness is a large-sample property</li>
+</ol>
+<p>Should we use sandwich all the time?</p>
+<p>No, it is problematic if</p>
+<ol style="list-style-type: decimal">
+<li>The number of independent subjects is much smaller than the number of repeated measures</li>
+<li>The design is unbalanced – the number of repeated measures differs across individuals</li>
+</ol>
+</div>
+<div id="example-pigs" class="section level1">
+<h1>Example: Pigs</h1>
+<p><strong>Question:</strong> How does Vitamin E and copper level in the feeds affect the weights of pigs?</p>
+<p>Data</p>
+<ul>
+<li>weight of slaughter pigs measured weekly for 12 weeks</li>
+<li>start weight (i.e. the weight at week 1)</li>
+<li>cumulated feed intake</li>
+</ul>
+<p>Treatments (3x3 factorial design)</p>
+<ul>
+<li>Vitamin E (dose: 0, 100, 200 mg dl-alpha-tocopheryl acetat/kg feed)</li>
+<li>Copper (dose: 0, 35, 175 mg/kg feed)</li>
+</ul>
+<p><em>Source: Lauridsen, C., Højsgaard, S.,Sørensen, M.T. C. (1999).</em></p>
+<ul>
+<li>Implementation in R: <code>geepack</code></li>
+</ul>
+<pre class="r"><code>library(&quot;geepack&quot;)
+data(dietox)
+dietox$Cu &lt;- as.factor(dietox$Cu)
+dietox$Evit &lt;- as.factor(dietox$Evit)
+mf &lt;- formula(Weight ~ Time + Evit + Cu)
+head(dietox)</code></pre>
+<pre><code>##     Weight      Feed Time  Pig Evit Cu Litter
+## 1 26.50000        NA    1 4601    1  1      1
+## 2 27.59999  5.200005    2 4601    1  1      1
+## 3 36.50000 17.600000    3 4601    1  1      1
+## 4 40.29999 28.500000    4 4601    1  1      1
+## 5 49.09998 45.200001    5 4601    1  1      1
+## 6 55.39999 56.900002    6 4601    1  1      1</code></pre>
+<div id="independence-working-covariance" class="section level4">
+<h4>Independence Working Covariance</h4>
+<pre class="r"><code>geeInd &lt;- geeglm(mf, id=Pig, data=dietox, family=gaussian, corstr=&quot;ind&quot;)
+summary(geeInd)</code></pre>
+<pre><code>## 
+## Call:
+## geeglm(formula = mf, family = gaussian, data = dietox, id = Pig, 
+##     corstr = &quot;ind&quot;)
+## 
+##  Coefficients:
+##             Estimate  Std.err     Wald Pr(&gt;|W|)    
+## (Intercept) 15.07283  1.42190  112.371   &lt;2e-16 ***
+## Time         6.94829  0.07979 7582.549   &lt;2e-16 ***
+## Evit2        2.08126  1.84178    1.277    0.258    
+## Evit3       -1.11327  1.84830    0.363    0.547    
+## Cu2         -0.78865  1.53486    0.264    0.607    
+## Cu3          1.77672  1.82134    0.952    0.329    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Estimated Scale Parameters:
+##             Estimate Std.err
+## (Intercept)    48.28   9.309
+## 
+## Correlation: Structure = independenceNumber of clusters:   72   Maximum cluster size: 12</code></pre>
+<pre class="r"><code>anova(geeInd)</code></pre>
+<pre><code>## Analysis of &#39;Wald statistic&#39; Table
+## Model: gaussian, link: identity
+## Response: Weight
+## Terms added sequentially (first to last)
+## 
+##      Df   X2 P(&gt;|Chi|)    
+## Time  1 7507    &lt;2e-16 ***
+## Evit  2    4      0.15    
+## Cu    2    2      0.41    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="exchangeable-working-covariance" class="section level4">
+<h4>Exchangeable Working Covariance</h4>
+<pre class="r"><code>geeEx &lt;- geeglm(mf, id=Pig, data=dietox, family=gaussian, corstr=&quot;ex&quot;)
+summary(geeEx)</code></pre>
+<pre><code>## 
+## Call:
+## geeglm(formula = mf, family = gaussian, data = dietox, id = Pig, 
+##     corstr = &quot;ex&quot;)
+## 
+##  Coefficients:
+##             Estimate Std.err    Wald Pr(&gt;|W|)    
+## (Intercept)  15.0984  1.4206  112.96   &lt;2e-16 ***
+## Time          6.9426  0.0796 7605.79   &lt;2e-16 ***
+## Evit2         2.0414  1.8431    1.23     0.27    
+## Evit3        -1.1103  1.8452    0.36     0.55    
+## Cu2          -0.7652  1.5354    0.25     0.62    
+## Cu3           1.7871  1.8189    0.97     0.33    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Estimated Scale Parameters:
+##             Estimate Std.err
+## (Intercept)     48.3    9.31
+## 
+## Correlation: Structure = exchangeable  Link = identity 
+## 
+## Estimated Correlation Parameters:
+##       Estimate Std.err
+## alpha    0.766  0.0326
+## Number of clusters:   72   Maximum cluster size: 12</code></pre>
+<pre class="r"><code>anova(geeEx)</code></pre>
+<pre><code>## Analysis of &#39;Wald statistic&#39; Table
+## Model: gaussian, link: identity
+## Response: Weight
+## Terms added sequentially (first to last)
+## 
+##      Df   X2 P(&gt;|Chi|)    
+## Time  1 7604    &lt;2e-16 ***
+## Evit  2    4      0.16    
+## Cu    2    2      0.41    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="ar1-working-covariance" class="section level4">
+<h4>AR(1) Working Covariance</h4>
+<pre class="r"><code>geeAr1 &lt;- geeglm(mf, id=Pig, data=dietox, family=gaussian, corstr=&quot;ar1&quot;)
+summary(geeAr1)</code></pre>
+<pre><code>## 
+## Call:
+## geeglm(formula = mf, family = gaussian, data = dietox, id = Pig, 
+##     corstr = &quot;ar1&quot;)
+## 
+##  Coefficients:
+##             Estimate Std.err    Wald Pr(&gt;|W|)    
+## (Intercept)  17.6124  1.3354  173.95   &lt;2e-16 ***
+## Time          6.7324  0.0756 7921.11   &lt;2e-16 ***
+## Evit2         2.3782  1.7676    1.81     0.18    
+## Evit3        -0.9779  1.7369    0.32     0.57    
+## Cu2          -0.3976  1.3928    0.08     0.78    
+## Cu3           1.2376  1.7376    0.51     0.48    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Estimated Scale Parameters:
+##             Estimate Std.err
+## (Intercept)     50.5    9.41
+## 
+## Correlation: Structure = ar1  Link = identity 
+## 
+## Estimated Correlation Parameters:
+##       Estimate Std.err
+## alpha    0.933  0.0116
+## Number of clusters:   72   Maximum cluster size: 12</code></pre>
+<pre class="r"><code>anova(geeAr1)</code></pre>
+<pre><code>## Analysis of &#39;Wald statistic&#39; Table
+## Model: gaussian, link: identity
+## Response: Weight
+## Terms added sequentially (first to last)
+## 
+##      Df   X2 P(&gt;|Chi|)    
+## Time  1 7907    &lt;2e-16 ***
+## Evit  2    5      0.07 .  
+## Cu    2    1      0.65    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+</div>
+<div id="advantages" class="section level1">
+<h1>Advantages</h1>
+<ul>
+<li>Computationally simple relative to MLE counterparts.</li>
+<li>No distributional assumptions.</li>
+<li>Estimates are consistent even if the correlation structure is misspecified (assuming that the model for the mean response is correct)</li>
+</ul>
+</div>
+<div id="limitations" class="section level1">
+<h1>Limitations</h1>
+<ul>
+<li>Likelihood-based methods are not available for usual statistical inference. GEE is a quasi-likelihood method.</li>
+<li>Unclear on how to perform model selection, as GEE is just an estimating procedure. There is no goodness-of-fit measure readily available.</li>
+<li>No subject-specific estimates; if that is the goal of your study, use a different method.</li>
+</ul>
+</div>
+<div id="extensions-of-gee" class="section level1">
+<h1>Extensions of GEE</h1>
+<ul>
+<li>GEE2: second-order extension
+<ul>
+<li>The GEE version in this presentation is GEE1.</li>
+<li>Idea: use more complex equations to study the covariance</li>
+</ul></li>
+<li>Alternating Logistic Regression (ALR) (Carey, Zeger, and Diggle (1993)): model an outcome conditional on another outcome
+<ul>
+<li>Idea: use log odd ratios instead of correlations to model associations</li>
+</ul></li>
+</ul>
+</div>
+<div id="take-home-messages-about-gee" class="section level1">
+<h1>Take-Home Messages about GEE</h1>
+<ul>
+<li>ONLY the first the <strong>mean</strong> and the <strong>covariance</strong> matter (quasi-likelihood approach)</li>
+<li>Use a <strong>sandwich estimator</strong> to guard against covariance mispecification</li>
+<li>Model <strong>population-averaged</strong> effects</li>
+<li>Useful when the within-subject dependence is unobserved/unknown</li>
+<li>Still assume subject independence (conditioned on covariates)</li>
+</ul>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<div id="gee" class="section level4">
+<h4>GEE</h4>
+<ul>
+<li>Liang, K., and S. L. Zeger (1986). Longitudinal data analysis using generalized linear models. Biometrika, 73:13–22.</li>
+<li>Fitzmaurice, G. M., Ware, J.H. and Laird, N. M. (2004). Applied Longitudinal Analysis. Wiley. (Chapter 13)</li>
+<li>Molenberghs, Geert and Verbeke, Geert (2005). Models for Discrete Longitudinal Data. Springer. (Chapter 8)</li>
+</ul>
+</div>
+<div id="to-gee-or-not-to-gee" class="section level4">
+<h4>To GEE or not to GEE:</h4>
+<ul>
+<li>Hubbard, A.E., Ahern, J., Fleischer, N.L., Van der Laan, M., Lippman, S.A., Jewell, N., Bruckner, T., Satariano, W.A. (2010). To GEE or not to GEE: comparing population average and mixed models for estimating the associations between neighborhood risk factors and health. Epidemiology 21:467–474.</li>
+</ul>
+<p>“…We conclude that the estimation-equation approach of population average models provides a more useful approximation of the truth.”</p>
+</div>
+<div id="subject-specific-versus-population-averaged-1" class="section level4">
+<h4>Subject-specific versus Population-averaged:</h4>
+<p>Allison, P. D. (2009). Fixed Effects Regression Models (Quantitative Applications in the Social Sciences). SAGE.</p>
+</div>
+<div id="blog-post" class="section level4">
+<h4>Blog post:</h4>
+<p>Dealing with ugly data: Generalized Estimating Equations (GEE) by BOUSTERHOUT:
+<a href="https://wildlifesnpits.wordpress.com/2014/10/24/dealing-with-ugly-data-generalized-estimating-equations-gee/" class="uri">https://wildlifesnpits.wordpress.com/2014/10/24/dealing-with-ugly-data-generalized-estimating-equations-gee/</a></p>
+</div>
+<div id="dataset" class="section level4">
+<h4>Dataset:</h4>
+<p>Lauridsen, C., Højsgaard, S.,Sørensen, M.T. C. (1999). Influence of Dietary Rapeseed Oli, Vitamin E, and Copper on Performance and Antioxidant and Oxidative Status of Pigs. J. Anim. Sci.77:906-916</p>
+<p><em>Available in the R package geepack</em></p>
+</div>
+</div>
